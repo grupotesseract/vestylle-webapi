@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Admin Panel Grupo Tesseract</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
@@ -45,7 +45,7 @@
             }
 
             .title {
-                font-size: 84px;
+                font-size: 60px;
             }
 
             .links > a {
@@ -81,16 +81,14 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    <img style="height: 45px;" src="https://res.cloudinary.com/tesseract/image/upload/q_auto/v1534552051/portfolio/logo-tesseract-preto-simples.png" alt="Logo Grupo Tesseract">
+                    Admin Panel<br>
+                    Grupo Tesseract
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="https://docs.google.com/document/d/1xivqhrpZphWdxDrEj3tVFj7AJr1o0DgR2mM-sfjZJ98/edit?usp=sharing">Documentação</a>
+                    <a href="https://github.com/grupotesseract/admin-panel">GitHub</a>
                 </div>
             </div>
         </div>

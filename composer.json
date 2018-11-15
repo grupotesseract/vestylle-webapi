@@ -10,7 +10,10 @@
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "predis/predis": "^1.1",
-        "shipping-docker/vessel": "^3.2"
+        "shipping-docker/vessel": "^3.2",
+        "infyomlabs/laravel-generator": "5.7.x-dev",
+        "laravelcollective/html": "^5.7.0",
+        "infyomlabs/adminlte-templates": "5.7.x-dev"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
