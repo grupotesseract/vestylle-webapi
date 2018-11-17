@@ -110,7 +110,7 @@ return [
 
         'softDelete' => true,
 
-        'tables_searchable_default' => false,
+        'tables_searchable_default' => true,
     ],
 
     /*
@@ -144,7 +144,7 @@ return [
 
         'tests'         => true,
 
-        'datatables'    => false,
+        'datatables'    => true,
 
         'menu'          => [
 
