@@ -89,6 +89,15 @@
                 <div class="links">
                     <a href="https://docs.google.com/document/d/1xivqhrpZphWdxDrEj3tVFj7AJr1o0DgR2mM-sfjZJ98/edit?usp=sharing">Documentação</a>
                     <a href="https://github.com/grupotesseract/admin-panel">GitHub</a>
+                    @auth
+                        <a href="{{ url('/home') }}">Home</a>
+                    @else
+                        <a href="{{ route('login') }}">Login</a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}">Register</a>
+                        @endif
+                    @endauth
                 </div>
             </div>
         </div>
