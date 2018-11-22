@@ -11,6 +11,17 @@
         "inIndex": false
     },
     {
+        "name": "user_id",
+        "dbType": "integer:unsigned:foreign,users,id",
+        "htmlType": null,
+        "validations": null,
+        "searchable": false,
+        "fillable": false,
+        "primary": false,
+        "inForm": false,
+        "inIndex": false
+    },
+    {
         "name": "full_name",
         "dbType": "string",
         "htmlType": "text",
@@ -22,9 +33,9 @@
         "inIndex": true
     },
     {
-        "name": "user_id",
-        "dbType": "integer:unsigned:foreign,users,id",
-        "htmlType": null,
+        "name": "full_name",
+        "dbType": "string",
+        "htmlType": "text",
         "validations": null,
         "searchable": true,
         "fillable": true,
