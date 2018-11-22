@@ -25,17 +25,6 @@
         "name": "full_name",
         "dbType": "string",
         "htmlType": "text",
-        "validations": "required",
-        "searchable": true,
-        "fillable": true,
-        "primary": false,
-        "inForm": true,
-        "inIndex": true
-    },
-    {
-        "name": "full_name",
-        "dbType": "string",
-        "htmlType": "text",
         "validations": null,
         "searchable": true,
         "fillable": true,
