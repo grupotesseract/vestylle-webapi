@@ -12,7 +12,7 @@
     },
     {
         "name": "full_name",
-        "dbType": "string",
+        "dbType": "string:nullable",
         "htmlType": "text",
         "validations": null,
         "searchable": true,
@@ -23,7 +23,7 @@
     },
     {
         "name": "mei",
-        "dbType": "string",
+        "dbType": "string:nullable",
         "htmlType": "text",
         "validations": null,
         "searchable": true,
