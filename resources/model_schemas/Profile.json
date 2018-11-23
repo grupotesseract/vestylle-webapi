@@ -11,18 +11,18 @@
         "inIndex": false
     },
     {
-        "name": "user_id",
-        "dbType": "integer:unsigned:foreign,users,id",
-        "htmlType": null,
+        "name": "full_name",
+        "dbType": "string",
+        "htmlType": "text",
         "validations": null,
-        "searchable": false,
-        "fillable": false,
+        "searchable": true,
+        "fillable": true,
         "primary": false,
-        "inForm": false,
-        "inIndex": false
+        "inForm": true,
+        "inIndex": true
     },
     {
-        "name": "full_name",
+        "name": "mei",
         "dbType": "string",
         "htmlType": "text",
         "validations": null,
@@ -55,7 +55,12 @@
         "inIndex": false
     },
     {
-        "type": "relation",
-        "relation": "1t1,User,user_id,id"
+        "name": "user_id",
+        "dbType": "integer:unsigned:foreign,users,id",
+        "htmlType": null,
+        "relation": "1t1,User,user_id,id",
+        "searchable": false,
+        "inForm": false,
+        "inIndex": false
     }
 ]
