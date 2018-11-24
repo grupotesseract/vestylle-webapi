@@ -1,0 +1,94 @@
+Table types vendor/infyomlabs/Utils/TableFieldGenerator.php
+
+    $databaseType $htmlType
+
+generateIntFieldInput
+    integer number
+    smallint number
+    bigint number
+
+generateField
+    boolean checkbox,1
+    datetime date
+    dateTimeTz date
+    date date
+    time text
+    string text
+    text textarea
+
+generateNumberInput
+    decimal number
+    float number
+
+special
+    password password
+    email email
+    created_at
+    updated_at
+
+default
+    string text
+    $field->isSearchable = false;
+    $field->isFillable = false;
+    $field->inForm = false;
+    $field->inIndex = false;
+
+--//--
+
+Possible relations
+    1t1 hasOne
+    1tm hasMany
+    mt1 belongsTo
+    mtm belongsToMany
+    hmt hasManyThrough
+
+--//--
+
+Command Options
+    fieldsFile
+    jsonFromGUI
+    tableName
+    fromTable
+    save
+    primary
+    prefix
+    paginate
+    skip
+    datatables
+    views
+    relations
+
+--//--
+
+Possible Options
+    s
+        "searchable": false,
+
+    p // if field is primary key, then its not searchable, fillable, not in index & form
+        "primary": true,
+        "searchable": false,
+        "fillable": false,
+        "inForm": false,
+        "inIndex": false,
+
+    f
+        "fillable": false,
+
+    if
+        "inForm": false,
+
+    ii
+        "inIndex": false,
+
+--//--
+
+Possible .json fields
+    $field->name = $fieldInput['name'];
+    $field->parseDBType($fieldInput['dbType']);
+    $field->parseHtmlInput(isset($fieldInput['htmlType']) ? $fieldInput['htmlType'] : '');
+    $field->validations = isset($fieldInput['validations']) ? $fieldInput['validations'] : '';
+    $field->isSearchable = isset($fieldInput['searchable']) ? $fieldInput['searchable'] : false;
+    $field->isFillable = isset($fieldInput['fillable']) ? $fieldInput['fillable'] : true;
+    $field->isPrimary = isset($fieldInput['primary']) ? $fieldInput['primary'] : false;
+    $field->inForm = isset($fieldInput['inForm']) ? $fieldInput['inForm'] : true;
+    $field->inIndex = isset($fieldInput['inIndex']) ? $fieldInput['inIndex'] : true;

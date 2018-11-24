@@ -1,0 +1,57 @@
+git reset --hard HEAD
+git clean -fd
+
+./vessel comp require yajra/laravel-datatables-buttons
+
+php artisan infyom:api_scaffold Post --relations --save
+
+./vessel art infyom:api_scaffold Profile --fieldsFile=Profile.json
+
+http://labs.infyom.com/laravelgenerator/docs/5.7/fields-input-guide
+
+http://labs.infyom.com/laravelgenerator/docs/5.7/generator-options
+
+https://www.froala.com/wysiwyg-editor
+
+https://github.com/DarkaOnLine/L5-Swagger
+
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     **/
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    protected function create(array $data)
+    {   
+        $user = User::create([
+            'name' => $data['name'],            
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        $profile = Profile::create([
+            'user_id' => $user->id,
+            'full_name' => $user->name, 
+        ]);
+
+        return $user;
+    }
+
+    {
+        "name": "user_id",
+        "dbType": "integer:unsigned:foreign,users,id",
+        "htmlType": "text",
+        "relation": "1t1,User,user_id,id"
+    }
