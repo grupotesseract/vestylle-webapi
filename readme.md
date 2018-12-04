@@ -1,33 +1,36 @@
-# Admin Panel of Grupo Tesseract
 
-Made with [InfyOm Laravel Generator](http://labs.infyom.com/laravelgenerator/).
+# Tesseract Laravel Boilerplate
 
-## Requirements
+Projeto Laravel 5.7 para facilitar a criacao de novos projetos
 
-- **Install [Docker](https://docs.docker.com/install/)**
-- **Install [Docker Compose](https://docs.docker.com/compose/install/)**
+- Laravel 5.7
+- Laravel Generator
+- Adminlte
+- Yajra DataTables v8
+- Languages / locale pt-BR
 
-The Rest of the tools will run from inside the containers.
+## Clone com submodulos
 
-## Setup
+`git clone --recursive https://github.com/grupotesseract/laravel-tesseract-boilerplate.git`
 
-```
-# Start Vessel and prepare the environment:
+## Rodando o projeto
 
-cp .env.example .env
-./vessel start
-./vessel comp install
-./vessel art key:generate
-./vessel art migrate --seed
+Buildar Laradock
+- `cd laradock`
+- `cp env-example .env` (editar caso seja necessario portas / BD's diferentes)
+- `docker-compose up -d nginx php-fpm postgres`
+- `docker-compose exec workspace composer install`
 
-# Prepare de Assets
-./vessel yarn
-./vessel yarn run watch
-```
+Acertar .env do projeto de acordo com as configs do laradock
 
-**Access [http://localhost](http://localhost)**
+Se pá GGWP :+1:
 
-## Useful Tools and Links
+
+
+
+
+
+nks
 
 - [Vessel](https://vessel.shippingdocker.com/)
 - [Laravel Generator](http://labs.infyom.com/laravelgenerator/)
