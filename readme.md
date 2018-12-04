@@ -38,16 +38,3 @@ Buildar Laradock
 Acertar .env do projeto de acordo com as configs do laradock
 
 Se pá GGWP :+1:
-
-
-
-
-
-
-nks
-
-- [Vessel](https://vessel.shippingdocker.com/)
-- [Laravel Generator](http://labs.infyom.com/laravelgenerator/)
-- [Postman](https://www.getpostman.com/)
-- [JSON API](https://jsonapi.org/)
-- [Eloquent: API Resources](https://laravel.com/docs/5.7/eloquent-resources)
