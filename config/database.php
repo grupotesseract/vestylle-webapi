@@ -82,6 +82,19 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'vestylle' => [
+            'driver' => 'mysql',
+            'host' => env('VESTYLLE_DB_HOST'),
+            'port' => env('VESTYLLE_DB_PORT'),
+            'database' => env('VESTYLLE_DB_DATABASE'),
+            'username' => env('VESTYLLE_DB_USERNAME'),
+            'password' => env('VESTYLLE_DB_PASSWORD'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
+
     ],
 
     /*
