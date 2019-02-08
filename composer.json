@@ -11,6 +11,7 @@
         "infyomlabs/adminlte-templates": "5.7.x-dev",
         "infyomlabs/generator-builder": "dev-master",
         "infyomlabs/laravel-generator": "5.7.x-dev",
+        "laravel-notification-channels/webpush": "^3.0",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.7.0",
