@@ -24,7 +24,6 @@ class Cidade extends Model
 
     protected $dates = ['deleted_at'];
 
-
     public $fillable = [
         'nome',
         'ibge_code',

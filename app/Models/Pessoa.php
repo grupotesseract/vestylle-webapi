@@ -70,6 +70,16 @@ class Pessoa extends Model
         'email' => 'email'
     ];
 
+    /**
+     * Relacionamento entre Pessoa x Cidade
+     *
+     * @return void
+     */
+    public function cidade()
+    {
+        return $this->belongsTo('App\Models\Cidade');
+    }
+
 
 
 }

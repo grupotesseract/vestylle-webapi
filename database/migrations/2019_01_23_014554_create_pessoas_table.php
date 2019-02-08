@@ -15,24 +15,31 @@ class CreatePessoasTable extends Migration
     {
         Schema::create('pessoas', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
-            $table->softDeletes();
-
             $table->integer('id_vestylle')->nullable();
-            $table->smallInteger('saldo_pontos')->nullable();
-            $table->smallInteger('celular')->nullable();
 
-            $table->smallInteger('telefone_fixo')->nullable();
+            $table->smallInteger('saldo_pontos')->nullable();
+
+            $table->string('celular')->nullable();
+            $table->string('telefone_fixo')->nullable();
+
             $table->string('nome')->nullable();
             $table->string('cpf')->nullable();
             $table->string('email')->nullable();
+
+            $table->string('cep')->nullable();
             $table->string('endereco')->nullable();
+            $table->string('numero')->nullable();
             $table->string('bairro')->nullable();
             $table->string('complemento')->nullable();
+
             $table->timestamp('data_ultima_compra')->nullable();
 
             $table->smallInteger('cidade_id')->nullable();
             $table->foreign('cidade_id')->references('id')->on('cidades');
+
+            $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

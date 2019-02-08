@@ -17,6 +17,7 @@ class CreateCidadesTable extends Migration
             $table->increments('id');
 
             $table->string('nome');
+            $table->string('nome_sanitized')->nullable();
             $table->string('ibge_code', 20)->nullable();
             $table->integer('estado_id')->unsigned();
             $table->foreign('estado_id')->references('id')->on('estados');
