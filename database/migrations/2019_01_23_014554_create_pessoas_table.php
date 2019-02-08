@@ -33,6 +33,7 @@ class CreatePessoasTable extends Migration
             $table->string('complemento')->nullable();
 
             $table->timestamp('data_ultima_compra')->nullable();
+            $table->timestamp('data_nascimento')->nullable();
 
             $table->smallInteger('cidade_id')->nullable();
             $table->foreign('cidade_id')->references('id')->on('cidades');
