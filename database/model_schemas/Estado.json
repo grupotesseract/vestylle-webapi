@@ -1,7 +1,7 @@
 [
     {
         "name": "id",
-        "dbType": "increments",
+        "dbType": "integer,true",
         "htmlType": null,
         "validations": null,
         "searchable": false,
@@ -11,8 +11,8 @@
         "inIndex": false
     },
     {
-        "name": "full_name",
-        "dbType": "string:nullable",
+        "name": "nome",
+        "dbType": "string",
         "htmlType": "text",
         "validations": null,
         "searchable": true,
@@ -22,8 +22,8 @@
         "inIndex": true
     },
     {
-        "name": "mei",
-        "dbType": "string:nullable",
+        "name": "sigla",
+        "dbType": "string",
         "htmlType": "text",
         "validations": null,
         "searchable": true,
@@ -34,8 +34,8 @@
     },
     {
         "name": "created_at",
-        "dbType": "timestamp",
-        "htmlType": null,
+        "dbType": "datetime",
+        "htmlType": "date",
         "validations": null,
         "searchable": false,
         "fillable": false,
@@ -45,8 +45,8 @@
     },
     {
         "name": "updated_at",
-        "dbType": "timestamp",
-        "htmlType": null,
+        "dbType": "datetime",
+        "htmlType": "date",
         "validations": null,
         "searchable": false,
         "fillable": false,
@@ -55,12 +55,7 @@
         "inIndex": false
     },
     {
-        "name": "user_id",
-        "dbType": "integer:unsigned:foreign,users,id",
-        "htmlType": null,
-        "relation": "1t1,User,user_id,id",
-        "searchable": false,
-        "inForm": false,
-        "inIndex": false
+        "type": "relation",
+        "relation": "1tm,Cidade"
     }
 ]
