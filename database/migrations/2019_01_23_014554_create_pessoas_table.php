@@ -22,9 +22,13 @@ class CreatePessoasTable extends Migration
             $table->string('celular')->nullable();
             $table->string('telefone_fixo')->nullable();
 
+            $table->string('email')->nullable()->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+
             $table->string('nome')->nullable();
-            $table->string('cpf')->nullable();
-            $table->string('email')->nullable();
+            $table->string('cpf')->nullable()->unique();
 
             $table->string('cep')->nullable();
             $table->string('endereco')->nullable();
