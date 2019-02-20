@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
+use Laratrust\Traits\LaratrustUserTrait;
 
 
 /**
@@ -27,6 +28,7 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
  */
 class Pessoa extends Authenticatable
 {
+    use LaratrustUserTrait;
     use Notifiable;
     use HasPushSubscriptions;
     use SoftDeletes;
