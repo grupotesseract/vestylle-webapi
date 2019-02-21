@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.7.0",
         "predis/predis": "^1.1",
+        "santigarcor/laratrust": "5.1.*",
         "shipping-docker/vessel": "^3.2",
         "yajra/laravel-datatables-buttons": "^4.5",
         "yajra/laravel-datatables-oracle": "~8.0"

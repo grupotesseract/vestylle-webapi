@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use NotificationChannels\WebPush\HasPushSubscriptions;
+use Laratrust\Traits\LaratrustUserTrait;
+
 
 /**
  * Class Pessoa
@@ -22,8 +26,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string bairro
  * @property string complemento
  */
-class Pessoa extends Model
+class Pessoa extends Authenticatable
 {
+    use LaratrustUserTrait;
+    use Notifiable;
+    use HasPushSubscriptions;
     use SoftDeletes;
 
     public $table = 'pessoas';
@@ -42,6 +49,15 @@ class Pessoa extends Model
         'endereco',
         'bairro',
         'complemento'
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
     ];
 
     /**
