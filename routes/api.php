@@ -19,3 +19,6 @@ Route::post('/subscription', 'SubscriptionController@store');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::resource('pessoas', 'PessoaAPIController');
