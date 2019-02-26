@@ -50,9 +50,9 @@ class PessoaDataTable extends DataTable
                     ['extend' => 'create', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'export', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'print', 'className' => 'btn btn-default btn-sm no-corner',],
-                    ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
+                'language' => ['url' => '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese-Brasil.json'],
             ]);
     }
 
@@ -64,22 +64,22 @@ class PessoaDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id_vestylle',
+//            'id_vestylle',
             'saldo_pontos',
             'celular',
-            'telefone_fixo',
+//            'telefone_fixo',
             'email',
-            'email_verified_at',
+//            'email_verified_at',
             'nome',
             'cpf',
             'cep',
-            'endereco',
-            'numero',
-            'bairro',
-            'complemento',
+//            'endereco',
+//            'numero',
+//            'bairro',
+//            'complemento',
             'data_ultima_compra',
             'data_nascimento',
-            'cidade_id'
+//            'cidade_id'
         ];
     }
 
