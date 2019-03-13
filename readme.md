@@ -11,7 +11,7 @@ Projeto Laravel 5.7 para facilitar a criacao de novos projetos
 
 ## Clone com submodulos
 
-`git clone --recursive https://github.com/grupotesseract/laravel-tesseract-boilerplate.git`
+`git clone --recursive https://github.com/grupotesseract/vestylle-webapi.git`
 
 ## Rodando o projeto
 
@@ -30,7 +30,7 @@ Buildar Laradock
     DB_USERNAME=default
     DB_PASSWORD=secret
     ```
-- `docker-compose up -d nginx php-fpm postgres`
+- `docker-compose up -d nginx php-fpm postgres workspace`
 - `docker-compose exec workspace composer install`
 - `docker-compose exec workspace php artisan key:generate`
 - `docker-compose exec workspace php artisan migrate --seed`
