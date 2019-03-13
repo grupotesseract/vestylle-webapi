@@ -32,6 +32,7 @@ class Pessoa extends Authenticatable
     use Notifiable;
     use HasPushSubscriptions;
     use SoftDeletes;
+    use HasApiTokens;
 
     public $table = 'pessoas';
 
