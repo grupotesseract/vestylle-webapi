@@ -47,7 +47,7 @@ Acertar .env do projeto de acordo com as configs do laradock
 
 cp .env.example-vessel .env
 ./vessel start
-composer install
+./vessel composer install
 ./vessel artisan key:generate
 ./vessel artisan migrate --seed
 
