@@ -1,17 +1,20 @@
+# Projeto API + Admin da Vestylle
 
-# Tesseract Laravel Boilerplate
-
-Projeto Laravel 5.7 para facilitar a criacao de novos projetos
+## Ferramentas
 
 - Laravel 5.7
 - Laravel Generator
 - Adminlte
 - Yajra DataTables v8
 - Languages / locale pt-BR
+- Laradock
+- Docker Vessel
 
 ## Clone com submodulos
 
-`git clone --recursive https://github.com/grupotesseract/laravel-tesseract-boilerplate.git`
+`git clone --recursive https://github.com/grupotesseract/vestylle-webapi.git`
+
+# Setup local usando o Laradock
 
 ## Rodando o projeto
 
@@ -37,4 +40,20 @@ Buildar Laradock
 
 Acertar .env do projeto de acordo com as configs do laradock
 
-Se pá GGWP :+1:
+# Setup local usando o Docker Vessel
+
+```
+# Start Vessel and prepare the environment:
+
+cp .env.example-vessel .env
+./vessel start
+./vessel composer install
+./vessel artisan key:generate
+./vessel artisan migrate --seed
+
+# Prepare de Assets
+./vessel yarn install
+./vessel yarn run watch
+```
+
+**Access [http://localhost](http://localhost)**
