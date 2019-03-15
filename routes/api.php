@@ -24,5 +24,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('pessoas', 'PessoaAPIController');
 
 Route::post('/login', 'PessoaAPIController@login');
-Route::get('login/facebook', 'PessoaAPIController@redirectToProvider');
-Route::get('login/facebook/callback', 'PessoaAPIController@handleProviderCallback');
+Route::get('login/facebook', 'PessoaAPIController@redirecionaSocial');
+Route::get('login/facebook/callback', 'PessoaAPIController@trataInformacoesSocial');
