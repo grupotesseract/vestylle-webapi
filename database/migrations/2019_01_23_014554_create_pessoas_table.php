@@ -24,7 +24,7 @@ class CreatePessoasTable extends Migration
 
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('social_token')->nullable();
             $table->rememberToken();
 
