@@ -153,7 +153,7 @@ class PessoaAPIController extends AppBaseController
         $pessoa->nome = $usuarioSocial->getName();
         $pessoa->social_token = $usuarioSocial->token;
         $pessoa->save();
-        dump($pessoa);        
+        //dump($pessoa);        
     }
 
     /**
