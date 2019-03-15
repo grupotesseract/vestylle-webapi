@@ -148,6 +148,6 @@ class PessoaAPIController extends AppBaseController
     {
         $user = Socialite::driver('facebook')->stateless()->user();
 
-        Log::info('Showing user profile for user: '.$user->getName());        
+        dump($user);        
     }
 }
