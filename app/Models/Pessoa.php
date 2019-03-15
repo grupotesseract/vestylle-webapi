@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,6 +33,7 @@ class Pessoa extends Authenticatable
     use Notifiable;
     use HasPushSubscriptions;
     use SoftDeletes;
+    use HasApiTokens;
 
     // FLAG cadastro para indicar quando a pessoa completou o cadastro || se o cadastro ainda está pendente
     const CADASTRO_PENDENTE = 1;
@@ -53,12 +55,11 @@ class Pessoa extends Authenticatable
         'email',
         'endereco',
         'bairro',
-
         'data_ultima_compra',
         'data_vencimento_pontos',
         'data_ultima_compra',
-
-        'complemento'
+        'complemento',
+        'password'
     ];
 
     /**
