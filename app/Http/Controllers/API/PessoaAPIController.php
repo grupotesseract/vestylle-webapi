@@ -12,8 +12,6 @@ use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 use Socialite;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * Class PessoaController
@@ -56,11 +54,21 @@ class PessoaAPIController extends AppBaseController
      */
     public function store(CreatePessoaAPIRequest $request)
     {
-        $input = $request->all();
+        $input = $request->all();  
 
-        $pessoas = $this->pessoaRepository->create($input);
+        $pessoa = $this->pessoaRepository->create($input);
+        $pessoa->password = bcrypt($request->password);
+        $pessoa->save();        
 
-        return $this->sendResponse($pessoas->toArray(), 'Pessoa criada com sucesso');
+        $token = $this->pessoaRepository->login($pessoa, $request);
+
+        return $this->sendResponse(
+            [
+                'pessoa' => $pessoa->toArray(),
+                'token' => $token
+            ], 
+            'Pessoa criada com sucesso'
+        );
     }
 
     /**
