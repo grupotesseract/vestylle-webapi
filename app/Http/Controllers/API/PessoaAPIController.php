@@ -168,11 +168,11 @@ class PessoaAPIController extends AppBaseController
                 $response = ['token' => $token];
                 return response($response, 200);
             } else {
-                $response = "Password missmatch";
+                $response = "A senha digitada está incorreta";
                 return response($response, 422);
             }    
         } else {
-            $response = 'User does not exist';
+            $response = 'Usuário inexistente';
             return response($response, 422);
         }    
     }

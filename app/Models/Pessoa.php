@@ -50,12 +50,7 @@ class Pessoa extends Authenticatable
         'email',
         'endereco',
         'bairro',
-<<<<<<< HEAD
         'complemento',        
-=======
-        'complemento',
-        'password'
->>>>>>> @{-1}
     ];
 
     /**
