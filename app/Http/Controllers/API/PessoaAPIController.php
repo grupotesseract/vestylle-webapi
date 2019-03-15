@@ -13,6 +13,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 use Socialite;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class PessoaController
@@ -149,5 +150,30 @@ class PessoaAPIController extends AppBaseController
         $user = Socialite::driver('facebook')->stateless()->user();
 
         dump($user);        
+    }
+
+    /**
+     * Autenticação via API
+     *     
+     *
+     * @return Response
+     */
+    public function login(Request $request) {
+
+        $pessoa = $this->pessoaRepository->findByField('email', $request->email)->first();
+    
+        if ($pessoa) {    
+            if (Hash::check($request->password, $pessoa->password)) {
+                $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;
+                $response = ['token' => $token];
+                return response($response, 200);
+            } else {
+                $response = "Password missmatch";
+                return response($response, 422);
+            }    
+        } else {
+            $response = 'User does not exist';
+            return response($response, 422);
+        }    
     }
 }
