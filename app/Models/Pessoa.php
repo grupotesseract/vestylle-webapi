@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,6 +33,7 @@ class Pessoa extends Authenticatable
     use Notifiable;
     use HasPushSubscriptions;
     use SoftDeletes;
+    use HasApiTokens;
 
     public $table = 'pessoas';
 
@@ -48,7 +50,8 @@ class Pessoa extends Authenticatable
         'email',
         'endereco',
         'bairro',
-        'complemento'
+        'complemento',
+        'password'
     ];
 
     /**
