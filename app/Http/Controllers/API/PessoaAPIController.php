@@ -147,9 +147,13 @@ class PessoaAPIController extends AppBaseController
      */
     public function handleProviderCallback()
     {
-        $user = Socialite::driver('facebook')->stateless()->user();
-
-        dump($user);        
+        $usuarioSocial = Socialite::driver('facebook')->stateless()->user();
+        $emailSocial = $usuarioSocial->getEmail();
+        $pessoa = $this->pessoaRepository->firstOrNew(['email' => $emailSocial]);
+        $pessoa->nome = $usuarioSocial->getName();
+        $pessoa->social_token = $usuarioSocial->token;
+        $pessoa->save();
+        dump($pessoa);        
     }
 
     /**
