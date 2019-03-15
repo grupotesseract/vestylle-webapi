@@ -11,6 +11,8 @@ use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
+use Socialite;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class PessoaController
@@ -125,5 +127,27 @@ class PessoaAPIController extends AppBaseController
         $pessoa->delete();
 
         return $this->sendResponse($id, 'Pessoa deleted successfully');
+    }
+
+    /**
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function redirectToProvider()
+    {
+        return Socialite::driver('facebook')->stateless()->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback()
+    {
+        $user = Socialite::driver('facebook')->stateless()->user();
+
+        Log::info('Showing user profile for user: '.$user->getName());        
     }
 }

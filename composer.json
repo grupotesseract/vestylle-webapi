@@ -13,6 +13,7 @@
         "infyomlabs/laravel-generator": "5.7.x-dev",
         "laravel-notification-channels/webpush": "^3.0",
         "laravel/framework": "5.7.*",
+        "laravel/socialite": "^4.1",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.7.0",
         "predis/predis": "^1.1",
