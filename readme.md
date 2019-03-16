@@ -14,9 +14,7 @@
 
 `git clone --recursive https://github.com/grupotesseract/vestylle-webapi.git`
 
-# Setup local usando o Laradock
-
-## Rodando o projeto
+# Setup local Opção 1 - usando o Laradock
 
 Buildar Laradock
 - `cd laradock`
@@ -40,7 +38,7 @@ Buildar Laradock
 
 Acertar .env do projeto de acordo com as configs do laradock
 
-# Setup local usando o Docker Vessel
+# Setup local Opção 2 -  usando o Docker Vessel
 
 ```
 # Start Vessel and prepare the environment:

@@ -11,6 +11,7 @@ use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
+use Socialite;
 
 /**
  * Class PessoaController
@@ -40,7 +41,7 @@ class PessoaAPIController extends AppBaseController
         $this->pessoaRepository->pushCriteria(new LimitOffsetCriteria($request));
         $pessoas = $this->pessoaRepository->all();
 
-        return $this->sendResponse($pessoas->toArray(), 'Pessoas retrieved successfully');
+        return $this->sendResponse($pessoas->toArray(), 'Pessoas encontrada com sucesso');
     }
 
     /**
@@ -53,11 +54,21 @@ class PessoaAPIController extends AppBaseController
      */
     public function store(CreatePessoaAPIRequest $request)
     {
-        $input = $request->all();
+        $input = $request->all();  
 
-        $pessoas = $this->pessoaRepository->create($input);
+        $pessoa = $this->pessoaRepository->create($input);
+        $pessoa->password = bcrypt($request->password);
+        $pessoa->save();        
 
-        return $this->sendResponse($pessoas->toArray(), 'Pessoa saved successfully');
+        $token = $this->pessoaRepository->login($pessoa, $request);
+
+        return $this->sendResponse(
+            [
+                'pessoa' => $pessoa->toArray(),
+                'token' => $token
+            ], 
+            'Pessoa criada com sucesso'
+        );
     }
 
     /**
@@ -74,10 +85,10 @@ class PessoaAPIController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            return $this->sendError('Pessoa not found');
+            return $this->sendError('Pessoa não encontrada');
         }
 
-        return $this->sendResponse($pessoa->toArray(), 'Pessoa retrieved successfully');
+        return $this->sendResponse($pessoa->toArray(), 'Pessoa encontrada com sucesso');
     }
 
     /**
@@ -97,12 +108,12 @@ class PessoaAPIController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            return $this->sendError('Pessoa not found');
+            return $this->sendError('Pessoa não encontrada');
         }
 
         $pessoa = $this->pessoaRepository->update($input, $id);
 
-        return $this->sendResponse($pessoa->toArray(), 'Pessoa updated successfully');
+        return $this->sendResponse($pessoa->toArray(), 'Pessoa atualizada com sucesso');
     }
 
     /**
@@ -119,11 +130,55 @@ class PessoaAPIController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            return $this->sendError('Pessoa not found');
+            return $this->sendError('Pessoa não encontrada');
         }
 
         $pessoa->delete();
 
-        return $this->sendResponse($id, 'Pessoa deleted successfully');
+        return $this->sendResponse($id, 'Pessoa excluída com sucesso');
+    }
+
+    /**
+     * Autenticação via Facebook - Redireciona usuário para página do Face.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function redirecionaSocial()
+    {
+        return Socialite::driver('facebook')->stateless()->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trataInformacoesSocial()
+    {
+        $usuarioSocial = Socialite::driver('facebook')->stateless()->user();
+        $pessoa = $this->pessoaRepository->trataInformacoesSocial($usuarioSocial);
+        return $this->sendResponse($pessoa->toArray(), 'Usuário autenticou no Facebook com Sucesso');
+    }
+
+    /**
+     * Autenticação via API
+     *     
+     * @return \Illuminate\Http\Response
+     * @return Response
+     */
+    public function login(Request $request) 
+    {
+        $pessoa = $this->pessoaRepository->findByField('email', $request->email)->first();
+    
+        if ($pessoa) {
+            $token = $this->pessoaRepository->login($pessoa, $request);    
+            if ($token) {
+                return $this->sendResponse($token, 'Usuário autenticou via API com Sucesso');                
+            } else {  
+                return $this->sendError('A senha digitada está incorreta');
+            }             
+        } else {  
+            return $this->sendError('Usuário inexistente');
+        }    
     }
 }

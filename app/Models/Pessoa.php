@@ -50,8 +50,8 @@ class Pessoa extends Authenticatable
         'email',
         'endereco',
         'bairro',
-        'complemento',
-        'password'
+        'complemento',  
+        'social_token'      
     ];
 
     /**
@@ -60,7 +60,7 @@ class Pessoa extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'social_token'
     ];
 
     /**
