@@ -47,6 +47,7 @@ class VestylleDBHelper
      * Metodo para obter os dados de 1 pessoa a partir do cpf
      *
      * @param mixed $cpf - numeros sem pontuacao
+     * @return array || false - O resultado da query ou false.
      */
     public function getPessoa($cpf)
     {
@@ -69,6 +70,7 @@ class VestylleDBHelper
      *
      * @param mixed $tipoLimite - Limite da query [self::LIMITE_DIAS || self::LIMITE_HORAS]
      * @param int $valorLimite - Valor do limite.
+     * @return array || false - O resultado da query ou false.
      */
     public function getPessoasAtualizadas($tipoLimite=null, $valorLimite=2)
     {
@@ -86,39 +88,14 @@ class VestylleDBHelper
             return false;
         }
 
-        //Iterando, atrelando a cidade no BD (qnd existir) e salvando
-        foreach ($result as $pessoa) {
-
-            $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
-            $cidadeId = $Cidade ? $Cidade->id : null;
-            $queryPessoaCPF = Pessoa::where('cpf', 'like', "%$pessoa->cnpj_cpf%");
-
-            //Se existir uma Pessoa com o CPF na base, fazer update
-            if ($queryPessoaCPF->count()) {
-                $queryPessoaCPF->first()->update([
-                    'id_vestylle'  => $pessoa->idpessoa,
-                    "celular" => $pessoa->celular,
-                    "fone" => $pessoa->fone,
-                    "nome" => $pessoa->nome,
-                    "cpf" => $pessoa->cnpj_cpf,
-                    "email" => $pessoa->email,
-                    "cep" => $pessoa->cep,
-                    "endereco" => $pessoa->endereco,
-                    "numero" => $pessoa->numero,
-                    "bairro" => $pessoa->bairro,
-                    "cidade_id" => $cidadeId,
-                    "complemento" => $pessoa->complement,
-                ]);
-            }
-        }
-        return count($result);
+        return $result;
     }
 
     /**
      * Metodo para obter o saldo de pontos de uma pessoa
      *
      * @param Pessoa $pessoa
-     * @return true || false - Se funcionou o update da $pessoa ou não
+     * @return array || false - O resultado da query ou false.
      */
     public function getSaldoPontosPessoa(Pessoa $pessoa)
     {
@@ -131,23 +108,14 @@ class VestylleDBHelper
             return false;
         }
 
-        //Se vier result, for array, nao estiver vazio e o objeto tiver a propriedade SALDO
-        if ($result && is_array($result) && !empty($result) && property_exists($result[0], 'SALDO')) {
-            $updated = $pessoa->update([
-                'saldo_pontos' => $result[0]->{"SALDO"}
-            ]);
-
-            return $updated;
-        }
-
-        return false;
+        return $result;
     }
 
     /**
      * Metodo para obter a data de vencimento dos pontos de uma pessoa
      *
      * @param Pessoa $pessoa
-     * @return true || false - Se funcionou o update da $pessoa ou não
+     * @return array || false - O resultado da query ou false.
      */
     public function getVencimentoPontosPessoa(Pessoa $pessoa)
     {
@@ -160,16 +128,7 @@ class VestylleDBHelper
             return false;
         }
 
-        //Se vier result, for array, nao estiver vazio e o objeto tiver a propriedade VENCIMENTO
-        if ($result && is_array($result) && !empty($result) && property_exists($result[0], 'VENCIMENTO')) {
-            $updated = $pessoa->update([
-                'data_vencimento_pontos' => $result[0]->{"VENCIMENTO"}
-            ]);
-
-            return $updated;
-        }
-
-        return false;
+        return $result;
     }
 
 
@@ -177,7 +136,7 @@ class VestylleDBHelper
      * Metodo para obter a data da ultima compra de uma pessoa
      *
      * @param Pessoa $pessoa
-     * @return true || false - Se funcionou o update da $pessoa ou não
+     * @return array || false - O resultado da query ou false.
      */
     public function getDataUltimaCompraPessoa(Pessoa $pessoa)
     {
@@ -190,16 +149,7 @@ class VestylleDBHelper
             return false;
         }
 
-        //Se vier result, for array, nao estiver vazio e o objeto tiver a propriedade CNSCADMOM
-        if ($result && is_array($result) && !empty($result) && property_exists($result[0], 'CNSCADMOM')) {
-            $updated = $pessoa->update([
-                'data_ultima_compra' => $result[0]->{"CNSCADMOM"}
-            ]);
-
-            return $updated;
-        }
-
-        return false;
+        return $result;
     }
 
 
