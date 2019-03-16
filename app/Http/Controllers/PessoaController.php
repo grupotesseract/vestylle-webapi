@@ -147,5 +147,5 @@ class PessoaController extends AppBaseController
         Flash::success('Pessoa deleted successfully.');
 
         return redirect(route('pessoas.index'));
-    }
+    }    
 }

@@ -59,7 +59,7 @@ class Pessoa extends Authenticatable
         'data_vencimento_pontos',
         'data_ultima_compra',
         'complemento',
-        'password'
+        'social_token'
     ];
 
     /**
@@ -68,7 +68,7 @@ class Pessoa extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'social_token'
     ];
 
     /**
