@@ -44,21 +44,13 @@ class VestylleDBHelper
     }
 
     /**
-     * Metodo para obter as pessoas novas o BD da Vestylle.
+     * Metodo para obter os dados de 1 pessoa a partir do cpf
      *
-     * Pode ser passado parametros para limitar a query em $valorLimite de dias || horas.
-     *
-     * @param mixed $tipoLimite - Limite da query [self::LIMITE_DIAS || self::LIMITE_HORAS]
-     * @param int $valorLimite - Valor do limite.
+     * @param mixed $cpf - numeros sem pontuacao
      */
-    public function getPessoasNovas($tipoLimite=null, $valorLimite=2)
+    public function getPessoa($cpf)
     {
-        $query = "SELECT idpessoa, celular, fone, nome, cnpj_cpf, email, cep, cidade, endereco, numero, bairro, complement FROM pessoa WHERE fis_jur = 'F'" ;
-
-        //Se for especificado algum limite, incluir na query.
-        if ($tipoLimite) {
-            $query .= " AND CNSCADMOM > " . str_replace("#", $valorLimite, $tipoLimite);
-        }
+        $query = "SELECT idpessoa, celular, fone, nome, cnpj_cpf, email, cep, cidade, endereco, numero, bairro, complement FROM pessoa WHERE fis_jur = 'F' AND cnpj_cpf = '$cpf'";
 
         try {
             $result = $this->query()->select($query);
@@ -67,51 +59,7 @@ class VestylleDBHelper
             return false;
         }
 
-        //Iterando, atrelando a cidade no BD (qnd existir) e salvando
-        foreach ($result as $pessoa) {
-
-            $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
-            $cidadeId = $Cidade ? $Cidade->id : null;
-            $queryPessoaCPF = Pessoa::where('cpf', 'like', "%$pessoa->cnpj_cpf%");
-
-            //Se existir uma Pessoa com o CPF na base, fazer update
-            if ($queryPessoaCPF->count()) {
-                $queryPessoaCPF->first()->update([
-                    'id_vestylle'  => $pessoa->idpessoa,
-                    "celular" => $pessoa->celular,
-                    "fone" => $pessoa->fone,
-                    "nome" => $pessoa->nome,
-                    "cpf" => $pessoa->cnpj_cpf,
-                    "email" => $pessoa->email,
-                    "cep" => $pessoa->cep,
-                    "endereco" => $pessoa->endereco,
-                    "numero" => $pessoa->numero,
-                    "bairro" => $pessoa->bairro,
-                    "cidade_id" => $cidadeId,
-                    "complemento" => $pessoa->complement,
-                ]);
-            }
-
-            //Se não existir uma Pessoa com o CPF, criar
-            else {
-                Pessoa::create([
-                    'id_vestylle'  => $pessoa->idpessoa,
-                    "celular" => $pessoa->celular,
-                    "fone" => $pessoa->fone,
-                    "nome" => $pessoa->nome,
-                    "cpf" => $pessoa->cnpj_cpf,
-                    "email" => $pessoa->email,
-                    "cep" => $pessoa->cep,
-                    "endereco" => $pessoa->endereco,
-                    "numero" => $pessoa->numero,
-                    "bairro" => $pessoa->bairro,
-                    "cidade_id" => $cidadeId,
-                    "complemento" => $pessoa->complement,
-                ]);
-            }
-        }
-
-        return count($result);
+        return $result;
     }
 
     /**
@@ -254,6 +202,80 @@ class VestylleDBHelper
         return false;
     }
 
+
+    /**
+     * Metodo para obter as pessoas novas o BD da Vestylle.
+     *
+     * Pode ser passado parametros para limitar a query em $valorLimite de dias || horas.
+     * Esse método nao faz parte do fluxo normal da aplicação, ele é usado somente para testes!
+     *
+     * @param mixed $tipoLimite - Limite da query [self::LIMITE_DIAS || self::LIMITE_HORAS]
+     * @param int $valorLimite - Valor do limite.
+     */
+    public function getPessoasNovas($tipoLimite=null, $valorLimite=2)
+    {
+        $query = "SELECT idpessoa, celular, fone, nome, cnpj_cpf, email, cep, cidade, endereco, numero, bairro, complement FROM pessoa WHERE fis_jur = 'F'" ;
+
+        //Se for especificado algum limite de tempo, incluir na query.
+        if ($tipoLimite) {
+            $query .= " AND CNSCADMOM > " . str_replace("#", $valorLimite, $tipoLimite);
+        }
+
+        try {
+            $result = $this->query()->select($query);
+        } catch (\Exception $e) {
+            \Log::error("\n[ERRO] - Erro ao obter pessoas novas. Log: " . $e->getMessage());
+            return false;
+        }
+
+        //Iterando, atrelando a cidade no BD (qnd existir) e salvando
+        foreach ($result as $pessoa) {
+
+            $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
+            $cidadeId = $Cidade ? $Cidade->id : null;
+            $queryPessoaCPF = Pessoa::where('cpf', 'like', "%$pessoa->cnpj_cpf%");
+
+            //Se existir uma Pessoa com o CPF na base, fazer update
+            if ($queryPessoaCPF->count()) {
+                $queryPessoaCPF->first()->update([
+                    'id_vestylle'  => $pessoa->idpessoa,
+                    "celular" => $pessoa->celular,
+                    "fone" => $pessoa->fone,
+                    "nome" => $pessoa->nome,
+                    "cpf" => $pessoa->cnpj_cpf,
+                    "email" => $pessoa->email,
+                    "cep" => $pessoa->cep,
+                    "endereco" => $pessoa->endereco,
+                    "numero" => $pessoa->numero,
+                    "bairro" => $pessoa->bairro,
+                    "cidade_id" => $cidadeId,
+                    "complemento" => $pessoa->complement,
+                ]);
+            }
+
+            //Se não existir uma Pessoa com o CPF, criar
+            else {
+                Pessoa::create([
+                    'id_vestylle'  => $pessoa->idpessoa,
+                    "celular" => $pessoa->celular,
+                    "fone" => $pessoa->fone,
+                    "nome" => $pessoa->nome,
+                    "cpf" => $pessoa->cnpj_cpf,
+                    "email" => $pessoa->email,
+                    "cep" => $pessoa->cep,
+                    "endereco" => $pessoa->endereco,
+                    "numero" => $pessoa->numero,
+                    "bairro" => $pessoa->bairro,
+                    "cidade_id" => $cidadeId,
+                    "complemento" => $pessoa->complement,
+                ]);
+            }
+        }
+
+        return count($result);
+    }
+
+
     /**
      * Metodo para remover acentos / caracteres especiais e retornar a string lowercase
      *
@@ -269,6 +291,9 @@ class VestylleDBHelper
         $str = preg_replace('/[ç]/ui', 'c', $str);
         return strtolower($str);
     }
+
+
+
 }
 
 

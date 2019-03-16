@@ -16,6 +16,17 @@ use InfyOm\Generator\Common\BaseRepository;
 */
 class PessoaRepository extends BaseRepository
 {
+    private $vestylleDB;
+
+    /**
+     * @param mixed
+     */
+    public function __construct()
+    {
+        $this->vestylleDB = new \App\Helpers\VestylleDBHelper();
+    }
+
+
     /**
      * @var array
      */
@@ -47,4 +58,62 @@ class PessoaRepository extends BaseRepository
     {
         return Pessoa::class;
     }
+
+    /**
+     * Metodo para criar uma Pessoa com as infos da Vestylle a partir do CPF
+     *
+     * @return Pessoa || false
+     */
+    public function createOrUpdateFromVestylle($cpf)
+    {
+        $retornoVestylle = $this->vestylleDB->getPessoa($cpf);
+        $pessoa = is_array($retornoVestylle) ? array_shift($retornoVestylle) : false;
+
+        if (!$pessoa || !is_object($pessoa)) {
+            return false;
+        }
+
+        $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
+        $cidadeId = $Cidade ? $Cidade->id : null;
+        $queryPessoaCPF = Pessoa::where('cpf', 'like', "%$pessoa->cnpj_cpf%");
+
+        //Se existir uma Pessoa com o CPF na base, fazer update
+        if ($queryPessoaCPF->count()) {
+            $queryPessoaCPF->first()->update([
+                'id_vestylle'  => $pessoa->idpessoa,
+                "celular" => $pessoa->celular,
+                "fone" => $pessoa->fone,
+                "nome" => $pessoa->nome,
+                "cpf" => $pessoa->cnpj_cpf,
+                "email" => $pessoa->email,
+                "cep" => $pessoa->cep,
+                "endereco" => $pessoa->endereco,
+                "numero" => $pessoa->numero,
+                "bairro" => $pessoa->bairro,
+                "cidade_id" => $cidadeId,
+                "complemento" => $pessoa->complement,
+            ]);
+        } else {
+            $result = Pessoa::create([
+                'id_vestylle'  => $pessoa->idpessoa,
+                "celular" => $pessoa->celular,
+                "fone" => $pessoa->fone,
+                "nome" => $pessoa->nome,
+                "cpf" => $pessoa->cnpj_cpf,
+                "email" => $pessoa->email,
+                "cep" => $pessoa->cep,
+                "endereco" => $pessoa->endereco,
+                "numero" => $pessoa->numero,
+                "bairro" => $pessoa->bairro,
+                "cidade_id" => $cidadeId,
+                "complemento" => $pessoa->complement,
+            ]);
+        }
+
+        return $result;
+    }
+
+
+
+
 }
