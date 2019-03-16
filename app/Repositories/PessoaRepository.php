@@ -6,6 +6,7 @@ use App\Models\Pessoa;
 use App\Helpers\VestylleDBHelper;
 use InfyOm\Generator\Common\BaseRepository;
 use Illuminate\Support\Facades\Hash;
+
 /**
  * Class PessoaRepository
  * @package App\Repositories
@@ -26,7 +27,6 @@ class PessoaRepository extends BaseRepository
     {
         $this->vestylleDB = new \App\Helpers\VestylleDBHelper();
     }
-
 
     /**
      * @var array
@@ -60,54 +60,37 @@ class PessoaRepository extends BaseRepository
         return Pessoa::class;
     }
 
-
     /**
-     * Metodo para atualizar as Pessoas que foram alteradas no BD da vestylle e já estiverem no nosso BD
+     * Traz infos do usuário logado no Facebook e atualiza Pessoa
      *
-     * @return void
+     * @return \Illuminate\Http\Response
      */
-    public function updatePessoasAtualizadasVestylle($tipoLimite=VestylleDBHelper::LIMITE_DIAS, $valorLimite=2)
+    public function trataInformacoesSocial($usuarioSocial)
     {
-        //Pega todas as pessoas alteradas lá no periodo especificado
-        $retornoVestylle = $this->vestylleDB->getPessoasAtualizadas($tipoLimite, $valorLimite);
-
-        if (!is_array($retornoVestylle)){
-            return false;
-        }
-
-        //Filtrando retorno pelos id_vestylle que temos aqui
-        $idsVestylle = Pessoa::pluck('id_vestylle')->all();
-        $pessoasParaAtualizar = collect($retornoVestylle)->whereIn('idpessoa', $idsVestylle);
-
-        //Iterando, atrelando a cidade no BD (qnd existir) e salvando
-        foreach ($pessoasParaAtualizar as $pessoa) {
-            $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
-            $cidadeId = $Cidade ? $Cidade->id : null;
-            $queryPessoaCPF = Pessoa::where('id_vestylle', $pessoa->idpessoa);
-
-            //Se existir uma Pessoa com o CPF na base, fazer update
-            if ($queryPessoaCPF->count()) {
-                $queryPessoaCPF->first()->update([
-                    'id_vestylle'  => $pessoa->idpessoa,
-                    "celular" => $pessoa->celular,
-                    "fone" => $pessoa->fone,
-                    "nome" => $pessoa->nome,
-                    "cpf" => $pessoa->cnpj_cpf,
-                    "email" => $pessoa->email,
-                    "cep" => $pessoa->cep,
-                    "endereco" => $pessoa->endereco,
-                    "numero" => $pessoa->numero,
-                    "bairro" => $pessoa->bairro,
-                    "cidade_id" => $cidadeId,
-                    "complemento" => $pessoa->complement,
-                ]);
-            }
-        }
-
-        return count($pessoasParaAtualizar);
+        $emailSocial = $usuarioSocial->getEmail();
+        $pessoa = $this->firstOrNew(['email' => $emailSocial]);
+        $pessoa->nome = $usuarioSocial->getName();
+        $pessoa->social_token = $usuarioSocial->token;
+        $pessoa->save();
+        return $pessoa;
     }
 
-
+    /**
+     * Autenticação via API
+     *
+     * @return \Illuminate\Http\Response
+     * @return Response
+     */
+    public function login($pessoa, $request)
+    {
+        if (Hash::check($request->password, $pessoa->password)) {
+            $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;
+            $response = ['token' => $token];
+            return $response;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Metodo para criar uma Pessoa com as infos da Vestylle a partir do CPF
@@ -145,13 +128,49 @@ class PessoaRepository extends BaseRepository
     }
 
     /**
+     * Metodo para fazer update dos dados de uma Pessoa com as infos da Vestylle
+     *
+     * @param Pessoa $pessoaObj
+     * @return boolean - Se o update ocorreu.
+     */
+    public function updateFromVestylle(Pessoa $pessoaObj)
+    {
+        $retornoVestylle = $this->vestylleDB->getPessoa($pessoaObj->cpf);
+        $pessoa = is_array($retornoVestylle) ? array_shift($retornoVestylle) : false;
+
+        if (!$pessoa || !is_object($pessoa)) {
+            return false;
+        }
+
+        $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
+        $cidadeId = $Cidade ? $Cidade->id : null;
+
+        $result = $pessoaObj->update([
+            'id_vestylle'  => $pessoa->idpessoa,
+            "celular" => $pessoa->celular,
+            "fone" => $pessoa->fone,
+            "nome" => $pessoa->nome,
+            "cpf" => $pessoa->cnpj_cpf,
+            "email" => $pessoa->email,
+            "cep" => $pessoa->cep,
+            "endereco" => $pessoa->endereco,
+            "numero" => $pessoa->numero,
+            "bairro" => $pessoa->bairro,
+            "cidade_id" => $cidadeId,
+            "complemento" => $pessoa->complement,
+        ]);
+
+        return $result;
+    }
+
+    /**
      * Atualiza o saldo de pontos de uma Pessoa
      *
      * @param Pessoa $pessoa
      */
     public function updatePontosPessoa(Pessoa $pessoa)
     {
-        $result = $this->vestylleDB->getVencimentoPontosPessoa($pessoa);
+        $result = $this->vestylleDB->getSaldoPontosPessoa($pessoa);
 
         //Se vier result, for array, nao estiver vazio e o objeto tiver a propriedade SALDO
         if ($result && is_array($result) && !empty($result) && property_exists($result[0], 'SALDO')) {
@@ -214,7 +233,8 @@ class PessoaRepository extends BaseRepository
      * @param mixed $str
      * @return string - string minuscula sem acentos ou caracteres especiais
      */
-    public function sanitizeString($str) {
+    public function sanitizeString($str)
+    {
         $str = preg_replace('/[áàãâä]/ui', 'a', $str);
         $str = preg_replace('/[éèêë]/ui', 'e', $str);
         $str = preg_replace('/[íìîï]/ui', 'i', $str);
@@ -224,36 +244,49 @@ class PessoaRepository extends BaseRepository
         return strtolower($str);
     }
 
-
     /**
-     * Traz infos do usuário logado no Facebook e atualiza Pessoa
+     * Metodo para atualizar as Pessoas que foram alteradas no BD da vestylle e já estiverem no nosso BD
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function trataInformacoesSocial($usuarioSocial)
+    public function updatePessoasAtualizadasVestylle($tipoLimite=VestylleDBHelper::LIMITE_DIAS, $valorLimite=2)
     {
-        $emailSocial = $usuarioSocial->getEmail();
-        $pessoa = $this->firstOrNew(['email' => $emailSocial]);
-        $pessoa->nome = $usuarioSocial->getName();
-        $pessoa->social_token = $usuarioSocial->token;
-        $pessoa->save();
-        return $pessoa;
-    }
+        //Pega todas as pessoas alteradas lá no periodo especificado
+        $retornoVestylle = $this->vestylleDB->getPessoasAtualizadas($tipoLimite, $valorLimite);
 
-    /**
-     * Autenticação via API
-     *
-     * @return \Illuminate\Http\Response
-     * @return Response
-     */
-    public function login($pessoa, $request)
-    {
-        if (Hash::check($request->password, $pessoa->password)) {
-            $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;
-            $response = ['token' => $token];
-            return $response;
-        } else {
+        if (!is_array($retornoVestylle)) {
             return false;
         }
+
+        //Filtrando retorno pelos id_vestylle que temos aqui
+        $idsVestylle = Pessoa::pluck('id_vestylle')->all();
+        $pessoasParaAtualizar = collect($retornoVestylle)->whereIn('idpessoa', $idsVestylle);
+
+        //Iterando, atrelando a cidade no BD (qnd existir) e salvando
+        foreach ($pessoasParaAtualizar as $pessoa) {
+            $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
+            $cidadeId = $Cidade ? $Cidade->id : null;
+            $queryPessoaCPF = Pessoa::where('id_vestylle', $pessoa->idpessoa);
+
+            //Se existir uma Pessoa com o CPF na base, fazer update
+            if ($queryPessoaCPF->count()) {
+                $queryPessoaCPF->first()->update([
+                    'id_vestylle'  => $pessoa->idpessoa,
+                    "celular" => $pessoa->celular,
+                    "fone" => $pessoa->fone,
+                    "nome" => $pessoa->nome,
+                    "cpf" => $pessoa->cnpj_cpf,
+                    "email" => $pessoa->email,
+                    "cep" => $pessoa->cep,
+                    "endereco" => $pessoa->endereco,
+                    "numero" => $pessoa->numero,
+                    "bairro" => $pessoa->bairro,
+                    "cidade_id" => $cidadeId,
+                    "complemento" => $pessoa->complement,
+                ]);
+            }
+        }
+
+        return count($pessoasParaAtualizar);
     }
 }

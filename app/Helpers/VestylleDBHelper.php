@@ -23,8 +23,7 @@ class VestylleDBHelper
 
         try {
             $this->connection->getPdo();
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             $msg = "[ERRO] Não foi possivel conectar com o BD da vestylle o .env tem as variaveis:\n
                 VESTYLLE_DB_HOST, VESTYLLE_DB_PORT, VESTYLLE_DB_DATABASE, VESTYLLE_DB_USERNAME, VESTYLLE_DB_PASSWORD?\n
                 Exception interna: \n" . $e->getMessage();
@@ -65,7 +64,6 @@ class VestylleDBHelper
 
     /**
      * Metodo para obter as pessoas que foram atualizadas do BD da Vestylle.
-     *
      * Pode ser passado parametros para limitar a query em $valorLimite de dias || horas.
      *
      * @param mixed $tipoLimite - Limite da query [self::LIMITE_DIAS || self::LIMITE_HORAS]
@@ -155,10 +153,9 @@ class VestylleDBHelper
 
     /**
      * Metodo para obter as pessoas novas o BD da Vestylle.
-     *
      * Pode ser passado parametros para limitar a query em $valorLimite de dias || horas.
-     * Esse método nao faz parte do fluxo normal da aplicação, ele é usado somente para testes!
      *
+     * @OBS - Esse método nao faz parte do fluxo normal da aplicação, ele é usado somente para testes!
      * @param mixed $tipoLimite - Limite da query [self::LIMITE_DIAS || self::LIMITE_HORAS]
      * @param int $valorLimite - Valor do limite.
      */
@@ -180,7 +177,6 @@ class VestylleDBHelper
 
         //Iterando, atrelando a cidade no BD (qnd existir) e salvando
         foreach ($result as $pessoa) {
-
             $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
             $cidadeId = $Cidade ? $Cidade->id : null;
             $queryPessoaCPF = Pessoa::where('cpf', 'like', "%$pessoa->cnpj_cpf%");
@@ -225,6 +221,33 @@ class VestylleDBHelper
         return count($result);
     }
 
+    /**
+     * Metodo para obter X ultimos CPF's para facilitar o teste
+     *
+     * @OBS - Esse método nao faz parte do fluxo normal da aplicação, ele é usado somente para testes!
+     * @param mixed $tipoLimite - Limite da query [self::LIMITE_DIAS || self::LIMITE_HORAS]
+     * @param int $valorLimite - Valor do limite.
+     */
+    public function getUltimosRegistros($tipoLimite=self::LIMITE_DIAS, $valorLimite=7)
+    {
+        $query = "SELECT cnpj_cpf  FROM pessoa WHERE fis_jur = 'F' " ;
+
+        //Se for especificado algum limite de tempo, incluir na query.
+        if ($tipoLimite) {
+            $query .= " AND CNSCADMOM > " . str_replace("#", $valorLimite, $tipoLimite);
+        }
+
+        $query .= " ORDER BY CNSCADMOM DESC";
+
+        try {
+            $result = $this->query()->select($query);
+        } catch (\Exception $e) {
+            \Log::error("\n[ERRO] - Erro ao obter ultimos registros. Log: " . $e->getMessage());
+            return false;
+        }
+
+        return $result;
+    }
 
     /**
      * Metodo para remover acentos / caracteres especiais e retornar a string lowercase
@@ -232,7 +255,8 @@ class VestylleDBHelper
      * @param mixed $str
      * @return string - string minuscula sem acentos ou caracteres especiais
      */
-    public function sanitizeString($str) {
+    public function sanitizeString($str)
+    {
         $str = preg_replace('/[áàãâä]/ui', 'a', $str);
         $str = preg_replace('/[éèêë]/ui', 'e', $str);
         $str = preg_replace('/[íìîï]/ui', 'i', $str);
@@ -241,9 +265,4 @@ class VestylleDBHelper
         $str = preg_replace('/[ç]/ui', 'c', $str);
         return strtolower($str);
     }
-
-
-
 }
-
-
