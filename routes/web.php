@@ -18,9 +18,6 @@ Route::get('/', function () {
 });
 
 
-
-
-
 /*
 |--------------------------------------------------------------------------
 | ADMIN Routes
@@ -33,17 +30,7 @@ Route::group(['middleware' => ['role:admin']], function() {
 
     Route::get('/home', 'HomeController@index');
 
-
-
 });
-
-
-
-
-
-
-
-
 
 
 
