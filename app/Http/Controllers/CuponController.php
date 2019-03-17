@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Oferta;
 use App\DataTables\CuponDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateCuponRequest;

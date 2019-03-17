@@ -118,6 +118,7 @@ class OfertaController extends AppBaseController
      */
     public function update($id, UpdateOfertaRequest $request)
     {
+        $input = $request->all();
         $oferta = $this->ofertaRepository->findWithoutFail($id);
 
         if (empty($oferta)) {
@@ -126,7 +127,15 @@ class OfertaController extends AppBaseController
             return redirect(route('ofertas.index'));
         }
 
-        $oferta = $this->ofertaRepository->update($request->all(), $id);
+        $foto = $request->file('foto_oferta');
+
+        $foto_original_name = $foto->getClientOriginalName();
+
+        $foto_path = $foto->storeAs('public', $foto_original_name);
+
+        $input['foto_oferta'] = $foto_original_name;
+
+        $oferta = $this->ofertaRepository->update($input, $id);
 
         Flash::success('Oferta updated successfully.');
 
