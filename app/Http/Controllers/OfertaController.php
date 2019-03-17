@@ -127,13 +127,14 @@ class OfertaController extends AppBaseController
             return redirect(route('ofertas.index'));
         }
 
-        $foto = $request->file('foto_oferta');
+        $hasFoto = $request->hasFile('foto_oferta');
 
-        $foto_original_name = $foto->getClientOriginalName();
-
-        $foto_path = $foto->storeAs('public', $foto_original_name);
-
-        $input['foto_oferta'] = $foto_original_name;
+        if ($hasFoto) {
+            $foto = $request->file('foto_oferta');
+            $foto_original_name = $foto->getClientOriginalName();
+            $foto_path = $foto->storeAs('public', $foto_original_name);
+            $input['foto_oferta'] = $foto_original_name;
+        }
 
         $oferta = $this->ofertaRepository->update($input, $id);
 
