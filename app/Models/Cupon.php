@@ -59,4 +59,14 @@ class Cupon extends Model
     {
         return $this->belongsTo(\App\Models\Oferta::class, 'oferta_id', 'id');
     }
+
+    /**
+     * Relacionamento N x N entre cupons e pessoas
+     *
+     * @return relationship
+     */
+    public function pessoas()
+    {
+        return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id');
+    }
 }

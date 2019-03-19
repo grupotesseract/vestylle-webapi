@@ -50,8 +50,8 @@ class Pessoa extends Authenticatable
         'email',
         'endereco',
         'bairro',
-        'complemento',  
-        'social_token'      
+        'complemento',
+        'social_token'
     ];
 
     /**
@@ -99,6 +99,13 @@ class Pessoa extends Authenticatable
         return $this->belongsTo('App\Models\Cidade');
     }
 
-
-
+    /**
+     * Relacionamento N x N entre cupons e pessoas
+     *
+     * @return relationship
+     */
+    public function cupons()
+    {
+        return $this->belongsToMany('App\Models\Cupon', 'cupons_pessoas', 'pessoa_id', 'cupom_id');
+    }
 }
