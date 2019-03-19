@@ -35,6 +35,10 @@ class Pessoa extends Authenticatable
     use SoftDeletes;
     use HasApiTokens;
 
+    // FLAG cadastro para indicar quando a pessoa completou o cadastro || se o cadastro ainda está pendente
+    const CADASTRO_PENDENTE = 1;
+    const CADASTRO_OK = 2;
+
     public $table = 'pessoas';
 
     protected $dates = ['deleted_at'];
@@ -42,6 +46,7 @@ class Pessoa extends Authenticatable
     public $fillable = [
         'id_vestylle',
         'saldo_pontos',
+        'status_cadastro',
         'celular',
         'cidade_id',
         'telefone_fixo',
@@ -50,6 +55,9 @@ class Pessoa extends Authenticatable
         'email',
         'endereco',
         'bairro',
+        'data_ultima_compra',
+        'data_vencimento_pontos',
+        'data_ultima_compra',
         'complemento',
         'social_token'
     ];
