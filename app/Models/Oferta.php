@@ -45,7 +45,7 @@ class Oferta extends Model
      */
     public static $rules = [
         'descricao_oferta' => 'required',
-        'foto_oferta.*' => 'required | mimes:jpg,jpeg,png',
+        'foto_oferta' => 'required | mimes:jpg,jpeg,png',
     ];
 
     /**
