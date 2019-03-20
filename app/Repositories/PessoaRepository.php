@@ -21,14 +21,6 @@ class PessoaRepository extends BaseRepository
     private $vestylleDB;
 
     /**
-     * @param mixed
-     */
-    public function __construct()
-    {
-        $this->vestylleDB = new \App\Helpers\VestylleDBHelper();
-    }
-
-    /**
      * @var array
      */
     protected $fieldSearchable = [
@@ -93,12 +85,23 @@ class PessoaRepository extends BaseRepository
     }
 
     /**
+     * Metodo para instanciar a classe que intermedia a conexão com o BD da vestylle
+     *
+     * @return void
+     */
+    private function startConnectorVestylle()
+    {
+        $this->vestylleDB = $this->vestylleDB ? $this->vestylleDB : new VestylleDBHelper();
+    }
+
+    /**
      * Metodo para criar uma Pessoa com as infos da Vestylle a partir do CPF
      *
      * @return Pessoa || false
      */
     public function createFromVestylle($cpf)
     {
+        $this->startConnectorVestylle();
         $retornoVestylle = $this->vestylleDB->getPessoa($cpf);
         $pessoa = is_array($retornoVestylle) ? array_shift($retornoVestylle) : false;
 
@@ -135,6 +138,7 @@ class PessoaRepository extends BaseRepository
      */
     public function updateFromVestylle(Pessoa $pessoaObj)
     {
+        $this->startConnectorVestylle();
         $retornoVestylle = $this->vestylleDB->getPessoa($pessoaObj->cpf);
         $pessoa = is_array($retornoVestylle) ? array_shift($retornoVestylle) : false;
 
@@ -170,6 +174,7 @@ class PessoaRepository extends BaseRepository
      */
     public function updatePontosPessoa(Pessoa $pessoa)
     {
+        $this->startConnectorVestylle();
         $result = $this->vestylleDB->getSaldoPontosPessoa($pessoa);
 
         //Se vier result, for array, nao estiver vazio e o objeto tiver a propriedade SALDO
@@ -192,6 +197,7 @@ class PessoaRepository extends BaseRepository
      */
     public function updateVencimentoPontosPessoa(Pessoa $pessoa)
     {
+        $this->startConnectorVestylle();
         $result = $this->vestylleDB->getVencimentoPontosPessoa($pessoa);
 
         //Se vier result, for array, nao estiver vazio e o objeto tiver a propriedade VENCIMENTO
@@ -213,6 +219,7 @@ class PessoaRepository extends BaseRepository
      */
     public function updateDataUltimaCompraPessoa(Pessoa $pessoa)
     {
+        $this->startConnectorVestylle();
         $result = $this->vestylleDB->getDataUltimaCompraPessoa($pessoa);
 
         //Se vier result, for array, nao estiver vazio e o objeto tiver a propriedade CNSCADMOM
@@ -251,6 +258,8 @@ class PessoaRepository extends BaseRepository
      */
     public function updatePessoasAtualizadasVestylle($tipoLimite=VestylleDBHelper::LIMITE_DIAS, $valorLimite=2)
     {
+        $this->startConnectorVestylle();
+
         //Pega todas as pessoas alteradas lá no periodo especificado
         $retornoVestylle = $this->vestylleDB->getPessoasAtualizadas($tipoLimite, $valorLimite);
 

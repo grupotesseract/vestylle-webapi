@@ -117,3 +117,4 @@ typings/
 
 # End of https://www.gitignore.io/api/node,laravel
 *.swp
+tags
