@@ -25,7 +25,7 @@ class PessoaAPIController extends AppBaseController
 
     public function __construct(PessoaRepository $pessoaRepo)
     {
-        //$this->pessoaRepository = $pessoaRepo;
+        $this->pessoaRepository = $pessoaRepo;
     }
 
     /**
