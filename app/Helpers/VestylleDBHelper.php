@@ -24,9 +24,8 @@ class VestylleDBHelper
         try {
             $this->connection->getPdo();
         } catch (\Exception $e) {
-            $msg = "[ERRO] Não foi possivel conectar com o BD da vestylle o .env tem as variaveis:\n
-                VESTYLLE_DB_HOST, VESTYLLE_DB_PORT, VESTYLLE_DB_DATABASE, VESTYLLE_DB_USERNAME, VESTYLLE_DB_PASSWORD?\n
-                Exception interna: \n" . $e->getMessage();
+            $msg = "[ERRO] Não foi possivel conectar com o BD da Vestylle.  o .env tem as variaveis:\n
+                Exception interna: " . $e->getMessage();
 
             throw new \Exception($msg);
         }
