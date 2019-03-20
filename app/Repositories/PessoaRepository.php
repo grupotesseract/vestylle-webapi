@@ -23,10 +23,10 @@ class PessoaRepository extends BaseRepository
     /**
      * @param mixed
      */
-    public function __construct()
-    {
-        //$this->vestylleDB = new \App\Helpers\VestylleDBHelper();
-    }
+    // public function __construct()
+    // {
+    //     $this->vestylleDB = new \App\Helpers\VestylleDBHelper();
+    // }
 
     /**
      * @var array
