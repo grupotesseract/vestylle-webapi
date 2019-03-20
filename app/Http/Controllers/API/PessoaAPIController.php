@@ -149,7 +149,7 @@ class PessoaAPIController extends AppBaseController
     }
 
     /**
-     * Obtain the user information from GitHub.
+     * Callback após login bem sucedido no Facebook
      *
      * @return \Illuminate\Http\Response
      */
@@ -157,7 +157,14 @@ class PessoaAPIController extends AppBaseController
     {
         $usuarioSocial = Socialite::driver('facebook')->stateless()->user();
         $pessoa = $this->pessoaRepository->trataInformacoesSocial($usuarioSocial);
-        return $this->sendResponse($pessoa->toArray(), 'Usuário autenticou no Facebook com Sucesso');
+
+        return $this->sendResponse(
+            [
+                'pessoa' => $pessoa->toArray(),
+                'token' => $pessoa->social_token
+            ], 
+            'Usuário autenticou no Facebook com Sucesso'
+        );
     }
 
     /**

@@ -91,9 +91,7 @@ class Pessoa extends Authenticatable
      *
      * @var array
      */
-    public static $rules = [
-        'nome' => 'required',
-        'cpf' => 'required',
+    public static $rules = [        
         'email' => 'email'
     ];
 
