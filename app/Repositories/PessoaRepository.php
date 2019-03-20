@@ -68,6 +68,7 @@ class PessoaRepository extends BaseRepository
     public function trataInformacoesSocial($usuarioSocial)
     {
         $emailSocial = $usuarioSocial->getEmail();
+        dump($emailSocial);
         $pessoa = $this->firstOrNew(['email' => $emailSocial]);
         $pessoa->nome = $usuarioSocial->getName();
         $pessoa->social_token = $usuarioSocial->token;
