@@ -17,7 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | ADMIN Routes
@@ -27,11 +26,9 @@ Route::get('/', function () {
 |
 */
 Route::group(['middleware' => ['role:admin']], function() {
-
     Route::get('/home', 'HomeController@index');
-
 });
 
-
-
 Route::resource('pessoas', 'PessoaController');
+Route::resource('cupons', 'CuponController');
+Route::resource('ofertas', 'OfertaController');
