@@ -38,6 +38,8 @@ class CreatePessoasTable extends Migration
             $table->string('bairro')->nullable();
             $table->string('complemento')->nullable();
 
+            $table->enum('sexo', ['Masculino', 'Feminino'])->nullable();
+
             $table->timestamp('data_vencimento_pontos')->nullable();
             $table->timestamp('data_ultima_compra')->nullable();
             $table->timestamp('data_nascimento')->nullable();
