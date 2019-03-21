@@ -17,7 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | ADMIN Routes
@@ -32,9 +31,6 @@ Route::group(['middleware' => ['role:admin']], function() {
 
 });
 
-
-
 Route::resource('pessoas', 'PessoaController');
 
-
-Route::resource('faleConoscos', 'FaleConoscoController');
+Route::resource('faleConoscos', 'FaleConoscoController')->except(['update', 'destroy']);

@@ -27,4 +27,4 @@ Route::post('/login', 'PessoaAPIController@login');
 Route::get('login/facebook', 'PessoaAPIController@redirecionaSocial');
 Route::get('login/facebook/callback', 'PessoaAPIController@trataInformacoesSocial');
 
-Route::resource('fale_conoscos', 'FaleConoscoAPIController');
+Route::resource('fale_conoscos', 'FaleConoscoAPIController')->except(['update', 'destroy']);
