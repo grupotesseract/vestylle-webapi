@@ -2,19 +2,18 @@
 
 ## Ferramentas
 
-- Laravel 5.7
+- Laravel 5.8
 - Laravel Generator
 - Adminlte
-- Yajra DataTables v8
-- Languages / locale pt-BR
+- Yajra DataTables
 - Laradock
 - Docker Vessel
+
+# Opção 1 - Setup local usando o Laradock
 
 ## Clone com submodulos
 
 `git clone --recursive https://github.com/grupotesseract/vestylle-webapi.git`
-
-# Setup local Opção 1 - usando o Laradock
 
 Buildar Laradock
 - `cd laradock`
@@ -38,7 +37,11 @@ Buildar Laradock
 
 Acertar .env do projeto de acordo com as configs do laradock
 
-# Setup local Opção 2 -  usando o Docker Vessel
+# Opção 2 - Setup local usando o Vessel
+
+## Clone do projeto
+
+`git clone https://github.com/grupotesseract/vestylle-webapi.git && cd vestylle-webapi`
 
 ```
 # Start Vessel and prepare the environment:

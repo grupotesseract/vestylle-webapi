@@ -30,5 +30,6 @@ Route::group(['middleware' => ['role:admin']], function() {
 });
 
 Route::resource('pessoas', 'PessoaController');
+Route::resource('faleConoscos', 'FaleConoscoController');
 Route::resource('cupons', 'CuponController');
 Route::resource('ofertas', 'OfertaController');
