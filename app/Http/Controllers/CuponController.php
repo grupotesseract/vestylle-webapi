@@ -57,7 +57,7 @@ class CuponController extends AppBaseController
 
         $cupon = $this->cuponRepository->create($input);
 
-        Flash::success('Cupon saved successfully.');
+        Flash::success('Cupom criado com sucesso.');
 
         return redirect(route('cupons.index'));
     }
@@ -74,7 +74,7 @@ class CuponController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            Flash::error('Cupon not found');
+            Flash::error('Cupom not found');
 
             return redirect(route('cupons.index'));
         }
@@ -94,7 +94,7 @@ class CuponController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            Flash::error('Cupon not found');
+            Flash::error('Cupom not found');
 
             return redirect(route('cupons.index'));
         }
@@ -116,14 +116,14 @@ class CuponController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            Flash::error('Cupon not found');
+            Flash::error('Cupom não encontrado');
 
             return redirect(route('cupons.index'));
         }
 
         $cupon = $this->cuponRepository->update($request->all(), $id);
 
-        Flash::success('Cupon updated successfully.');
+        Flash::success('Cupom atualizado com sucesso.');
 
         return redirect(route('cupons.index'));
     }
@@ -140,14 +140,14 @@ class CuponController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            Flash::error('Cupon not found');
+            Flash::error('Cupom not found');
 
             return redirect(route('cupons.index'));
         }
 
         $this->cuponRepository->delete($id);
 
-        Flash::success('Cupon deleted successfully.');
+        Flash::success('Cupom excluído com sucesso.');
 
         return redirect(route('cupons.index'));
     }
