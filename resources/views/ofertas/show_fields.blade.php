@@ -10,6 +10,12 @@
     <p>{!! $oferta->descricao_oferta !!}</p>
 </div>
 
+<!-- Texto Oferta Field -->
+<div class="form-group">
+    {!! Form::label('texto_oferta', 'Texto da Oferta') !!}
+    <p>{!! $oferta->texto_oferta !!}</p>
+</div>
+
 <!-- Foto Oferta Field -->
 <div class="form-group">
     {!! Form::label('foto_oferta', 'Foto da oferta:') !!}

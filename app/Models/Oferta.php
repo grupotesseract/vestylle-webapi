@@ -25,6 +25,7 @@ class Oferta extends Model
 
     public $fillable = [
         'descricao_oferta',
+        'texto_oferta',
         'foto_oferta'
     ];
 
@@ -35,6 +36,7 @@ class Oferta extends Model
      */
     protected $casts = [
         'descricao_oferta' => 'string',
+        'texto_oferta' => 'string',
         'foto_oferta' => 'string'
     ];
 
