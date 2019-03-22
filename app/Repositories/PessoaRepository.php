@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Pessoa;
+use App\Models\Cidade;
 use App\Helpers\VestylleDBHelper;
 use InfyOm\Generator\Common\BaseRepository;
 use Illuminate\Support\Facades\Hash;
@@ -109,7 +110,7 @@ class PessoaRepository extends BaseRepository
             return false;
         }
 
-        $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
+        $Cidade = Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
         $cidadeId = $Cidade ? $Cidade->id : null;
 
         $result = Pessoa::create([
@@ -138,6 +139,10 @@ class PessoaRepository extends BaseRepository
      */
     public function updateFromVestylle(Pessoa $pessoaObj)
     {
+        if (!$pessoaObj->cpf) {
+            return false;
+        }
+
         $this->startConnectorVestylle();
         $retornoVestylle = $this->vestylleDB->getPessoa($pessoaObj->cpf);
         $pessoa = is_array($retornoVestylle) ? array_shift($retornoVestylle) : false;
@@ -146,16 +151,13 @@ class PessoaRepository extends BaseRepository
             return false;
         }
 
-        $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
+        $Cidade = Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
         $cidadeId = $Cidade ? $Cidade->id : null;
 
         $result = $pessoaObj->update([
             'id_vestylle'  => $pessoa->idpessoa,
             "celular" => $pessoa->celular,
             "fone" => $pessoa->fone,
-            "nome" => $pessoa->nome,
-            "cpf" => $pessoa->cnpj_cpf,
-            "email" => $pessoa->email,
             "cep" => $pessoa->cep,
             "endereco" => $pessoa->endereco,
             "numero" => $pessoa->numero,
@@ -273,7 +275,7 @@ class PessoaRepository extends BaseRepository
 
         //Iterando, atrelando a cidade no BD (qnd existir) e salvando
         foreach ($pessoasParaAtualizar as $pessoa) {
-            $Cidade = \Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
+            $Cidade = Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
             $cidadeId = $Cidade ? $Cidade->id : null;
             $queryPessoaCPF = Pessoa::where('id_vestylle', $pessoa->idpessoa);
 

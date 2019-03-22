@@ -54,11 +54,20 @@ class PessoaAPIController extends AppBaseController
      */
     public function store(CreatePessoaAPIRequest $request)
     {
-        $input = $request->all();  
+        $input = $request->all();
 
         $pessoa = $this->pessoaRepository->create($input);
         $pessoa->password = bcrypt($request->password);
-        $pessoa->save();        
+        $pessoa->save();
+
+        $pegouDadosVestylle = $this->pessoaRepository->updateFromVestylle($pessoa);
+
+        //Se tem id_vestylle --> Pegar Pontos, Vencimento dos Pontos e Data de ultima compra da pessoa
+        if ($pegouDadosVestylle) {
+            $this->pessoaRepository->updatePontosPessoa($pessoa);
+            $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
+            $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
+        }
 
         $token = $this->pessoaRepository->login($pessoa, $request);
 
@@ -66,7 +75,7 @@ class PessoaAPIController extends AppBaseController
             [
                 'pessoa' => $pessoa->toArray(),
                 'token' => $token
-            ], 
+            ],
             'Pessoa criada com sucesso'
         );
     }
@@ -162,30 +171,30 @@ class PessoaAPIController extends AppBaseController
             [
                 'pessoa' => $pessoa->toArray(),
                 'token' => $pessoa->social_token
-            ], 
+            ],
             'Usuário autenticou no Facebook com Sucesso'
         );
     }
 
     /**
      * Autenticação via API
-     *     
+     *
      * @return \Illuminate\Http\Response
      * @return Response
      */
-    public function login(Request $request) 
+    public function login(Request $request)
     {
         $pessoa = $this->pessoaRepository->findByField('email', $request->email)->first();
-    
+
         if ($pessoa) {
-            $token = $this->pessoaRepository->login($pessoa, $request);    
+            $token = $this->pessoaRepository->login($pessoa, $request);
             if ($token) {
-                return $this->sendResponse($token, 'Usuário autenticou via API com Sucesso');                
-            } else {  
+                return $this->sendResponse($token, 'Usuário autenticou via API com Sucesso');
+            } else {
                 return $this->sendError('A senha digitada está incorreta');
-            }             
-        } else {  
+            }
+        } else {
             return $this->sendError('Usuário inexistente');
-        }    
+        }
     }
 }
