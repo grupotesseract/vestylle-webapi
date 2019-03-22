@@ -42,12 +42,13 @@ class OfertaDataTable extends DataTable
         return $this->builder()
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->addAction(['width' => '120px'])
+            ->addAction(['width' => '120px', 'title' => 'Ações'])
             ->parameters([
                 'dom'     => 'Bfrtip',
                 'order'   => [[0, 'desc']],
                 'buttons' => [
                     ['extend' => 'create','text' => '<i class="fa fa-plus"></i> Adicionar'],
+                    ['extend' => 'print', 'text' => '<i class="fa fa-print"></i> Imprimir'],
                     ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar'],
                 ],
                 'language' => [
@@ -65,13 +66,8 @@ class OfertaDataTable extends DataTable
     {
         $url = url('storage/');
         return [
+            ['data' => 'id', 'title' => 'Código'],
             ['data' => 'descricao_oferta', 'title' => 'Descrição'],
-            'foto_oferta' => [
-                'name' => 'foto_oferta',
-                'data' => 'foto_oferta',
-                'title' => 'Foto',
-                'render' => "`<img src=\"$url/` + data + `\" height=\"50\"/>`"
-            ]
         ];
     }
 

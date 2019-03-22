@@ -42,7 +42,7 @@
 
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Entre para iniciar sua sessão</p>
+        <p class="login-box-msg">Digite suas credenciais</p>
 
         <form method="post" action="{{ url('/login') }}">
             {!! csrf_field() !!}
