@@ -59,7 +59,8 @@ class Pessoa extends Authenticatable
         'data_vencimento_pontos',
         'data_ultima_compra',
         'complemento',
-        'social_token'
+        'social_token',
+        'genero'
     ];
 
     /**
@@ -83,7 +84,8 @@ class Pessoa extends Authenticatable
         'email' => 'string',
         'endereco' => 'string',
         'bairro' => 'string',
-        'complemento' => 'string'
+        'complemento' => 'string',
+        'genero' => 'string'
     ];
 
     /**
