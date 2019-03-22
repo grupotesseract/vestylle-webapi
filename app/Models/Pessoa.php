@@ -60,7 +60,7 @@ class Pessoa extends Authenticatable
         'data_ultima_compra',
         'complemento',
         'social_token',
-        'sexo'
+        'genero'
     ];
 
     /**
@@ -85,7 +85,7 @@ class Pessoa extends Authenticatable
         'endereco' => 'string',
         'bairro' => 'string',
         'complemento' => 'string',
-        'sexo' => 'string'
+        'genero' => 'string'
     ];
 
     /**
