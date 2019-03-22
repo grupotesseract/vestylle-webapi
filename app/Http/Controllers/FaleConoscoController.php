@@ -55,7 +55,7 @@ class FaleConoscoController extends AppBaseController
 
         $faleConosco = $this->faleConoscoRepository->create($input);
 
-        Flash::success('Fale Conosco saved successfully.');
+        Flash::success('Fale Conosco criado com sucesso.');
 
         return redirect(route('faleConoscos.index'));
     }
@@ -72,7 +72,7 @@ class FaleConoscoController extends AppBaseController
         $faleConosco = $this->faleConoscoRepository->findWithoutFail($id);
 
         if (empty($faleConosco)) {
-            Flash::error('Fale Conosco not found');
+            Flash::error('Fale Conosco não encontrado');
 
             return redirect(route('faleConoscos.index'));
         }
@@ -92,7 +92,7 @@ class FaleConoscoController extends AppBaseController
         $faleConosco = $this->faleConoscoRepository->findWithoutFail($id);
 
         if (empty($faleConosco)) {
-            Flash::error('Fale Conosco not found');
+            Flash::error('Fale Conosco não encontrado');
 
             return redirect(route('faleConoscos.index'));
         }

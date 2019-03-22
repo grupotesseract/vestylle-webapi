@@ -123,7 +123,7 @@ class OfertaController extends AppBaseController
         $oferta = $this->ofertaRepository->findWithoutFail($id);
 
         if (empty($oferta)) {
-            Flash::error('Oferta not found');
+            Flash::error('Oferta não encontrada');
 
             return redirect(route('ofertas.index'));
         }
@@ -156,7 +156,7 @@ class OfertaController extends AppBaseController
         $oferta = $this->ofertaRepository->findWithoutFail($id);
 
         if (empty($oferta)) {
-            Flash::error('Oferta not found');
+            Flash::error('Oferta não encontrada');
 
             return redirect(route('ofertas.index'));
         }

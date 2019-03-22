@@ -74,7 +74,7 @@ class CuponController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            Flash::error('Cupom not found');
+            Flash::error('Cupom não encontrado');
 
             return redirect(route('cupons.index'));
         }
@@ -94,7 +94,7 @@ class CuponController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            Flash::error('Cupom not found');
+            Flash::error('Cupom não encontrado');
 
             return redirect(route('cupons.index'));
         }
@@ -140,7 +140,7 @@ class CuponController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            Flash::error('Cupom not found');
+            Flash::error('Cupom não encontrado');
 
             return redirect(route('cupons.index'));
         }
