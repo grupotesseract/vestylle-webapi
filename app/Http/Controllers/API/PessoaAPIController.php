@@ -122,6 +122,15 @@ class PessoaAPIController extends AppBaseController
 
         $pessoa = $this->pessoaRepository->update($input, $id);
 
+        $pegouDadosVestylle = $this->pessoaRepository->updateFromVestylle($pessoa);
+
+        //Se tem id_vestylle --> Pegar Pontos, Vencimento dos Pontos e Data de ultima compra da pessoa
+        if ($pegouDadosVestylle) {
+            $this->pessoaRepository->updatePontosPessoa($pessoa);
+            $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
+            $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
+        }
+
         return $this->sendResponse($pessoa->toArray(), 'Pessoa atualizada com sucesso');
     }
 
