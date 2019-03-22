@@ -65,13 +65,8 @@ class OfertaDataTable extends DataTable
     {
         $url = url('storage/');
         return [
+            ['data' => 'id', 'title' => 'Código'],
             ['data' => 'descricao_oferta', 'title' => 'Descrição'],
-            'foto_oferta' => [
-                'name' => 'foto_oferta',
-                'data' => 'foto_oferta',
-                'title' => 'Foto',
-                'render' => "`<img src=\"$url/` + data + `\" height=\"50\"/>`"
-            ]
         ];
     }
 
