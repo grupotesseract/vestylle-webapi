@@ -11,7 +11,7 @@
        <div class="box box-primary">
            <div class="box-body">
                <div class="row">
-                   {!! Form::model($cupon, ['route' => ['cupons.update', $cupon->id], 'method' => 'patch']) !!}
+                   {!! Form::model($cupon, ['route' => ['cupons.update', $cupon->id], 'files' => true, 'method' => 'patch']) !!}
 
                         @include('cupons.fields')
 

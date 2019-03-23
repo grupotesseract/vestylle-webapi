@@ -28,7 +28,8 @@ class Cupon extends Model
     public $fillable = [
         'data_validade',
         'texto_cupom',
-        'oferta_id'
+        'oferta_id',
+        'foto_caminho',
     ];
 
     /**
@@ -39,7 +40,8 @@ class Cupon extends Model
     protected $casts = [
         'data_validade' => 'date',
         'texto_cupom' => 'string',
-        'oferta_id' => 'integer'
+        'oferta_id' => 'integer',
+        'foto_caminho' => 'string',
     ];
 
     /**
@@ -49,7 +51,7 @@ class Cupon extends Model
      */
     public static $rules = [
         'data_validade' => 'required',
-        'texto_cupom' => 'required'
+        'texto_cupom' => 'required',
     ];
 
     /**

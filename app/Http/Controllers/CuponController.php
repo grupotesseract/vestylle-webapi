@@ -55,6 +55,15 @@ class CuponController extends AppBaseController
     {
         $input = $request->all();
 
+        $hasFoto = $request->hasFile('foto_caminho');
+
+        if ($hasFoto) {
+            $foto = $request->file('foto_caminho');
+            $foto_original_name = $foto->getClientOriginalName();
+            $foto_path = $foto->storeAs('public', $foto_original_name);
+            $input['foto_caminho'] = $foto_original_name;
+        }
+
         $cupon = $this->cuponRepository->create($input);
 
         Flash::success('Cupom criado com sucesso.');
@@ -72,6 +81,7 @@ class CuponController extends AppBaseController
     public function show($id)
     {
         $cupon = $this->cuponRepository->findWithoutFail($id);
+            \Log::info(json_encode($cupon));
 
         if (empty($cupon)) {
             Flash::error('Cupom não encontrado');
@@ -113,6 +123,7 @@ class CuponController extends AppBaseController
      */
     public function update($id, UpdateCuponRequest $request)
     {
+        $input = $request->all();
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
@@ -121,7 +132,16 @@ class CuponController extends AppBaseController
             return redirect(route('cupons.index'));
         }
 
-        $cupon = $this->cuponRepository->update($request->all(), $id);
+        $hasFoto = $request->hasFile('foto_caminho');
+
+        if ($hasFoto) {
+            $foto = $request->file('foto_caminho');
+            $foto_original_name = $foto->getClientOriginalName();
+            $foto_path = $foto->storeAs('public', $foto_original_name);
+            $input['foto_caminho'] = $foto_original_name;
+        }
+
+        $cupon = $this->cuponRepository->update($input, $id);
 
         Flash::success('Cupom atualizado com sucesso.');
 
