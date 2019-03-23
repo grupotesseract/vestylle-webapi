@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\OfertaDataTable;
+use Flash;
+use Response;
 use App\Http\Requests;
+use App\DataTables\OfertaDataTable;
+use App\DataTables\PessoaDataTable;
+use App\Repositories\OfertaRepository;
 use App\Http\Requests\CreateOfertaRequest;
 use App\Http\Requests\UpdateOfertaRequest;
-use App\Repositories\OfertaRepository;
-use Flash;
 use App\Http\Controllers\AppBaseController;
-use Response;
+use App\DataTables\Scopes\PessoasPorOferta;
 
 class OfertaController extends AppBaseController
 {
@@ -76,17 +78,17 @@ class OfertaController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show(PessoaDataTable $pessoaDataTable, $id)
     {
         $oferta = $this->ofertaRepository->findWithoutFail($id);
 
         if (empty($oferta)) {
             Flash::error('Oferta não encontrada');
-
             return redirect(route('ofertas.index'));
         }
 
-        return view('ofertas.show')->with('oferta', $oferta);
+        return $pessoaDataTable->addScope(new PessoasPorOferta($id))
+            ->render('ofertas.show', compact('oferta'));
     }
 
     /**
