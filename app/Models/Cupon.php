@@ -27,6 +27,7 @@ class Cupon extends Model
 
     public $fillable = [
         'data_validade',
+        'cupom_primeiro_login',
         'texto_cupom',
         'oferta_id'
     ];
