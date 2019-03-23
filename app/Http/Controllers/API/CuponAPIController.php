@@ -40,7 +40,7 @@ class CuponAPIController extends AppBaseController
         $this->cuponRepository->pushCriteria(new LimitOffsetCriteria($request));
         $cupons = $this->cuponRepository->all();
 
-        return $this->sendResponse($cupons->toArray(), 'Cupons retrieved successfully');
+        return $this->sendResponse($cupons->toArray(), 'Cupom encontrado com sucesso');
     }
 
     /**
@@ -57,7 +57,7 @@ class CuponAPIController extends AppBaseController
 
         $cupons = $this->cuponRepository->create($input);
 
-        return $this->sendResponse($cupons->toArray(), 'Cupon saved successfully');
+        return $this->sendResponse($cupons->toArray(), 'Cupom salvo com sucesso');
     }
 
     /**
@@ -77,7 +77,7 @@ class CuponAPIController extends AppBaseController
             return $this->sendError('Cupon not found');
         }
 
-        return $this->sendResponse($cupon->toArray(), 'Cupon retrieved successfully');
+        return $this->sendResponse($cupon->toArray(), 'Cupom encontrado com sucesso');
     }
 
     /**
@@ -102,7 +102,7 @@ class CuponAPIController extends AppBaseController
 
         $cupon = $this->cuponRepository->update($input, $id);
 
-        return $this->sendResponse($cupon->toArray(), 'Cupon updated successfully');
+        return $this->sendResponse($cupon->toArray(), 'Cupom atualizado com sucesso');
     }
 
     /**
@@ -124,6 +124,6 @@ class CuponAPIController extends AppBaseController
 
         $cupon->delete();
 
-        return $this->sendResponse($id, 'Cupon deleted successfully');
+        return $this->sendResponse($id, 'Cupom excluído com sucesso');
     }
 }

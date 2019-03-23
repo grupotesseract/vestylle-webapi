@@ -40,7 +40,7 @@ class OfertaAPIController extends AppBaseController
         $this->ofertaRepository->pushCriteria(new LimitOffsetCriteria($request));
         $ofertas = $this->ofertaRepository->all();
 
-        return $this->sendResponse($ofertas->toArray(), 'Ofertas retrieved successfully');
+        return $this->sendResponse($ofertas->toArray(), 'Ofertas encontradas com sucesso');
     }
 
     /**
@@ -57,7 +57,7 @@ class OfertaAPIController extends AppBaseController
 
         $ofertas = $this->ofertaRepository->create($input);
 
-        return $this->sendResponse($ofertas->toArray(), 'Oferta saved successfully');
+        return $this->sendResponse($ofertas->toArray(), 'Oferta salva com sucesso');
     }
 
     /**
@@ -77,7 +77,7 @@ class OfertaAPIController extends AppBaseController
             return $this->sendError('Oferta not found');
         }
 
-        return $this->sendResponse($oferta->toArray(), 'Oferta retrieved successfully');
+        return $this->sendResponse($oferta->toArray(), 'Oferta encontrada com sucesso');
     }
 
     /**
@@ -102,7 +102,7 @@ class OfertaAPIController extends AppBaseController
 
         $oferta = $this->ofertaRepository->update($input, $id);
 
-        return $this->sendResponse($oferta->toArray(), 'Oferta updated successfully');
+        return $this->sendResponse($oferta->toArray(), 'Oferta atualizada com sucesso');
     }
 
     /**
@@ -124,6 +124,6 @@ class OfertaAPIController extends AppBaseController
 
         $oferta->delete();
 
-        return $this->sendResponse($id, 'Oferta deleted successfully');
+        return $this->sendResponse($id, 'Oferta excluída com sucesso');
     }
 }
