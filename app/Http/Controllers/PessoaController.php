@@ -55,7 +55,7 @@ class PessoaController extends AppBaseController
 
         $pessoa = $this->pessoaRepository->create($input);
 
-        Flash::success('Pessoa saved successfully.');
+        Flash::success('Pessoa salva com sucesso');
 
         return redirect(route('pessoas.index'));
     }
@@ -72,7 +72,7 @@ class PessoaController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            Flash::error('Pessoa not found');
+            Flash::error('Pessoa não encontrada');
 
             return redirect(route('pessoas.index'));
         }
@@ -92,7 +92,7 @@ class PessoaController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            Flash::error('Pessoa not found');
+            Flash::error('Pessoa não encontrada');
 
             return redirect(route('pessoas.index'));
         }
@@ -113,7 +113,7 @@ class PessoaController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            Flash::error('Pessoa not found');
+            Flash::error('Pessoa não encontrada');
 
             return redirect(route('pessoas.index'));
         }
@@ -137,7 +137,7 @@ class PessoaController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            Flash::error('Pessoa not found');
+            Flash::error('Pessoa não encontrada');
 
             return redirect(route('pessoas.index'));
         }

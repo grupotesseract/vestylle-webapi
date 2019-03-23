@@ -40,7 +40,7 @@ class FaleConoscoAPIController extends AppBaseController
         $this->faleConoscoRepository->pushCriteria(new LimitOffsetCriteria($request));
         $faleConoscos = $this->faleConoscoRepository->all();
 
-        return $this->sendResponse($faleConoscos->toArray(), 'Fale Conoscos retrieved successfully');
+        return $this->sendResponse($faleConoscos->toArray(), 'Fale Conosco encontrado com sucesso');
     }
 
     /**
@@ -57,7 +57,7 @@ class FaleConoscoAPIController extends AppBaseController
 
         $faleConoscos = $this->faleConoscoRepository->create($input);
 
-        return $this->sendResponse($faleConoscos->toArray(), 'Fale Conosco saved successfully');
+        return $this->sendResponse($faleConoscos->toArray(), 'Fale Conosco salvo com sucesso');
     }
 
     /**
@@ -77,6 +77,6 @@ class FaleConoscoAPIController extends AppBaseController
             return $this->sendError('Fale Conosco not found');
         }
 
-        return $this->sendResponse($faleConosco->toArray(), 'Fale Conosco retrieved successfully');
+        return $this->sendResponse($faleConosco->toArray(), 'Fale Conosco encontrado com sucesso');
     }
 }
