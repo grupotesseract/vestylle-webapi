@@ -185,7 +185,7 @@ class CuponController extends AppBaseController
         $pessoa = Pessoa::find($pessoa_id);
 
         if (!$pessoa) {
-           return Response::error(404, 'Pessoa não encontrada');
+           return Response::json('Pessoa não encontrada', 404);
         }
 
         $cupons = $pessoa->cupons->all();
