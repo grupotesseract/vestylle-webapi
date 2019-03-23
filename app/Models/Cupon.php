@@ -53,6 +53,11 @@ class Cupon extends Model
         'texto_cupom' => 'required'
     ];
 
+    public function scopePrimeiroLogin($query)
+    {
+        return $query->where('cupom_primeiro_login', true);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
