@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Oferta;
+use App\Models\Pessoa;
 use App\DataTables\CuponDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreateCuponRequest;
@@ -170,5 +171,25 @@ class CuponController extends AppBaseController
         Flash::success('Cupom excluído com sucesso.');
 
         return redirect(route('cupons.index'));
+    }
+
+    /**
+     * Traz todos os cupons relacionados a uma pessoa
+     *
+     * @param int $pessoa_id
+     *
+     * @return Response
+     */
+    public function getCuponsPessoa($pessoa_id)
+    {
+        $pessoa = Pessoa::find($pessoa_id);
+
+        if (!$pessoa) {
+           return Response::error(404, 'Pessoa não encontrada');
+        }
+
+        $cupons = $pessoa->cupons->all();
+
+        return Response::json($cupons, 200);
     }
 }

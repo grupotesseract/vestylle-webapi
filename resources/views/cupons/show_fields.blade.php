@@ -36,19 +36,9 @@
     </div>
 </div>
 
-@isset($cupon->oferta_id)
-<div class="col-md-6">
-    <!-- Foto da oferta -->
-    <div class="form-group">
-        <img src="{!! url('storage/' . $cupon->oferta->foto_oferta) !!}" width="300" height="300" alt="foto da oferta">
-    </div>
-</div>
-@endisset
-@if ($cupon->oferta_id == null)
 <div class="col-md-6">
     <!-- Foto da oferta -->
     <div class="form-group">
         <img src="{!! url('storage/' . $cupon->foto_caminho) !!}" width="300" height="300" alt="foto do cupom">
     </div>
 </div>
-@endif

@@ -71,4 +71,18 @@ class Cupon extends Model
     {
         return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id');
     }
+
+    /**
+     * Mutator que traz a foto da oferta no lugar da foto
+     * do cupom caso eles estejam relacionados
+     *
+     * @return void
+     */
+    public function getFotoCaminhoAttribute()
+    {
+        if ($this->oferta) {
+            return $this->oferta->foto_oferta;
+        }
+        return $this->attributes['foto_caminho'];
+    }
 }
