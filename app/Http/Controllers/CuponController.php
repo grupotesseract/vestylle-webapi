@@ -82,7 +82,6 @@ class CuponController extends AppBaseController
     public function show($id)
     {
         $cupon = $this->cuponRepository->findWithoutFail($id);
-            \Log::info(json_encode($cupon));
 
         if (empty($cupon)) {
             Flash::error('Cupom não encontrado');
