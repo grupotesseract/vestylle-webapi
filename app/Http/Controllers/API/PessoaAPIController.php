@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreatePessoaAPIRequest;
-use App\Http\Requests\API\UpdatePessoaAPIRequest;
-use App\Models\Pessoa;
-use App\Repositories\PessoaRepository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
-use InfyOm\Generator\Criteria\LimitOffsetCriteria;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 use Socialite;
+use App\Models\Pessoa;
+use Illuminate\Http\Request;
+use App\Repositories\PessoaRepository;
+use App\Repositories\OfertaRepository;
+use App\Http\Controllers\AppBaseController;
+use Prettus\Repository\Criteria\RequestCriteria;
+use App\Http\Requests\API\CreatePessoaAPIRequest;
+use App\Http\Requests\API\UpdatePessoaAPIRequest;
+use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 
 /**
  * Class PessoaController
@@ -22,10 +23,12 @@ class PessoaAPIController extends AppBaseController
 {
     /** @var  PessoaRepository */
     private $pessoaRepository;
+    private $ofertaRepository;
 
-    public function __construct(PessoaRepository $pessoaRepo)
+    public function __construct(PessoaRepository $pessoaRepo, OfertaRepository $ofertaRepo)
     {
         $this->pessoaRepository = $pessoaRepo;
+        $this->ofertaRepository = $ofertaRepo;
     }
 
     /**
@@ -204,6 +207,70 @@ class PessoaAPIController extends AppBaseController
             }
         } else {
             return $this->sendError('Usuário inexistente');
+        }
+    }
+
+    /**
+     * Metodo para retornar as Ofertas que foram adicinadas a lista de desejos da $idPessoa
+     *
+     * @param mixed $idPessoa
+     */
+    public function getOfertas($id)
+    {
+        $pessoa = $this->pessoaRepository->findWithoutFail($id);
+
+        if ($pessoa) {
+
+            return $this->sendResponse(
+                [
+                    'ofertas' => $pessoa->listaDesejos->toArray(),
+                ],
+                'Listagem das Ofertas adicinadas á lista de desejos'
+            );
+        } else {
+            return $this->sendError('Pessoa não encontrada');
+        }
+    }
+
+    /**
+     * Metodo para retornar as Ofertas que foram adicinadas a lista de desejos da $idPessoa
+     *
+     * @param mixed $idPessoa
+     */
+    public function postOfertas(Request $request, $id)
+    {
+        $pessoa = $this->pessoaRepository->findWithoutFail($id);
+
+        if ($pessoa) {
+
+            $oferta = $this->ofertaRepository->findWithoutFail($request->oferta_id);
+            if (!$oferta) {
+                return $this->sendError('Oferta não encontrada');
+            }
+
+            $result = $this->pessoaRepository->toggleOfertaListaDesejo($pessoa, $oferta);
+            if ($result) {
+                return $this->sendResponse(
+                    [
+                        'ofertas' => $pessoa->listaDesejos->toArray(),
+                    ],
+                    'Oferta adicionada a lista de desejos com sucesso!'
+                );
+            }
+
+            else {
+                return $this->sendResponse(
+                    [
+                        'ofertas' => $pessoa->listaDesejos->toArray(),
+                    ],
+                    'Oferta removida da lista de desejos com sucesso!'
+                );
+
+            }
+
+
+        } else {
+            return $this->sendError('Pessoa não encontrada');
         }
     }
 }

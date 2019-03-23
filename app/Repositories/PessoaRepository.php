@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Pessoa;
+use App\Models\Oferta;
 use App\Models\Cidade;
 use App\Helpers\VestylleDBHelper;
 use InfyOm\Generator\Common\BaseRepository;
@@ -300,4 +301,31 @@ class PessoaRepository extends BaseRepository
 
         return count($pessoasParaAtualizar);
     }
+
+    /**
+     * Metodo para dar toggle em uma Oferta á lista de desejos
+     *
+     * Se já estiver adicionado, remove. Se não, adiciona.
+     *
+     * @return boolean - true || false - Se adicionou ou removeu da lista de desejos.
+     */
+    public function toggleOfertaListaDesejo(Pessoa $pessoa, Oferta $oferta)
+    {
+        if ($pessoa->listaDesejos()->find($oferta->id)){
+            $pessoa->listaDesejos()->detach($oferta);
+            return false;
+        }
+
+        else {
+            $pessoa->listaDesejos()->attach($oferta);
+            return true;
+        }
+        return null;
+    }
+
+
+
+
+
+
 }
