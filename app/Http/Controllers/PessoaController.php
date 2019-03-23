@@ -55,7 +55,7 @@ class PessoaController extends AppBaseController
 
         $pessoa = $this->pessoaRepository->create($input);
 
-        Flash::success('Pessoa salva com sucesso');
+        Flash::success('Pessoa criada com sucesso.');
 
         return redirect(route('pessoas.index'));
     }
@@ -120,7 +120,7 @@ class PessoaController extends AppBaseController
 
         $pessoa = $this->pessoaRepository->update($request->all(), $id);
 
-        Flash::success('Pessoa updated successfully.');
+        Flash::success('Pessoa atualizada com sucesso.');
 
         return redirect(route('pessoas.index'));
     }
@@ -144,8 +144,8 @@ class PessoaController extends AppBaseController
 
         $this->pessoaRepository->delete($id);
 
-        Flash::success('Pessoa deleted successfully.');
+        Flash::success('Pessoa excluída com sucesso.');
 
         return redirect(route('pessoas.index'));
-    }    
+    }
 }

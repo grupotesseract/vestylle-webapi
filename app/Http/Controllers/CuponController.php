@@ -57,7 +57,7 @@ class CuponController extends AppBaseController
 
         $cupon = $this->cuponRepository->create($input);
 
-        Flash::success('Cupom salvo com sucesso');
+        Flash::success('Cupom criado com sucesso.');
 
         return redirect(route('cupons.index'));
     }
@@ -123,7 +123,7 @@ class CuponController extends AppBaseController
 
         $cupon = $this->cuponRepository->update($request->all(), $id);
 
-        Flash::success('Cupom atualizado com sucesso');
+        Flash::success('Cupom atualizado com sucesso.');
 
         return redirect(route('cupons.index'));
     }
@@ -147,7 +147,7 @@ class CuponController extends AppBaseController
 
         $this->cuponRepository->delete($id);
 
-        Flash::success('Cupom excluído com sucesso');
+        Flash::success('Cupom excluído com sucesso.');
 
         return redirect(route('cupons.index'));
     }

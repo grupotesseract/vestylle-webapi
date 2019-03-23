@@ -48,6 +48,7 @@ class PessoaDataTable extends DataTable
                 'order'   => [[0, 'desc']],
                 'buttons' => [
                     ['extend' => 'create','text' => '<i class="fa fa-plus"></i> Adicionar'],
+                    ['extend' => 'print', 'text' => '<i class="fa fa-print"></i> Imprimir'],
                     ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar'],
                 ],
                 'language' => ['url' => '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese-Brasil.json'],

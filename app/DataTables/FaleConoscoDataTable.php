@@ -47,6 +47,7 @@ class FaleConoscoDataTable extends DataTable
                 'dom'     => 'Bfrtip',
                 'order'   => [[0, 'desc']],
                 'buttons' => [
+                    ['extend' => 'print', 'text' => '<i class="fa fa-print"></i> Imprimir'],
                     ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar']
                 ],
                 'language' => [

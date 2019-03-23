@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'pt-BR',
 
     /*
     |--------------------------------------------------------------------------
@@ -183,7 +183,7 @@ return [
         \InfyOm\Generator\InfyOmGeneratorServiceProvider::class,
         \InfyOm\AdminLTETemplates\AdminLTETemplatesServiceProvider::class,
 
-        \InfyOm\GeneratorBuilder\GeneratorBuilderServiceProvider::class, 
+        \InfyOm\GeneratorBuilder\GeneratorBuilderServiceProvider::class,
     ],
 
     /*

@@ -4,6 +4,12 @@
     {!! Form::text('descricao_oferta', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Texto Oferta Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('texto_oferta', 'Texto da oferta') !!}
+    {!! Form::text('texto_oferta', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Foto Oferta Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('foto_oferta', 'Foto da oferta') !!}
