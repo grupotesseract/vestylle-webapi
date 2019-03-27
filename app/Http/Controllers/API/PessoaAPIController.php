@@ -233,7 +233,7 @@ class PessoaAPIController extends AppBaseController
     }
 
     /**
-     * Metodo para retornar as Ofertas que foram adicinadas a lista de desejos da $idPessoa
+     * Metodo para associar/desassociar uma oferta a uma pessoa
      *
      * @param mixed $idPessoa
      */
