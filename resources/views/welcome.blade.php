@@ -4,7 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Admin Panel Grupo Tesseract</title>
+        <title>Vestylle Web API</title>
+
+        <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/tesseract/image/upload/v1553217519/vestylle-webapi/favicon-16x16.png">
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
@@ -80,15 +82,15 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    <img style="height: 45px;" src="https://res.cloudinary.com/tesseract/image/upload/q_auto/v1534552051/portfolio/logo-tesseract-preto-simples.png" alt="Logo Grupo Tesseract">
-                    Admin Panel<br>
-                    Grupo Tesseract
+                <div class="m-b-md">
+                    <img style="height: 90px;" src="https://res.cloudinary.com/tesseract/image/upload/v1553214101/vestylle-webapi/logo.svg" alt="Vestylle Jau">
+                </div>
+                <div class="title m-b-md">Admin Panel<br>
+                    Vestylle Web API
                 </div>
 
                 <div class="links">
-                    <a target="_blank" href="https://docs.google.com/document/d/1xivqhrpZphWdxDrEj3tVFj7AJr1o0DgR2mM-sfjZJ98/edit?usp=sharing">Documentação</a>
-                    <a target="_blank" href="https://github.com/grupotesseract/admin-panel">GitHub</a>
+                    <a target="_blank" href="https://github.com/grupotesseract/vestylle-webapi">GitHub</a>
                     @auth
                         <a target="_blank" href="{{ url('/home') }}">Home</a>
                     @else
@@ -103,3 +105,4 @@
         </div>
     </body>
 </html>
+
