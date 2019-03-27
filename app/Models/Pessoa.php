@@ -93,7 +93,7 @@ class Pessoa extends Authenticatable
      *
      * @var array
      */
-    public static $rules = [        
+    public static $rules = [
         'email' => 'email'
     ];
 
@@ -115,5 +115,15 @@ class Pessoa extends Authenticatable
     public function cupons()
     {
         return $this->belongsToMany('App\Models\Cupon', 'cupons_pessoas', 'pessoa_id', 'cupom_id');
+    }
+
+    /**
+     * Relacionamento N x N entre ofertas e pessoas
+     *
+     * @return relationship
+     */
+    public function listaDesejos()
+    {
+        return $this->belongsToMany('App\Models\Oferta', 'lista_desejos', 'pessoa_id', 'oferta_id');
     }
 }
