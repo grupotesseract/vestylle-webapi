@@ -303,7 +303,35 @@ class PessoaRepository extends BaseRepository
     }
 
     /**
-     * Metodo para dar toggle em uma Oferta á lista de desejos
+     * Metodo para atualizar as Pessoas que fizeram compra em um determinado periodo
+     *
+     * @return void
+     */
+    public function updatePessoasUltimasCompras($tipoLimite=VestylleDBHelper::LIMITE_DIAS, $valorLimite=2)
+    {
+        $this->startConnectorVestylle();
+
+        //Pega todas as pessoas alteradas lá no periodo especificado
+        $retornoVestylle = $this->vestylleDB->getIdsUltimasCompras($tipoLimite, $valorLimite);
+
+        if (count($retornoVestylle)) {
+            $numPessoasAtualizadas = 0;
+
+            //Obter pessoas que existem no nosso BD
+            $pessoasParaAtualizar = \Pessoa::whereIn('id_vestylle', $retornoVestylle)->get();
+
+            //Para cada uma dessas atualizar, pontos, vencimento e ultima compra
+            foreach ($pessoasParaAtualizar as $Pessoa) {
+                $this->updatePontosPessoa($Pessoa);
+                $this->updateVencimentoPontosPessoa($Pessoa);
+                $this->updateDataUltimaCompraPessoa($Pessoa);
+                $numPessoasAtualizadas++;
+            }
+        }
+    }
+    
+    /**
+    * Metodo para dar toggle em uma Oferta á lista de desejos
      *
      * Se já estiver adicionado, remove. Se não, adiciona.
      *
@@ -322,10 +350,6 @@ class PessoaRepository extends BaseRepository
         }
         return null;
     }
-
-
-
-
 
 
 }
