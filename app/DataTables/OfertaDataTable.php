@@ -48,6 +48,7 @@ class OfertaDataTable extends DataTable
                 'order'   => [[0, 'desc']],
                 'buttons' => [
                     ['extend' => 'create','text' => '<i class="fa fa-plus"></i> Adicionar'],
+                    ['extend' => 'print', 'text' => '<i class="fa fa-print"></i> Imprimir'],
                     ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar'],
                 ],
                 'language' => [
