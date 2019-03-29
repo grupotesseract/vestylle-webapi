@@ -25,6 +25,7 @@ class Oferta extends Model
 
     public $fillable = [
         'descricao_oferta',
+        'texto_oferta',
         'foto_oferta'
     ];
 
@@ -35,6 +36,7 @@ class Oferta extends Model
      */
     protected $casts = [
         'descricao_oferta' => 'string',
+        'texto_oferta' => 'string',
         'foto_oferta' => 'string'
     ];
 
@@ -56,5 +58,15 @@ class Oferta extends Model
     public function cupons()
     {
         return $this->hasMany('App\Cupon');
+    }
+
+    /**
+     * Relacionamento N x N entre ofertas e pessoas
+     *
+     * @return relationship
+     */
+    public function pessoas()
+    {
+        return $this->belongsToMany('App\Models\Pessoa', 'lista_desejos', 'oferta_id', 'pessoa_id');
     }
 }

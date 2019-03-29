@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Cupon
+            Cupom
         </h1>
     </section>
     <div class="content">
@@ -12,7 +12,7 @@
 
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'cupons.store']) !!}
+                    {!! Form::open(['route' => 'cupons.store', 'files' => true]) !!}
 
                         @include('cupons.fields')
 

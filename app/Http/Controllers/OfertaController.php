@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\OfertaDataTable;
+use Flash;
+use Response;
 use App\Http\Requests;
+use App\DataTables\OfertaDataTable;
+use App\DataTables\PessoaDataTable;
+use App\Repositories\OfertaRepository;
 use App\Http\Requests\CreateOfertaRequest;
 use App\Http\Requests\UpdateOfertaRequest;
-use App\Repositories\OfertaRepository;
-use Flash;
 use App\Http\Controllers\AppBaseController;
-use Response;
+use App\DataTables\Scopes\PessoasPorOferta;
 
 class OfertaController extends AppBaseController
 {
@@ -64,7 +66,7 @@ class OfertaController extends AppBaseController
 
         $oferta = $this->ofertaRepository->create($input);
 
-        Flash::success('Oferta saved successfully.');
+        Flash::success('Oferta criada com sucesso.');
 
         return redirect(route('ofertas.index'));
     }
@@ -76,17 +78,17 @@ class OfertaController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show(PessoaDataTable $pessoaDataTable, $id)
     {
         $oferta = $this->ofertaRepository->findWithoutFail($id);
 
         if (empty($oferta)) {
-            Flash::error('Oferta not found');
-
+            Flash::error('Oferta não encontrada');
             return redirect(route('ofertas.index'));
         }
 
-        return view('ofertas.show')->with('oferta', $oferta);
+        return $pessoaDataTable->addScope(new PessoasPorOferta($id))
+            ->render('ofertas.show', compact('oferta'));
     }
 
     /**
@@ -101,7 +103,7 @@ class OfertaController extends AppBaseController
         $oferta = $this->ofertaRepository->findWithoutFail($id);
 
         if (empty($oferta)) {
-            Flash::error('Oferta not found');
+            Flash::error('Oferta não encontrada');
 
             return redirect(route('ofertas.index'));
         }
@@ -123,7 +125,7 @@ class OfertaController extends AppBaseController
         $oferta = $this->ofertaRepository->findWithoutFail($id);
 
         if (empty($oferta)) {
-            Flash::error('Oferta not found');
+            Flash::error('Oferta não encontrada');
 
             return redirect(route('ofertas.index'));
         }
@@ -139,7 +141,7 @@ class OfertaController extends AppBaseController
 
         $oferta = $this->ofertaRepository->update($input, $id);
 
-        Flash::success('Oferta updated successfully.');
+        Flash::success('Oferta atualizada com sucesso.');
 
         return redirect(route('ofertas.index'));
     }
@@ -156,14 +158,14 @@ class OfertaController extends AppBaseController
         $oferta = $this->ofertaRepository->findWithoutFail($id);
 
         if (empty($oferta)) {
-            Flash::error('Oferta not found');
+            Flash::error('Oferta não encontrada');
 
             return redirect(route('ofertas.index'));
         }
 
         $this->ofertaRepository->delete($id);
 
-        Flash::success('Oferta deleted successfully.');
+        Flash::success('Oferta excluída com sucesso.');
 
         return redirect(route('ofertas.index'));
     }
