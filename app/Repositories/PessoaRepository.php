@@ -116,8 +116,7 @@ class PessoaRepository extends BaseRepository
 
         $result = Pessoa::create([
             'id_vestylle'  => $pessoa->idpessoa,
-            "celular" => $pessoa->celular,
-            "fone" => $pessoa->fone,
+            "celular" => $pessoa->celular,            
             "nome" => $pessoa->nome,
             "cpf" => $pessoa->cnpj_cpf,
             "email" => $pessoa->email,
@@ -157,8 +156,7 @@ class PessoaRepository extends BaseRepository
 
         $result = $pessoaObj->update([
             'id_vestylle'  => $pessoa->idpessoa,
-            "celular" => $pessoa->celular,
-            "fone" => $pessoa->fone,
+            "celular" => $pessoa->celular,            
             "cep" => $pessoa->cep,
             "endereco" => $pessoa->endereco,
             "numero" => $pessoa->numero,
