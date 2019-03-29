@@ -59,4 +59,14 @@ class Oferta extends Model
     {
         return $this->hasMany('App\Cupon');
     }
+
+    /**
+     * Relacionamento N x N entre ofertas e pessoas
+     *
+     * @return relationship
+     */
+    public function pessoas()
+    {
+        return $this->belongsToMany('App\Models\Pessoa', 'lista_desejos', 'oferta_id', 'pessoa_id');
+    }
 }
