@@ -26,11 +26,16 @@ class UpdatePessoaAPIRequest extends APIRequest
     public function rules()
     {        
         $rules = [
-                'email' => 
-                    [
-                        'required',
-                        Rule::unique('pessoas')->ignore($this->route('pessoa')),
-                    ],
+            'email' => 
+                [
+                    'required',
+                    Rule::unique('pessoas')->ignore($this->route('pessoa')),
+                ],
+            'cpf' => 
+                [
+                    'required',
+                    Rule::unique('pessoas')->ignore($this->route('pessoa')),
+                ],
         ];
 
         return $rules;

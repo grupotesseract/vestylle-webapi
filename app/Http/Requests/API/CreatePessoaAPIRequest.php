@@ -26,14 +26,6 @@ class CreatePessoaAPIRequest extends APIRequest
      */
     public function rules()
     {
-        $rules = [
-            'email' => 
-                [
-                    'required',
-                    Rule::unique('pessoas')->ignore($this->route('pessoa')),
-                ],
-        ];
-        
-        return $rules;
+        return Pessoa::$rules;
     }
 }
