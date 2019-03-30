@@ -13,6 +13,7 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Http\Requests\API\CreatePessoaAPIRequest;
 use App\Http\Requests\API\UpdatePessoaAPIRequest;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class PessoaController
@@ -217,19 +218,23 @@ class PessoaAPIController extends AppBaseController
      */
     public function getOfertas($id)
     {
-        $pessoa = $this->pessoaRepository->findWithoutFail($id);
+        if (Auth::user()->id == $id) {
+            $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
-        if ($pessoa) {
-
-            return $this->sendResponse(
-                [
-                    'ofertas' => $pessoa->listaDesejos->toArray(),
-                ],
-                'Listagem das Ofertas adicinadas á lista de desejos'
-            );
+            if ($pessoa) {
+                return $this->sendResponse(
+                    [
+                        'ofertas' => $pessoa->listaDesejos->toArray(),
+                    ],
+                    'Listagem das Ofertas adicinadas á lista de desejos'
+                );
+            } else {
+                return $this->sendError('Pessoa não encontrada');
+            }
         } else {
             return $this->sendError('Pessoa não encontrada');
         }
+        
     }
 
     /**
@@ -239,38 +244,41 @@ class PessoaAPIController extends AppBaseController
      */
     public function postOfertas(Request $request, $id)
     {
-        $pessoa = $this->pessoaRepository->findWithoutFail($id);
+        if (Auth::user()->id == $id) {
+            $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
-        if ($pessoa) {
+            if ($pessoa) {
 
-            $oferta = $this->ofertaRepository->findWithoutFail($request->oferta_id);
-            if (!$oferta) {
-                return $this->sendError('Oferta não encontrada');
+                $oferta = $this->ofertaRepository->findWithoutFail($request->oferta_id);
+                if (!$oferta) {
+                    return $this->sendError('Oferta não encontrada');
+                }
+
+                $result = $this->pessoaRepository->toggleOfertaListaDesejo($pessoa, $oferta);
+                if ($result) {
+                    return $this->sendResponse(
+                        [
+                            'ofertas' => $pessoa->listaDesejos->toArray(),
+                        ],
+                        'Oferta adicionada a lista de desejos com sucesso!'
+                    );
+                } else {
+                    return $this->sendResponse(
+                        [
+                            'ofertas' => $pessoa->listaDesejos->toArray(),
+                        ],
+                        'Oferta removida da lista de desejos com sucesso!'
+                    );
+
+                }
+
+            } else {
+                return $this->sendError('Pessoa não encontrada');
             }
-
-            $result = $this->pessoaRepository->toggleOfertaListaDesejo($pessoa, $oferta);
-            if ($result) {
-                return $this->sendResponse(
-                    [
-                        'ofertas' => $pessoa->listaDesejos->toArray(),
-                    ],
-                    'Oferta adicionada a lista de desejos com sucesso!'
-                );
-            }
-
-            else {
-                return $this->sendResponse(
-                    [
-                        'ofertas' => $pessoa->listaDesejos->toArray(),
-                    ],
-                    'Oferta removida da lista de desejos com sucesso!'
-                );
-
-            }
-
-
         } else {
             return $this->sendError('Pessoa não encontrada');
         }
+
+        
     }
 }
