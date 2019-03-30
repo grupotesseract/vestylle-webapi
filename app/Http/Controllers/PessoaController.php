@@ -7,7 +7,6 @@ use App\Http\Requests;
 use App\Http\Requests\CreatePessoaRequest;
 use App\Http\Requests\UpdatePessoaRequest;
 use App\Repositories\PessoaRepository;
-use App\Models\Cupon;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
@@ -56,7 +55,7 @@ class PessoaController extends AppBaseController
 
         $pessoa = $this->pessoaRepository->create($input);
 
-        $this->associarCuponsDePrimeiroLogin($pessoa);
+        $pessoa->associarCuponsDePrimeiroLogin();
 
         Flash::success('Pessoa criada com sucesso.');
 
@@ -151,18 +150,4 @@ class PessoaController extends AppBaseController
 
         return redirect(route('pessoas.index'));
     }
-
-    /**
-     * Método para alimentar tabela pivô cupons_pessoas
-     * com cupons marcados pra primeiro login associando o usuário novo
-     *
-     * @return void
-     */
-    public function associarCuponsDePrimeiroLogin($pessoa)
-    {
-        $cuponsDePrimeiroLogin = Cupon::primeiroLogin()->pluck('id')->all();
-
-        return $pessoa->cupons()->sync($cuponsDePrimeiroLogin);
-    }
-
 }
