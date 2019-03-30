@@ -28,7 +28,13 @@ class PessoasTableSeeder extends Seeder
 
         foreach ($pessoas as $pessoa) {
             $repositorio = new \App\Repositories\PessoaRepository(app());
-            $repositorio->createFromVestylle($pessoa->cnpj_cpf);
+            $pessoaCriada = $repositorio->createFromVestylle($pessoa->cnpj_cpf); 
+            
+            if (env('SEED_DADOS_PESSOA')) {            
+                $repositorio->updatePontosPessoa($pessoaCriada); 
+                $repositorio->updateVencimentoPontosPessoa($pessoaCriada);
+                $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
+            }
         }
 
     }
