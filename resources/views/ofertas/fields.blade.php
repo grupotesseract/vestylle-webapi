@@ -12,6 +12,7 @@
 
 
 {{-- Campos para o UPLOAD / CROP de foto. Só incluindo o crop no edit --}}
+{{-- Passando para a blade fotos.upload o id do form, da img e o aspectRatio --}}
 <div class="form-group col-sm-12 text-center">
     @if (\Route::is('*edit*'))
 

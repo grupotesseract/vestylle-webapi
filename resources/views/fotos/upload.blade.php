@@ -9,7 +9,7 @@
             data-aspectratio="{{$aspectRatio}}"
             data-formid="{{$formID}}"
             data-previewid="{{$previewID}}"
-            class="btn btn-info">
+            class="btn btn-info btnUploadFoto">
                 <i class="glyphicon glyphicon-upload"></i> &nbsp; <strong>Trocar</strong>
         </button>
         <div class="hide fileupload">

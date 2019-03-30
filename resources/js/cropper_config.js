@@ -1,8 +1,9 @@
-
+//Botao 'trocar foto'
 window.uploadFile = function(btn) {
     $($(btn).parents('.controles-cropper').find('input[type=file]')).click();
 }
 
+//Se um file com .auto-upload for changed, dar submit no form de cima
 window.bindUploadFile = function() {
     $('input[type=file]').on('change', function(el) {
         swal({
@@ -14,24 +15,18 @@ window.bindUploadFile = function() {
     })
 }
 
+//Da comportamento para os botões que controlam o start/confirm/cancel o cropper
 window.bindCropperJS = function () {
 
     $('.btnStartCrop').on('click', function(ev) {
-        console.log('.btnStartCrop clicked');
-        console.log(ev);
         let aspectRatio = $(ev.target).data('aspectratio');
         let previewID = $(ev.target).data('previewid');
         let formID = $(ev.target).data('formid');
-
-        console.log(aspectRatio);
-        console.log(previewID);
 
         initCropper(previewID, aspectRatio, formID);
     });
 
     $('.btnCancelCrop').on('click', function(ev) {
-        console.log('.btnCancelCrop clicked');
-        console.log(ev);
         let previewID = $(ev.target).data('previewid');
         let formID = $(ev.target).data('formid');
 
@@ -39,17 +34,16 @@ window.bindCropperJS = function () {
     });
 
     $('.btnConfirmCrop').on('click', function(ev) {
-        console.log('.btnConfirmCrop clicked');
-        console.log(ev);
-        let formID = $(ev.target).data('formid');
-        let previewID = $(ev.target).data('previewid');
-        let croppedImage = $(previewID).cropper('getCroppedCanvas').toDataURL('image/jpeg');
 
         swal({
             title: 'Carregando...',
             html: '<br><i class="fa fa-spin fa-spinner fa-3x"></i><br><br><br>',
             showConfirmButton: false
         });
+
+        let formID = $(ev.target).data('formid');
+        let previewID = $(ev.target).data('previewid');
+        let croppedImage = $(previewID).cropper('getCroppedCanvas').toDataURL('image/jpeg');
 
         $(formID).find('input[type=file]').remove();
         $(formID).append("<input name='foto' type='hidden'/>");
@@ -58,25 +52,25 @@ window.bindCropperJS = function () {
     });
 }
 
+//Inicia o cropper na img com ID previewID, seguindo o aspectRatio e altera a visibilidade dos botoes do form#formID
 function initCropper(previewID, aspectRatio, formID) {
-    console.log('formID' + formID);
     $(previewID).cropper({
         aspectRatio: aspectRatio
     });
-    $(formID).find('input[type=file]').hide();
+    $(formID).find('.btnUploadFoto').hide();
     $(formID).find('.btnStartCrop').hide();
     $(formID).find('.btnConfirmCrop').show();
     $(formID).find('.btnCancelCrop').show();
 }
 
+//destroy o cropper de determinada img#previewID e reverte a visibilidade dos botoes do form#formID
 function destroyCropper(previewID, formID) {
     $(previewID).cropper('destroy');
-    $(formID).find('input[type=file]').show();
+    $(formID).find('.btnUploadFoto').show();
     $(formID).find('.btnStartCrop').show();
     $(formID).find('.btnConfirmCrop').hide();
     $(formID).find('.btnCancelCrop').hide();
 }
-
 
 $(function () {
     bindCropperJS();
