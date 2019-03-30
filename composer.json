@@ -12,6 +12,8 @@
         "infyomlabs/adminlte-templates": "5.7.x-dev",
         "infyomlabs/generator-builder": "dev-master",
         "infyomlabs/laravel-generator": "5.7.x-dev",
+        "intervention/image": "^2.4",
+        "jrm2k6/cloudder": "^0.6.0",
         "laravel-notification-channels/webpush": "^3.0",
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.2",
