@@ -14,9 +14,7 @@
                <div class="row">
                    {!! Form::model($oferta, ['route' => ['ofertas.update', $oferta->id], 'files' => true, 'method' => 'patch', 'id' => 'form-oferta']) !!}
 
-                        @include('ofertas.fields', [
-                            'Oferta' => $oferta
-                        ])
+                        @include('ofertas.fields')
 
                    {!! Form::close() !!}
                </div>

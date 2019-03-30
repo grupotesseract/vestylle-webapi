@@ -11,10 +11,11 @@
 </div>
 
 
+{{-- Campos para o UPLOAD / CROP de foto. Só incluindo o crop no edit --}}
 <div class="form-group col-sm-12 text-center">
     @if (\Route::is('*edit*'))
 
-        <img id="foto-oferta" class="" src="{{$Oferta->urlFoto}}" alt=""/>
+        <img id="foto-oferta" class="" src="{{$oferta->urlFoto}}" alt=""/>
 
         @include('fotos.upload', [
             'comCropper' => true,

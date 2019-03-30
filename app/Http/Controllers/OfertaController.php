@@ -71,7 +71,8 @@ class OfertaController extends AppBaseController
 
             //Upload p/ Cloudinary e delete local
             $publicId = "oferta_".time();
-            $retorno = $this->fotoRepository->sendToCloudinary($foto, $publicId, env('CLOUDINARY_CLOUD_FOLDER'));
+            $this->fotoRepository->sendToCloudinary($foto, $publicId, env('CLOUDINARY_CLOUD_FOLDER'));
+            $this->fotoRepository->deleteLocal($foto->id);
         }
 
         Flash::success('Oferta criada com sucesso.');
@@ -149,7 +150,8 @@ class OfertaController extends AppBaseController
 
             //Upload p/ Cloudinary e delete local
             $publicId = "oferta_".time();
-            $retorno = $this->fotoRepository->sendToCloudinary($foto, $publicId, env('CLOUDINARY_CLOUD_FOLDER'));
+            $this->fotoRepository->sendToCloudinary($foto, $publicId, env('CLOUDINARY_CLOUD_FOLDER'));
+            $this->fotoRepository->deleteLocal($foto->id);
         }
 
         $oferta = $this->ofertaRepository->update($input, $id);
