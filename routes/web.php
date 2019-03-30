@@ -27,9 +27,12 @@ Route::get('/', function () {
 */
 Route::group(['middleware' => ['role:admin']], function() {
     Route::get('/home', 'HomeController@index');
+Route::resource('pessoas', 'PessoaController');
 });
+
+Route::resource('cupons', 'CuponController');
+Route::get('cupons/pessoa/{id}', 'CuponController@getCuponsPessoa');
 
 Route::resource('pessoas', 'PessoaController');
 Route::resource('faleConoscos', 'FaleConoscoController');
-Route::resource('cupons', 'CuponController');
 Route::resource('ofertas', 'OfertaController');

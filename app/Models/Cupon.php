@@ -29,7 +29,8 @@ class Cupon extends Model
         'data_validade',
         'cupom_primeiro_login',
         'texto_cupom',
-        'oferta_id'
+        'oferta_id',
+        'foto_caminho',
     ];
 
     /**
@@ -40,7 +41,8 @@ class Cupon extends Model
     protected $casts = [
         'data_validade' => 'date',
         'texto_cupom' => 'string',
-        'oferta_id' => 'integer'
+        'oferta_id' => 'integer',
+        'foto_caminho' => 'string',
     ];
 
     /**
@@ -50,7 +52,7 @@ class Cupon extends Model
      */
     public static $rules = [
         'data_validade' => 'required',
-        'texto_cupom' => 'required'
+        'texto_cupom' => 'required',
     ];
 
     public function scopePrimeiroLogin($query)
@@ -74,5 +76,19 @@ class Cupon extends Model
     public function pessoas()
     {
         return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id');
+    }
+
+    /**
+     * Mutator que traz a foto da oferta no lugar da foto
+     * do cupom caso eles estejam relacionados
+     *
+     * @return void
+     */
+    public function getFotoCaminhoAttribute()
+    {
+        if ($this->oferta) {
+            return $this->oferta->foto_oferta;
+        }
+        return $this->attributes['foto_caminho'];
     }
 }
