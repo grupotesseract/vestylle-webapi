@@ -94,7 +94,7 @@ class Pessoa extends Authenticatable
      * @var array
      */
     public static $rules = [
-        'email' => 'email'
+        
     ];
 
     /**

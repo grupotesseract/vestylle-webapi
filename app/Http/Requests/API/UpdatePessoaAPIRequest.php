@@ -4,6 +4,7 @@ namespace App\Http\Requests\API;
 
 use App\Models\Pessoa;
 use InfyOm\Generator\Request\APIRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePessoaAPIRequest extends APIRequest
 {
@@ -23,7 +24,15 @@ class UpdatePessoaAPIRequest extends APIRequest
      * @return array
      */
     public function rules()
-    {
-        return Pessoa::$rules;
+    {        
+        $rules = [
+                'email' => 
+                    [
+                        'required',
+                        Rule::unique('pessoas')->ignore($this->route('pessoa')),
+                    ],
+        ];
+
+        return $rules;
     }
 }
