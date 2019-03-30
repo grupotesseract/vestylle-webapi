@@ -26,7 +26,6 @@ class Oferta extends Model
     public $fillable = [
         'descricao_oferta',
         'texto_oferta',
-        'foto_oferta'
     ];
 
     /**
@@ -37,7 +36,6 @@ class Oferta extends Model
     protected $casts = [
         'descricao_oferta' => 'string',
         'texto_oferta' => 'string',
-        'foto_oferta' => 'string'
     ];
 
     /**
@@ -47,8 +45,12 @@ class Oferta extends Model
      */
     public static $rules = [
         'descricao_oferta' => 'required',
-        'foto_oferta' => 'required | mimes:jpg,jpeg,png',
     ];
+
+    public $appends = [
+        'urlFoto'
+    ];
+
 
     /**
      * Relacionamento 1-N entre ofertas-cupons
@@ -68,5 +70,27 @@ class Oferta extends Model
     public function pessoas()
     {
         return $this->belongsToMany('App\Models\Pessoa', 'lista_desejos', 'oferta_id', 'pessoa_id');
+    }
+
+    /**
+     * Relação de polimorfica com fotos
+     *
+     * @return void
+     */
+    public function foto()
+    {
+        return $this->morphOne(\App\Models\Foto::class, 'owner');
+    }
+
+    /**
+     * Acessor para obter a URL da foto da Oferta.
+     *
+     * @return string - URL da foto ou de um placeholder com tamanho equivalente
+     */
+    public function getUrlFotoAttribute()
+    {
+        return $this->foto
+            ? $this->foto->urlCloudinary
+                : '//via.placeholder.com/500x500';
     }
 }
