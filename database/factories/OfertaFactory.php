@@ -28,7 +28,6 @@ $factory->define(App\Models\Oferta::class, function (Faker $faker) {
     return [
         'descricao_oferta' => 'Oferta de ' . $produtoAleatorio,
         'texto_oferta' => $produtoAleatorio . ' ' . $promocaoAleatoria,
-        'foto_oferta' => '',
     ];
 });
 
