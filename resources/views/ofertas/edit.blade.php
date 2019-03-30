@@ -8,12 +8,15 @@
    </section>
    <div class="content">
        @include('adminlte-templates::common.errors')
+       @include('flash::message')
        <div class="box box-primary">
            <div class="box-body">
                <div class="row">
-                   {!! Form::model($oferta, ['route' => ['ofertas.update', $oferta->id], 'files' => true, 'method' => 'patch']) !!}
+                   {!! Form::model($oferta, ['route' => ['ofertas.update', $oferta->id], 'files' => true, 'method' => 'patch', 'id' => 'form-oferta']) !!}
 
-                        @include('ofertas.fields')
+                        @include('ofertas.fields', [
+                            'Oferta' => $oferta
+                        ])
 
                    {!! Form::close() !!}
                </div>
@@ -21,3 +24,4 @@
        </div>
    </div>
 @endsection
+
