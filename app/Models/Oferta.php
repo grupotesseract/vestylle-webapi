@@ -26,6 +26,10 @@ class Oferta extends Model
     public $fillable = [
         'descricao_oferta',
         'texto_oferta',
+        'foto_oferta',
+        'titulo',
+        'subtitulo',
+        'preco',
     ];
 
     /**
@@ -36,6 +40,10 @@ class Oferta extends Model
     protected $casts = [
         'descricao_oferta' => 'string',
         'texto_oferta' => 'string',
+        'foto_oferta' => 'string',
+        'titulo' => 'string',
+        'subtitulo' => 'string',
+        'preco' => 'decimal:2',
     ];
 
     /**
@@ -45,6 +53,10 @@ class Oferta extends Model
      */
     public static $rules = [
         'descricao_oferta' => 'required',
+        'foto_oferta' => 'required | mimes:jpg,jpeg,png',
+        'titulo' => 'required | max: 150',
+        'subtitulo' => 'required | max: 150',
+        'preco' => 'required',
     ];
 
     public $appends = [
@@ -92,5 +104,15 @@ class Oferta extends Model
         return $this->foto
             ? $this->foto->urlCloudinary
                 : '//via.placeholder.com/500x500';
+    }
+
+    /*
+     * Mutator para obter o preço da oferta
+     *
+     * @return string
+     */
+    public function getPrecoAttribute()
+    {
+        return number_format($this->attributes['preco'], 2, ',', '.');
     }
 }

@@ -1,4 +1,14 @@
 <div class="col-md-6">
+    <div class="form-group">
+        {!! Form::label('titulo', 'Título') !!}
+        <p>{!! $cupon->titulo !!}</p>
+    </div>
+
+    <div class="form-group">
+        {!! Form::label('subtitulo', 'Subtítulo') !!}
+        <p>{!! $cupon->subtitulo !!}</p>
+    </div>
+
     <!-- Id Field -->
     <div class="form-group">
         {!! Form::label('id', 'Código:') !!}
@@ -9,6 +19,12 @@
     <div class="form-group">
         {!! Form::label('data_validade', 'Data de validade:') !!}
         <p>{!! $cupon->data_validade !!}</p>
+    </div>
+
+    <!-- Cupom Primeiro Login Field -->
+    <div class="form-group">
+        {!! Form::label('cupom_primeiro_login', 'Adicionar ao usuário no primeiro login') !!}
+        <p>{!! $cupon->cupom_primeiro_login ? 'Sim' : 'Não' !!}</p>
     </div>
 
     <!-- Texto Cupom Field -->
