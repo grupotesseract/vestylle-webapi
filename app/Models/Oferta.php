@@ -82,7 +82,7 @@ class Oferta extends Model
     /**
      * Mutator para obter o preço da oferta em goldenshoweR$
      *
-     * @return number
+     * @return string
      */
     public function getPrecoAttribute()
     {
