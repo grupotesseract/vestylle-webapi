@@ -26,6 +26,9 @@ $factory->define(App\Models\Oferta::class, function (Faker $faker) {
     $promocaoAleatoria = Arr::random($frasesDePromocao);
 
     return [
+        'titulo' => $produtoAleatorio,
+        'subtitulo' => 'Oferta fícticia simulando peças do tipo ' . $produtoAleatorio,
+        'preco' => rand(199, 5999) / 10,
         'descricao_oferta' => 'Oferta de ' . $produtoAleatorio,
         'texto_oferta' => $produtoAleatorio . ' ' . $promocaoAleatoria,
         'foto_oferta' => '',
