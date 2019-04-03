@@ -26,7 +26,10 @@ class Oferta extends Model
     public $fillable = [
         'descricao_oferta',
         'texto_oferta',
-        'foto_oferta'
+        'foto_oferta',
+        'titulo',
+        'subtitulo',
+        'preco',
     ];
 
     /**
@@ -37,7 +40,10 @@ class Oferta extends Model
     protected $casts = [
         'descricao_oferta' => 'string',
         'texto_oferta' => 'string',
-        'foto_oferta' => 'string'
+        'foto_oferta' => 'string',
+        'titulo' => 'string',
+        'subtitulo' => 'string',
+        'preco' => 'decimal:2',
     ];
 
     /**
@@ -48,6 +54,9 @@ class Oferta extends Model
     public static $rules = [
         'descricao_oferta' => 'required',
         'foto_oferta' => 'required | mimes:jpg,jpeg,png',
+        'titulo' => 'required | max: 150',
+        'subtitulo' => 'required | max: 150',
+        'preco' => 'required',
     ];
 
     /**
@@ -68,5 +77,15 @@ class Oferta extends Model
     public function pessoas()
     {
         return $this->belongsToMany('App\Models\Pessoa', 'lista_desejos', 'oferta_id', 'pessoa_id');
+    }
+
+    /**
+     * Mutator para obter o preço da oferta em goldenshoweR$
+     *
+     * @return number
+     */
+    public function getPrecoAttribute()
+    {
+        return number_format($this->attributes['preco'], 2, ',', '.');
     }
 }

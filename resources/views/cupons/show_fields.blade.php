@@ -1,4 +1,14 @@
 <div class="col-md-6">
+    <div class="form-group">
+        {!! Form::label('titulo', 'Título') !!}
+        <p>{!! $cupon->titulo !!}</p>
+    </div>
+
+    <div class="form-group">
+        {!! Form::label('subtitulo', 'Subtítulo') !!}
+        <p>{!! $cupon->subtitulo !!}</p>
+    </div>
+
     <!-- Id Field -->
     <div class="form-group">
         {!! Form::label('id', 'Código:') !!}

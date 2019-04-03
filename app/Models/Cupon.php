@@ -30,6 +30,8 @@ class Cupon extends Model
         'texto_cupom',
         'oferta_id',
         'foto_caminho',
+        'titulo',
+        'subtitulo',
     ];
 
     /**
@@ -42,6 +44,8 @@ class Cupon extends Model
         'texto_cupom' => 'string',
         'oferta_id' => 'integer',
         'foto_caminho' => 'string',
+        'titulo' => 'string',
+        'subtitulo' => 'string',
     ];
 
     /**
@@ -52,6 +56,8 @@ class Cupon extends Model
     public static $rules = [
         'data_validade' => 'required',
         'texto_cupom' => 'required',
+        'titulo' => 'required | max: 150',
+        'subtitulo' => 'required | max: 150',
     ];
 
     /**
