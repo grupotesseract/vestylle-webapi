@@ -27,6 +27,7 @@ class Cupon extends Model
 
     public $fillable = [
         'data_validade',
+        'cupom_primeiro_login',
         'texto_cupom',
         'oferta_id',
         'foto_caminho',
@@ -53,6 +54,11 @@ class Cupon extends Model
         'data_validade' => 'required',
         'texto_cupom' => 'required',
     ];
+
+    public function scopePrimeiroLogin($query)
+    {
+        return $query->where('cupom_primeiro_login', true);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
