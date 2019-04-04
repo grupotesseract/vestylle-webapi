@@ -12,25 +12,25 @@
 
 <!-- Cor Primaria Field -->
 <div class="form-group">
-    {!! Form::label('cor_primaria', 'Cor Primaria:') !!}
+    {!! Form::label('cor_primaria', 'Cor Primária:') !!}
     <p>{!! $loja->cor_primaria !!}</p>
 </div>
 
 <!-- Cor Secundaria Field -->
 <div class="form-group">
-    {!! Form::label('cor_secundaria', 'Cor Secundaria:') !!}
+    {!! Form::label('cor_secundaria', 'Cor Secundária:') !!}
     <p>{!! $loja->cor_secundaria !!}</p>
 </div>
 
 <!-- Cor Terciaria Field -->
 <div class="form-group">
-    {!! Form::label('cor_terciaria', 'Cor Terciaria:') !!}
+    {!! Form::label('cor_terciaria', 'Cor Terciária:') !!}
     <p>{!! $loja->cor_terciaria !!}</p>
 </div>
 
 <!-- Endereco Field -->
 <div class="form-group">
-    {!! Form::label('endereco', 'Endereco:') !!}
+    {!! Form::label('endereco', 'Endereço:') !!}
     <p>{!! $loja->endereco !!}</p>
 </div>
 
@@ -54,7 +54,7 @@
 
 <!-- Horario Funcionamento Field -->
 <div class="form-group">
-    {!! Form::label('horario_funcionamento', 'Horario Funcionamento:') !!}
+    {!! Form::label('horario_funcionamento', 'Horário Funcionamento:') !!}
     <p>{!! $loja->horario_funcionamento !!}</p>
 </div>
 

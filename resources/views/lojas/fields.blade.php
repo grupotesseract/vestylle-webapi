@@ -6,25 +6,25 @@
 
 <!-- Cor Primaria Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('cor_primaria', 'Cor Primaria:') !!}
+    {!! Form::label('cor_primaria', 'Cor Primária:') !!}
     {!! Form::text('cor_primaria', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Cor Secundaria Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('cor_secundaria', 'Cor Secundaria:') !!}
+    {!! Form::label('cor_secundaria', 'Cor Secundária:') !!}
     {!! Form::text('cor_secundaria', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Cor Terciaria Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('cor_terciaria', 'Cor Terciaria:') !!}
+    {!! Form::label('cor_terciaria', 'Cor Terciária:') !!}
     {!! Form::text('cor_terciaria', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Endereco Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('endereco', 'Endereco:') !!}
+    {!! Form::label('endereco', 'Endereço:') !!}
     {!! Form::text('endereco', null, ['class' => 'form-control']) !!}
 </div>
 
@@ -48,12 +48,12 @@
 
 <!-- Horario Funcionamento Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('horario_funcionamento', 'Horario Funcionamento:') !!}
+    {!! Form::label('horario_funcionamento', 'Horário de Funcionamento:') !!}
     {!! Form::text('horario_funcionamento', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
-    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-    <a href="{!! route('lojas.index') !!}" class="btn btn-default">Cancel</a>
+    {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
+    <a href="{!! route('lojas.index') !!}" class="btn btn-default">Cancelar</a>
 </div>

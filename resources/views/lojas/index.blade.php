@@ -4,7 +4,7 @@
     <section class="content-header">
         <h1 class="pull-left">Lojas</h1>
         <h1 class="pull-right">
-           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('lojas.create') !!}">Add New</a>
+           <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('lojas.create') !!}">Adicionar Nova Loja</a>
         </h1>
     </section>
     <div class="content">
@@ -15,7 +15,7 @@
         <div class="clearfix"></div>
         <div class="box box-primary">
             <div class="box-body">
-                    @include('lojas.table')
+                @include('lojas.table')
             </div>
         </div>
         <div class="text-center">
