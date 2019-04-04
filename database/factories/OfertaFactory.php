@@ -31,7 +31,6 @@ $factory->define(App\Models\Oferta::class, function (Faker $faker) {
         'preco' => rand(199, 5999) / 10,
         'descricao_oferta' => 'Oferta de ' . $produtoAleatorio,
         'texto_oferta' => $produtoAleatorio . ' ' . $promocaoAleatoria,
-        'foto_oferta' => '',
     ];
 });
 

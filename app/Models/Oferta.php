@@ -59,6 +59,11 @@ class Oferta extends Model
         'preco' => 'required',
     ];
 
+    public $appends = [
+        'urlFoto'
+    ];
+
+
     /**
      * Relacionamento 1-N entre ofertas-cupons
      *
@@ -80,7 +85,29 @@ class Oferta extends Model
     }
 
     /**
-     * Mutator para obter o preço da oferta em goldenshoweR$
+     * Relação de polimorfica com fotos
+     *
+     * @return void
+     */
+    public function foto()
+    {
+        return $this->morphOne(\App\Models\Foto::class, 'owner');
+    }
+
+    /**
+     * Acessor para obter a URL da foto da Oferta.
+     *
+     * @return string - URL da foto ou de um placeholder com tamanho equivalente
+     */
+    public function getUrlFotoAttribute()
+    {
+        return $this->foto
+            ? $this->foto->urlCloudinary
+                : '//via.placeholder.com/500x500';
+    }
+
+    /*
+     * Mutator para obter o preço da oferta
      *
      * @return string
      */

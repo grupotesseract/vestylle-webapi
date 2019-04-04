@@ -48,6 +48,6 @@
 <div class="col-md-6">
     <!-- Foto Oferta Field -->
     <div class="form-group">
-        <img src="{!! url('storage/' . $oferta->foto_oferta) !!}" width="300" height="300" alt="oferta">
+        <img src="{{ $oferta->urlFoto }}" width="300" height="300" alt="oferta">
     </div>
 </div>
