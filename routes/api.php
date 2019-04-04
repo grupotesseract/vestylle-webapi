@@ -31,3 +31,6 @@ Route::get('login/facebook/callback', 'PessoaAPIController@trataInformacoesSocia
 Route::resource('fale_conoscos', 'FaleConoscoAPIController')->except(['update', 'destroy']);
 Route::resource('cupons', 'CuponAPIController')->except(['update', 'destroy','insert']);
 Route::resource('ofertas', 'OfertaAPIController')->except(['update', 'destroy','insert']);
+Route::resource('cupons', 'CuponAPIController');
+Route::resource('ofertas', 'OfertaAPIController');
+Route::resource('lojas', 'LojaAPIController');

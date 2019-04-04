@@ -1,0 +1,65 @@
+[
+    {
+        "name": "id",
+        "dbType": "increments",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false,
+        "fillable": false,
+        "primary": true,
+        "inForm": false,
+        "inIndex": false
+    },
+    {
+        "name": "cloudinary_id",
+        "dbType": "string:nullable",
+        "htmlType": ""
+    },
+    {
+        "name": "image_name",
+        "dbType": "string:nullable",
+        "htmlType": ""
+    },
+    {
+        "name": "image_path",
+        "dbType": "string:nullable",
+        "htmlType": ""
+    },
+    {
+        "name": "image_extension",
+        "dbType": "string:nullable",
+        "htmlType": ""
+    },
+    {
+        "name": "owner_id",
+        "dbType": "integer:nullable",
+        "htmlType": ""
+    },
+    {
+        "name": "owner_type",
+        "dbType": "string:nullable",
+        "htmlType": ""
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false,
+        "fillable": false,
+        "primary": false,
+        "inForm": false,
+        "inIndex": false
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false,
+        "fillable": false,
+        "primary": false,
+        "inForm": false,
+        "inIndex": false
+    }
+]

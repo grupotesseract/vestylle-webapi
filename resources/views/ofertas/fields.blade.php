@@ -1,3 +1,19 @@
+<div class="form-group col-sm-6">
+    {!! Form::label('titulo', 'Título da oferta') !!}
+    {!! Form::text('titulo', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group col-sm-6">
+    {!! Form::label('subtitulo', 'Subtítulo da oferta') !!}
+    {!! Form::text('subtitulo', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group col-sm-6">
+    {!! Form::label('preco', 'Preço da oferta') !!}
+    {!! Form::text('preco', null, ['class' => 'form-control']) !!}
+</div>
+
+
 <!-- Descricao Oferta Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('descricao_oferta', 'Descrição da oferta') !!}
@@ -10,11 +26,30 @@
     {!! Form::text('texto_oferta', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Foto Oferta Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('foto_oferta', 'Foto da oferta') !!}
-    {!! Form::file('foto_oferta', null, ['class' => 'form-control']) !!}
+
+{{-- Campos para o UPLOAD / CROP de foto. Só incluindo o crop no edit --}}
+{{-- Passando para a blade fotos.upload o id do form, da img e o aspectRatio --}}
+<div class="form-group col-sm-12 text-center">
+    @if (\Route::is('*edit*'))
+
+        <img id="foto-oferta" class="" src="{{$oferta->urlFoto}}" alt=""/>
+
+        @include('fotos.upload', [
+            'comCropper' => true,
+            'aspectRatio' => 1,
+            'formID' => '#form-oferta',
+            'previewID' => '#foto-oferta'
+        ])
+    @else
+        @include('fotos.upload', [
+            'comCropper' => false,
+            'aspectRatio' => 1,
+            'formID' => '#form-oferta',
+            'previewID' => '#foto-oferta'
+        ])
+    @endif
 </div>
+
 <div class="clearfix"></div>
 
 <!-- Submit Field -->

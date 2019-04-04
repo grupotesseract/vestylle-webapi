@@ -94,7 +94,8 @@ class Pessoa extends Authenticatable
      * @var array
      */
     public static $rules = [
-        'email' => 'email'
+        'email' => 'required|unique:pessoas',
+        'cpf' => 'required|unique:pessoas',
     ];
 
     /**
@@ -125,5 +126,18 @@ class Pessoa extends Authenticatable
     public function listaDesejos()
     {
         return $this->belongsToMany('App\Models\Oferta', 'lista_desejos', 'pessoa_id', 'oferta_id');
+    }
+
+    /**
+     * Método para alimentar tabela pivô cupons_pessoas
+     * com cupons marcados pra primeiro login associando o usuário novo
+     *
+     * @return void
+     */
+    public function associarCuponsDePrimeiroLogin()
+    {
+        $cuponsDePrimeiroLogin = Cupon::primeiroLogin()->pluck('id')->all();
+
+        return $this->cupons()->sync($cuponsDePrimeiroLogin);
     }
 }

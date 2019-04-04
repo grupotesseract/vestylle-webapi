@@ -37,3 +37,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 });
 
 
+Route::resource('pessoas', 'PessoaController');
+Route::resource('faleConoscos', 'FaleConoscoController');
+Route::resource('ofertas', 'OfertaController');
+Route::resource('lojas', 'LojaController');

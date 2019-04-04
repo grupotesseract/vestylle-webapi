@@ -55,6 +55,8 @@ class PessoaController extends AppBaseController
 
         $pessoa = $this->pessoaRepository->create($input);
 
+        $pessoa->associarCuponsDePrimeiroLogin();
+
         Flash::success('Pessoa criada com sucesso.');
 
         return redirect(route('pessoas.index'));
