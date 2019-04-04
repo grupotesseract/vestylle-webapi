@@ -7,6 +7,7 @@ use Response;
 use App\Http\Requests;
 use App\DataTables\OfertaDataTable;
 use App\DataTables\PessoaDataTable;
+use App\Repositories\FotoRepository;
 use App\Repositories\OfertaRepository;
 use App\Http\Requests\CreateOfertaRequest;
 use App\Http\Requests\UpdateOfertaRequest;
@@ -17,10 +18,12 @@ class OfertaController extends AppBaseController
 {
     /** @var  OfertaRepository */
     private $ofertaRepository;
+    private $fotoRepository;
 
-    public function __construct(OfertaRepository $ofertaRepo)
+    public function __construct(OfertaRepository $ofertaRepo, FotoRepository $fotoRepo)
     {
         $this->ofertaRepository = $ofertaRepo;
+        $this->fotoRepository = $fotoRepo;
     }
 
     /**
@@ -55,16 +58,22 @@ class OfertaController extends AppBaseController
     {
         $input = $request->all();
 
-        $hasFoto = $request->hasFile('foto_oferta');
-
-        if ($hasFoto) {
-            $foto = $request->file('foto_oferta');
-            $foto_original_name = $foto->getClientOriginalName();
-            $foto_path = $foto->storeAs('public', $foto_original_name);
-            $input['foto_oferta'] = $foto_original_name;
-        }
-
         $oferta = $this->ofertaRepository->create($input);
+
+        $hasFoto = $request->hasFile('foto');
+        if ($hasFoto) {
+            if ($oferta->foto) {
+                $oferta->foto->delete();
+            }
+
+            $foto = $this->fotoRepository->uploadAndCreate($request);
+            $oferta->foto()->save($foto);
+
+            //Upload p/ Cloudinary e delete local
+            $publicId = "oferta_".time();
+            $this->fotoRepository->sendToCloudinary($foto, $publicId, env('CLOUDINARY_CLOUD_FOLDER'));
+            $this->fotoRepository->deleteLocal($foto->id);
+        }
 
         Flash::success('Oferta criada com sucesso.');
 
@@ -130,20 +139,26 @@ class OfertaController extends AppBaseController
             return redirect(route('ofertas.index'));
         }
 
-        $hasFoto = $request->hasFile('foto_oferta');
-
+        $hasFoto = $request->foto;
         if ($hasFoto) {
-            $foto = $request->file('foto_oferta');
-            $foto_original_name = $foto->getClientOriginalName();
-            $foto_path = $foto->storeAs('public', $foto_original_name);
-            $input['foto_oferta'] = $foto_original_name;
+            if ($oferta->foto) {
+                $oferta->foto->delete();
+            }
+
+            $foto = $this->fotoRepository->uploadAndCreate($request);
+            $oferta->foto()->save($foto);
+
+            //Upload p/ Cloudinary e delete local
+            $publicId = "oferta_".time();
+            $this->fotoRepository->sendToCloudinary($foto, $publicId, env('CLOUDINARY_CLOUD_FOLDER'));
+            $this->fotoRepository->deleteLocal($foto->id);
         }
 
         $oferta = $this->ofertaRepository->update($input, $id);
 
         Flash::success('Oferta atualizada com sucesso.');
 
-        return redirect(route('ofertas.index'));
+        return redirect(route('ofertas.edit', $oferta));
     }
 
     /**
@@ -169,4 +184,5 @@ class OfertaController extends AppBaseController
 
         return redirect(route('ofertas.index'));
     }
+
 }

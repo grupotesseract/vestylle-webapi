@@ -67,6 +67,7 @@ class CuponDataTable extends DataTable
     {
         return [
             ['data' => 'data_validade', 'title' => 'Valido até:'],
+            ['data' => 'titulo', 'title' => 'Título'],
             ['data' => 'texto_cupom', 'title' => 'Texto'],
             ['data' => 'oferta_id', 'title' => 'Código da oferta']
         ];
