@@ -13,19 +13,19 @@
 <!-- Cor Primaria Field -->
 <div class="form-group">
     {!! Form::label('cor_primaria', 'Cor Primária:') !!}
-    <p>{!! $loja->cor_primaria !!}</p>
+    <p class="color-background">{!! $loja->cor_primaria !!}</p>
 </div>
 
 <!-- Cor Secundaria Field -->
 <div class="form-group">
     {!! Form::label('cor_secundaria', 'Cor Secundária:') !!}
-    <p>{!! $loja->cor_secundaria !!}</p>
+    <p class="color-background">{!! $loja->cor_secundaria !!}</p>
 </div>
 
 <!-- Cor Terciaria Field -->
 <div class="form-group">
     {!! Form::label('cor_terciaria', 'Cor Terciária:') !!}
-    <p>{!! $loja->cor_terciaria !!}</p>
+    <p class="color-background">{!! $loja->cor_terciaria !!}</p>
 </div>
 
 <!-- Endereco Field -->
@@ -69,4 +69,12 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{!! $loja->updated_at !!}</p>
 </div>
+
+<script>
+var colorCollection = document.getElementsByClassName("color-background");
+var i;
+for (i = 0; i < colorCollection.length; i++) {
+    colorCollection[i].style.backgroundColor = "#" + colorCollection[i].innerHTML;
+}
+</script>
 

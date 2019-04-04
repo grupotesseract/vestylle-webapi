@@ -7,19 +7,19 @@
 <!-- Cor Primaria Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('cor_primaria', 'Cor Primária:') !!}
-    {!! Form::text('cor_primaria', null, ['class' => 'form-control']) !!}
+    {!! Form::text('cor_primaria', null, ['class' => 'form-control jscolor']) !!}
 </div>
 
 <!-- Cor Secundaria Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('cor_secundaria', 'Cor Secundária:') !!}
-    {!! Form::text('cor_secundaria', null, ['class' => 'form-control']) !!}
+    {!! Form::text('cor_secundaria', null, ['class' => 'form-control jscolor']) !!}
 </div>
 
 <!-- Cor Terciaria Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('cor_terciaria', 'Cor Terciária:') !!}
-    {!! Form::text('cor_terciaria', null, ['class' => 'form-control']) !!}
+    {!! Form::text('cor_terciaria', null, ['class' => 'form-control jscolor']) !!}
 </div>
 
 <!-- Endereco Field -->
@@ -57,3 +57,4 @@
     {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
     <a href="{!! route('lojas.index') !!}" class="btn btn-default">Cancelar</a>
 </div>
+

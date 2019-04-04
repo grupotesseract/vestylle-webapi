@@ -55,4 +55,3 @@ if (token) {
 //     encrypted: true
 // });
 
-require('bootstrap-colorpicker');
