@@ -168,9 +168,7 @@ class PessoaAPIController extends AppBaseController
      */
     public function redirecionaSocial(Request $request)
     {
-        $pessoa = $this->pessoaRepository->findByField('email', $request->email)->first();
-        $pessoa->social_token = $request->social_token;
-        $pessoa->save();
+        $pessoa = $this->pessoaRepository->trataInformacoesSocial($request);                
         $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;        
         return $this->sendResponse(
             [
@@ -179,26 +177,7 @@ class PessoaAPIController extends AppBaseController
             ],            
             'Usuário autenticou via API com Sucesso'
         );
-    }
-
-    /**
-     * Callback após login bem sucedido no Facebook
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function trataInformacoesSocial()
-    // {
-    //     $usuarioSocial = Socialite::driver('facebook')->stateless()->user();
-    //     $pessoa = $this->pessoaRepository->trataInformacoesSocial($usuarioSocial);
-
-    //     return $this->sendResponse(
-    //         [
-    //             'pessoa' => $pessoa->toArray(),
-    //             'token' => $pessoa->social_token
-    //         ],
-    //         'Usuário autenticou no Facebook com Sucesso'
-    //     );
-    // }
+    }    
 
     /**
      * Autenticação via API
