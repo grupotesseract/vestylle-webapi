@@ -26,8 +26,8 @@ Route::get('pessoas/{id}/ofertas', 'PessoaAPIController@getOfertas');
 Route::post('pessoas/{id}/ofertas', 'PessoaAPIController@postOfertas');
 
 Route::post('/login', 'PessoaAPIController@login');
-Route::get('login/facebook', 'PessoaAPIController@redirecionaSocial');
-Route::get('login/facebook/callback', 'PessoaAPIController@trataInformacoesSocial');
+Route::post('login/facebook', 'PessoaAPIController@redirecionaSocial');
+//Route::get('login/facebook/callback', 'PessoaAPIController@trataInformacoesSocial');
 Route::resource('fale_conoscos', 'FaleConoscoAPIController')->except(['update', 'destroy']);
 Route::resource('cupons', 'CuponAPIController');
 Route::resource('ofertas', 'OfertaAPIController');
