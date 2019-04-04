@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\Oferta;
+use App\Models\Loja;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class OfertaDataTable extends DataTable
+class LojaDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -18,16 +18,16 @@ class OfertaDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'ofertas.datatables_actions');
+        return $dataTable->addColumn('action', 'lojas.datatables_actions');
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Oferta $model
+     * @param \App\Models\Loja $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Oferta $model)
+    public function query(Loja $model)
     {
         return $model->newQuery();
     }
@@ -47,10 +47,10 @@ class OfertaDataTable extends DataTable
                 'dom'     => 'Bfrtip',
                 'order'   => [[0, 'desc']],
                 'buttons' => [
-                    ['extend' => 'create','text' => '<i class="fa fa-plus"></i> Adicionar'],
+                    ['extend' => 'create', 'text' => '<i class="fa fa-plus"></i> Adicionar'],
                     ['extend' => 'export', 'text' => '<i class="fa fa-download"></i> Exportar'],
                     ['extend' => 'print', 'text' => '<i class="fa fa-print"></i> Imprimir'],
-                    ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar'],
+                    ['extend' => 'reload', 'text' => '<i class="fa fa-refresh"></i> Atualizar'],
                 ],
                 'language' => [
                     'url' => url('//cdn.datatables.net/plug-ins/1.10.18/i18n/Portuguese-Brasil.json')
@@ -65,12 +65,8 @@ class OfertaDataTable extends DataTable
      */
     protected function getColumns()
     {
-        $url = url('storage/');
         return [
-            ['data' => 'id', 'title' => 'Código'],
-            ['data' => 'titulo', 'title' => 'Título'],
-            ['data' => 'preco', 'title' => 'Preço'],
-            ['data' => 'descricao_oferta', 'title' => 'Descrição'],
+            'nome'
         ];
     }
 
@@ -81,6 +77,6 @@ class OfertaDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'ofertasdatatable_' . time();
+        return 'lojasdatatable_' . time();
     }
 }
