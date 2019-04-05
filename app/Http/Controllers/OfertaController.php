@@ -96,7 +96,7 @@ class OfertaController extends AppBaseController
             return redirect(route('ofertas.index'));
         }
 
-        return $pessoaDataTable->addScope(new PessoasPorOferta($id))
+        return $pessoaDataTable->addScope(new PessoasPorCupon($id))
             ->render('ofertas.show', compact('oferta'));
     }
 
