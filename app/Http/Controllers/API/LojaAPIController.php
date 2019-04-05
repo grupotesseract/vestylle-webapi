@@ -68,10 +68,10 @@ class LojaAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show()
     {
         /** @var Loja $loja */
-        $loja = $this->lojaRepository->findWithoutFail($id);
+        $loja = $this->lojaRepository->first();
 
         if (empty($loja)) {
             return $this->sendError('Loja not found');
