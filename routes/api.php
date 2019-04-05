@@ -31,3 +31,6 @@ Route::post('login/facebook', 'PessoaAPIController@redirecionaSocial');
 Route::resource('fale_conoscos', 'FaleConoscoAPIController')->except(['update', 'destroy']);
 Route::resource('cupons', 'CuponAPIController');
 Route::resource('ofertas', 'OfertaAPIController');
+
+
+Route::resource('lojas', 'LojaAPIController');

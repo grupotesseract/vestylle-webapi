@@ -11,3 +11,7 @@
     <a href="{!! route('ofertas.index') !!}"><i class="fa fa-edit"></i><span>Ofertas</span></a>
 </li>
 
+<li class="{{ Request::is('lojas*') ? 'active' : '' }}">
+    <a href="{!! route('lojas.index') !!}"><i class="fa fa-edit"></i><span>Lojas</span></a>
+</li>
+
