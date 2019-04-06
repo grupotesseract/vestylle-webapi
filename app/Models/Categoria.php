@@ -9,7 +9,7 @@ class Categoria extends Model
     public $fillable = [
         'owner_type',
         'owner_id',
-        'categoria_id'        
+        'segmentacao_id'        
     ];
 
     public function segmentos()
