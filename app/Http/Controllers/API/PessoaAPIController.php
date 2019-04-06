@@ -166,29 +166,18 @@ class PessoaAPIController extends AppBaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function redirecionaSocial()
+    public function redirecionaSocial(Request $request)
     {
-        return Socialite::driver('facebook')->stateless()->redirect();
-    }
-
-    /**
-     * Callback após login bem sucedido no Facebook
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function trataInformacoesSocial()
-    {
-        $usuarioSocial = Socialite::driver('facebook')->stateless()->user();
-        $pessoa = $this->pessoaRepository->trataInformacoesSocial($usuarioSocial);
-
+        $pessoa = $this->pessoaRepository->trataInformacoesSocial($request);                
+        $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;        
         return $this->sendResponse(
             [
                 'pessoa' => $pessoa->toArray(),
-                'token' => $pessoa->social_token
-            ],
-            'Usuário autenticou no Facebook com Sucesso'
+                'token' => $token
+            ],            
+            'Usuário autenticou via API com Sucesso'
         );
-    }
+    }    
 
     /**
      * Autenticação via API
@@ -203,7 +192,13 @@ class PessoaAPIController extends AppBaseController
         if ($pessoa) {
             $token = $this->pessoaRepository->login($pessoa, $request);
             if ($token) {
-                return $this->sendResponse($token, 'Usuário autenticou via API com Sucesso');
+                return $this->sendResponse(
+                    [
+                        'pessoa' => $pessoa->toArray(),
+                        'token' => $token
+                    ],            
+                    'Usuário autenticou via API com Sucesso'                    
+                );
             } else {
                 return $this->sendError('A senha digitada está incorreta');
             }

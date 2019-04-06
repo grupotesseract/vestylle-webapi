@@ -60,11 +60,10 @@ class PessoaRepository extends BaseRepository
      * @return \Illuminate\Http\Response
      */
     public function trataInformacoesSocial($usuarioSocial)
-    {
-        $emailSocial = $usuarioSocial->getEmail();
-        $pessoa = $this->firstOrNew(['email' => $emailSocial]);
-        $pessoa->nome = $usuarioSocial->getName();
-        $pessoa->social_token = $usuarioSocial->token;
+    {        
+        $pessoa = $this->firstOrNew(['email' => $usuarioSocial->email]);
+        $pessoa->nome = $usuarioSocial->nome;
+        $pessoa->social_token = $usuarioSocial->social_token;
         $pessoa->save();
         return $pessoa;
     }
