@@ -15,16 +15,33 @@ class CategoriasTableSeeder extends Seeder
             'descricao' => 'HOBBY',
             'conteudo' => 'MUSICA',            
         ]);
+        
+        \App\Models\Pessoa::inRandomOrder()->get()->first()->
+            segmentos()->create(['segmentacao_id' => $segmentacao->id]);
+
+        \App\Models\Oferta::inRandomOrder()->get()->first()->
+        segmentos()->create(['segmentacao_id' => $segmentacao->id]);
 
         $segmentacao = \App\Models\Segmentacao::create([
             'descricao' => 'CALÇADO',
             'valor' => '39',            
         ]);
 
+        \App\Models\Pessoa::inRandomOrder()->get()->first()->
+            segmentos()->create(['segmentacao_id' => $segmentacao->id]);
+
+        \App\Models\Oferta::inRandomOrder()->get()->first()->
+        segmentos()->create(['segmentacao_id' => $segmentacao->id]);
+
         $segmentacao = \App\Models\Segmentacao::create([
             'descricao' => 'ESTILO',
             'conteudo' => 'CASUAL',            
         ]);
 
+        \App\Models\Pessoa::inRandomOrder()->get()->first()->
+            segmentos()->create(['segmentacao_id' => $segmentacao->id]);
+
+        \App\Models\Oferta::inRandomOrder()->get()->first()->
+        segmentos()->create(['segmentacao_id' => $segmentacao->id]);
     }
 }
