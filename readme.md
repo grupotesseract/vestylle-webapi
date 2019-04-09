@@ -65,7 +65,7 @@
   ```
 - Acessar [http://localhost](http://localhost)
 
-### Deploy
+## Deploy
 
 - Configurar os remotes:
   ``` sh
