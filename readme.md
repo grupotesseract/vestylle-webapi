@@ -75,7 +75,8 @@
   # Develop & Stage - TesseractDev
   git remote add test tesseractdev:/var/www/html/vestylle-webapi/vestylle-webapi.git
   ```
-- Conferir os remotes com `git remote -v`
+- Conferir os remotes com `git remote -v`:
+  ![](https://i.snag.gy/4Q6kqb.jpg)
 - Para executar os deploys:
   ``` sh
   # Production
