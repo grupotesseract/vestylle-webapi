@@ -30,6 +30,7 @@ class PessoasTableSeeder extends Seeder
             $repositorio = new \App\Repositories\PessoaRepository(app());
             $pessoaCriada = $repositorio->createFromVestylle($pessoa->cnpj_cpf); 
             
+            dump(env('SEED_DADOS_PESSOA'));
             if (env('SEED_DADOS_PESSOA')) {            
                 $repositorio->updatePontosPessoa($pessoaCriada); 
                 $repositorio->updateVencimentoPontosPessoa($pessoaCriada);
