@@ -5,7 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\API\CreateFaleConoscoAPIRequest;
 use App\Http\Requests\API\UpdateFaleConoscoAPIRequest;
 use App\Models\FaleConosco;
+// use App\Models\Loja;
 use App\Repositories\FaleConoscoRepository;
+use App\Mail\FaleConoscoCreated;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
@@ -56,6 +59,8 @@ class FaleConoscoAPIController extends AppBaseController
         $input = $request->all();
 
         $faleConoscos = $this->faleConoscoRepository->create($input);
+
+        Mail::to('blau@blau.com')->send(new FaleConoscoCreated($this->faleConoscoRepository));
 
         return $this->sendResponse($faleConoscos->toArray(), 'Fale Conosco salvo com sucesso');
     }
