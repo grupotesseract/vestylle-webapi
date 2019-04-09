@@ -67,7 +67,7 @@ class FaleConoscoAPIController extends AppBaseController
 
         $usuario = $this->pessoa::findOrFail($faleConoscos->pessoa_id)->nome;
 
-        Mail::to('blau@blau.com')->send(new FaleConoscoCreated($faleConoscos, $lojaNome, $usuario));
+        Mail::to($this->loja::findOrFail(1)->email)->send(new FaleConoscoCreated($faleConoscos, $lojaNome, $usuario));
 
         return $this->sendResponse($faleConoscos->toArray(), 'Fale Conosco salvo com sucesso');
     }
