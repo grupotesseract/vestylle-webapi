@@ -108,7 +108,7 @@ class PessoaRepository extends BaseRepository
 
         if (!$pessoa || !is_object($pessoa)) {
             return false;
-        }
+        } 
 
         $Cidade = Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
         $cidadeId = $Cidade ? $Cidade->id : null;
@@ -125,6 +125,7 @@ class PessoaRepository extends BaseRepository
             "bairro" => $pessoa->bairro,
             "cidade_id" => $cidadeId,
             "complemento" => $pessoa->complement,
+            'password' => bcrypt('123321')
         ]);
 
         return $result;
