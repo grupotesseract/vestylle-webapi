@@ -1,12 +1,12 @@
 @component('mail::message')
-# Mensagem recebida pelo Fale Conosco da $loja->nome
+# Mensagem recebida pelo Fale Conosco da {{ $lojaNome }}
 
-Usuário: {{ $faleConosco->pessoa }}
+Usuário: {{ $pessoa }}
 
-Contato: {{ $faleConosco->contato }}
+Contato: {{ $contato }}
 
-Assunto: {{ $faleConosco->assunto }}
+Assunto: {{ $assunto }}
 
 Mensagem:
-{{ $faleConosco->mensagem }}
+{{ $mensagem }}
 @endcomponent

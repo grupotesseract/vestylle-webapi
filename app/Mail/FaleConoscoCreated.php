@@ -2,8 +2,7 @@
 
 namespace App\Mail;
 
-use App\Repositories\FaleConoscoRepository;
-// use App\Models\Loja;
+use App\Models\FaleConosco;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -18,10 +17,11 @@ class FaleConoscoCreated extends Mailable
      *
      * @return void
      */
-    public function __construct(FaleConoscoRepository $faleConoscoRepo)//, Loja $loja)
+    public function __construct(FaleConosco $faleConosco, $lojaNome, $usuario)
     {
-        $this->faleConosco = $faleConoscoRepo->model();
-        // $this->loja = $loja;
+        $this->faleConosco = $faleConosco;
+        $this->lojaNome = $lojaNome;
+        $this->usuario = $usuario;
     }
 
     /**
@@ -31,6 +31,13 @@ class FaleConoscoCreated extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.fale-conosco-created');
+        return $this->markdown('emails.fale-conosco-created')
+                    ->with([
+                        'lojaNome' => $this->lojaNome,
+                        'pessoa' => $this->usuario,
+                        'contato' => $this->faleConosco->contato,
+                        'assunto' => $this->faleConosco->assunto,
+                        'mensagem' => $this->faleConosco->mensagem,
+                    ]);
     }
 }
