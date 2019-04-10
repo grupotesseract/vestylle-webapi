@@ -53,7 +53,7 @@ class FaleConosco extends Model
     public static $rules = [
         'pessoa_id' => 'integer|nullable',
         'assunto' => 'string|nullable',
-        'mensagem' => 'string:nullable',
+        'mensagem' => 'string|nullable',
         'contato' => 'string|nullable'
     ];
 
