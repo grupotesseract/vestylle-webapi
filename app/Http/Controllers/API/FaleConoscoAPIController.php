@@ -5,7 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Requests\API\CreateFaleConoscoAPIRequest;
 use App\Http\Requests\API\UpdateFaleConoscoAPIRequest;
 use App\Models\FaleConosco;
+use App\Models\Loja;
+use App\Models\Pessoa;
 use App\Repositories\FaleConoscoRepository;
+use App\Mail\FaleConoscoCreated;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
@@ -22,9 +26,11 @@ class FaleConoscoAPIController extends AppBaseController
     /** @var  FaleConoscoRepository */
     private $faleConoscoRepository;
 
-    public function __construct(FaleConoscoRepository $faleConoscoRepo)
+    public function __construct(FaleConoscoRepository $faleConoscoRepo, Loja $loja, Pessoa $pessoa)
     {
         $this->faleConoscoRepository = $faleConoscoRepo;
+        $this->loja = $loja;
+        $this->pessoa = $pessoa;
     }
 
     /**
@@ -56,6 +62,12 @@ class FaleConoscoAPIController extends AppBaseController
         $input = $request->all();
 
         $faleConoscos = $this->faleConoscoRepository->create($input);
+
+        $lojaNome = $this->loja::findOrFail(1)->nome;
+
+        $usuario = $this->pessoa::findOrFail($faleConoscos->pessoa_id)->nome;
+
+        Mail::to($this->loja::findOrFail(1)->email)->send(new FaleConoscoCreated($faleConoscos, $lojaNome, $usuario));
 
         return $this->sendResponse($faleConoscos->toArray(), 'Fale Conosco salvo com sucesso');
     }
