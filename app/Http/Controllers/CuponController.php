@@ -58,6 +58,8 @@ class CuponController extends AppBaseController
     {
         $input = $request->all();
 
+        $input['cupom_primeiro_login'] = isset($input['cupom_primeiro_login']) ? true : false;
+
         $hasFoto = $request->hasFile('foto_caminho');
 
         if ($hasFoto) {
@@ -127,6 +129,7 @@ class CuponController extends AppBaseController
     public function update($id, UpdateCuponRequest $request)
     {
         $input = $request->all();
+        $input['cupom_primeiro_login'] = isset($input['cupom_primeiro_login']) ? true : false;
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
