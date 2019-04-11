@@ -60,11 +60,10 @@ class PessoaRepository extends BaseRepository
      * @return \Illuminate\Http\Response
      */
     public function trataInformacoesSocial($usuarioSocial)
-    {
-        $emailSocial = $usuarioSocial->getEmail();
-        $pessoa = $this->firstOrNew(['email' => $emailSocial]);
-        $pessoa->nome = $usuarioSocial->getName();
-        $pessoa->social_token = $usuarioSocial->token;
+    {        
+        $pessoa = $this->firstOrNew(['email' => $usuarioSocial->email]);
+        $pessoa->nome = $usuarioSocial->nome;
+        $pessoa->social_token = $usuarioSocial->social_token;
         $pessoa->save();
         return $pessoa;
     }
@@ -109,7 +108,7 @@ class PessoaRepository extends BaseRepository
 
         if (!$pessoa || !is_object($pessoa)) {
             return false;
-        }
+        } 
 
         $Cidade = Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
         $cidadeId = $Cidade ? $Cidade->id : null;
@@ -126,6 +125,7 @@ class PessoaRepository extends BaseRepository
             "bairro" => $pessoa->bairro,
             "cidade_id" => $cidadeId,
             "complemento" => $pessoa->complement,
+            'password' => bcrypt('123321')
         ]);
 
         return $result;

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use function GuzzleHttp\Psr7\str;
 
 /**
  * Class Oferta
@@ -52,8 +53,7 @@ class Oferta extends Model
      * @var array
      */
     public static $rules = [
-        'descricao_oferta' => 'required',
-        'foto_oferta' => 'required | mimes:jpg,jpeg,png',
+        'descricao_oferta' => 'required',        
         'titulo' => 'required | max: 150',
         'subtitulo' => 'required | max: 150',
         'preco' => 'required',
@@ -115,4 +115,10 @@ class Oferta extends Model
     {
         return number_format($this->attributes['preco'], 2, ',', '.');
     }
+
+    public function setPrecoAttribute($value)
+    {
+        $this->attributes['preco'] = str_replace(',', '.', $value);
+    }
+
 }
