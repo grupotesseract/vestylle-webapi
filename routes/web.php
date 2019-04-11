@@ -17,6 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | ADMIN Routes
@@ -25,17 +26,14 @@ Route::get('/', function () {
 | Rotas da interface administrativa, acessiveis por pessoas 'admin'
 |
 */
-Route::group(['middleware' => ['role:admin']], function() {
+Route::group(['middleware' => ['role:admin']], function () {
     Route::get('/home', 'HomeController@index');
-Route::resource('pessoas', 'PessoaController');
+    Route::resource('pessoas', 'PessoaController');
+    Route::resource('cupons', 'CuponController');
+    Route::get('cupons/pessoa/{id}', 'CuponController@getCuponsPessoa');
+    Route::resource('faleConoscos', 'FaleConoscoController');
+    Route::resource('ofertas', 'OfertaController');
+    Route::resource('lojas', 'LojaController');
 });
 
-Route::resource('cupons', 'CuponController');
-Route::get('cupons/pessoa/{id}', 'CuponController@getCuponsPessoa');
 
-Route::resource('pessoas', 'PessoaController');
-Route::resource('faleConoscos', 'FaleConoscoController');
-Route::resource('ofertas', 'OfertaController');
-
-
-Route::resource('lojas', 'LojaController');
