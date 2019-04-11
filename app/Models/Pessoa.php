@@ -58,6 +58,7 @@ class Pessoa extends Authenticatable
         'data_ultima_compra',
         'data_vencimento_pontos',
         'data_ultima_compra',
+        'data_nascimento',
         'complemento',
         'social_token',
         'genero'
