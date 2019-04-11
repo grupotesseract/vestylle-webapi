@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,6 +33,11 @@ class Pessoa extends Authenticatable
     use Notifiable;
     use HasPushSubscriptions;
     use SoftDeletes;
+    use HasApiTokens;
+
+    // FLAG cadastro para indicar quando a pessoa completou o cadastro || se o cadastro ainda está pendente
+    const CADASTRO_PENDENTE = 1;
+    const CADASTRO_OK = 2;
 
     public $table = 'pessoas';
 
@@ -40,6 +46,7 @@ class Pessoa extends Authenticatable
     public $fillable = [
         'id_vestylle',
         'saldo_pontos',
+        'status_cadastro',
         'celular',
         'cidade_id',
         'telefone_fixo',
@@ -48,7 +55,12 @@ class Pessoa extends Authenticatable
         'email',
         'endereco',
         'bairro',
-        'complemento'
+        'data_ultima_compra',
+        'data_vencimento_pontos',
+        'data_ultima_compra',
+        'complemento',
+        'social_token',
+        'genero'
     ];
 
     /**
@@ -57,7 +69,7 @@ class Pessoa extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'social_token'
     ];
 
     /**
@@ -72,7 +84,8 @@ class Pessoa extends Authenticatable
         'email' => 'string',
         'endereco' => 'string',
         'bairro' => 'string',
-        'complemento' => 'string'
+        'complemento' => 'string',
+        'genero' => 'string'
     ];
 
     /**
@@ -81,9 +94,8 @@ class Pessoa extends Authenticatable
      * @var array
      */
     public static $rules = [
-        'nome' => 'required',
-        'cpf' => 'required',
-        'email' => 'email'
+        'email' => 'required|unique:pessoas',
+        'cpf' => 'unique:pessoas',
     ];
 
     /**
@@ -96,6 +108,36 @@ class Pessoa extends Authenticatable
         return $this->belongsTo('App\Models\Cidade');
     }
 
+    /**
+     * Relacionamento N x N entre cupons e pessoas
+     *
+     * @return relationship
+     */
+    public function cupons()
+    {
+        return $this->belongsToMany('App\Models\Cupon', 'cupons_pessoas', 'pessoa_id', 'cupom_id');
+    }
 
+    /**
+     * Relacionamento N x N entre ofertas e pessoas
+     *
+     * @return relationship
+     */
+    public function listaDesejos()
+    {
+        return $this->belongsToMany('App\Models\Oferta', 'lista_desejos', 'pessoa_id', 'oferta_id');
+    }
 
+    /**
+     * Método para alimentar tabela pivô cupons_pessoas
+     * com cupons marcados pra primeiro login associando o usuário novo
+     *
+     * @return void
+     */
+    public function associarCuponsDePrimeiroLogin()
+    {
+        $cuponsDePrimeiroLogin = Cupon::primeiroLogin()->pluck('id')->all();
+
+        return $this->cupons()->sync($cuponsDePrimeiroLogin);
+    }
 }

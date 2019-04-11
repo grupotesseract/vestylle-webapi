@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
+use Response;
+use Socialite;
+use App\Models\Pessoa;
+use Illuminate\Http\Request;
+use App\Repositories\PessoaRepository;
+use App\Repositories\OfertaRepository;
+use App\Http\Controllers\AppBaseController;
+use Prettus\Repository\Criteria\RequestCriteria;
 use App\Http\Requests\API\CreatePessoaAPIRequest;
 use App\Http\Requests\API\UpdatePessoaAPIRequest;
-use App\Models\Pessoa;
-use App\Repositories\PessoaRepository;
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Response;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class PessoaController
@@ -21,10 +24,12 @@ class PessoaAPIController extends AppBaseController
 {
     /** @var  PessoaRepository */
     private $pessoaRepository;
+    private $ofertaRepository;
 
-    public function __construct(PessoaRepository $pessoaRepo)
+    public function __construct(PessoaRepository $pessoaRepo, OfertaRepository $ofertaRepo)
     {
         $this->pessoaRepository = $pessoaRepo;
+        $this->ofertaRepository = $ofertaRepo;
     }
 
     /**
@@ -40,7 +45,7 @@ class PessoaAPIController extends AppBaseController
         $this->pessoaRepository->pushCriteria(new LimitOffsetCriteria($request));
         $pessoas = $this->pessoaRepository->all();
 
-        return $this->sendResponse($pessoas->toArray(), 'Pessoas retrieved successfully');
+        return $this->sendResponse($pessoas->toArray(), 'Pessoas encontrada com sucesso');
     }
 
     /**
@@ -55,9 +60,30 @@ class PessoaAPIController extends AppBaseController
     {
         $input = $request->all();
 
-        $pessoas = $this->pessoaRepository->create($input);
+        $pessoa = $this->pessoaRepository->create($input);
+        $pessoa->password = bcrypt($request->password);
+        $pessoa->save();
 
-        return $this->sendResponse($pessoas->toArray(), 'Pessoa saved successfully');
+        $pegouDadosVestylle = $this->pessoaRepository->updateFromVestylle($pessoa);
+
+        $pessoa->associarCuponsDePrimeiroLogin();
+
+        //Se tem id_vestylle --> Pegar Pontos, Vencimento dos Pontos e Data de ultima compra da pessoa
+        if ($pegouDadosVestylle) {
+            $this->pessoaRepository->updatePontosPessoa($pessoa);
+            $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
+            $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
+        }
+
+        $token = $this->pessoaRepository->login($pessoa, $request);
+
+        return $this->sendResponse(
+            [
+                'pessoa' => $pessoa->toArray(),
+                'token' => $token
+            ],
+            'Pessoa criada com sucesso'
+        );
     }
 
     /**
@@ -74,10 +100,10 @@ class PessoaAPIController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            return $this->sendError('Pessoa not found');
+            return $this->sendError('Pessoa não encontrada');
         }
 
-        return $this->sendResponse($pessoa->toArray(), 'Pessoa retrieved successfully');
+        return $this->sendResponse($pessoa->toArray(), 'Pessoa encontrada com sucesso');
     }
 
     /**
@@ -97,12 +123,21 @@ class PessoaAPIController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            return $this->sendError('Pessoa not found');
+            return $this->sendError('Pessoa não encontrada');
         }
 
         $pessoa = $this->pessoaRepository->update($input, $id);
 
-        return $this->sendResponse($pessoa->toArray(), 'Pessoa updated successfully');
+        $pegouDadosVestylle = $this->pessoaRepository->updateFromVestylle($pessoa);
+
+        //Se tem id_vestylle --> Pegar Pontos, Vencimento dos Pontos e Data de ultima compra da pessoa
+        if ($pegouDadosVestylle) {
+            $this->pessoaRepository->updatePontosPessoa($pessoa);
+            $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
+            $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
+        }
+
+        return $this->sendResponse($pessoa->toArray(), 'Pessoa atualizada com sucesso');
     }
 
     /**
@@ -119,11 +154,128 @@ class PessoaAPIController extends AppBaseController
         $pessoa = $this->pessoaRepository->findWithoutFail($id);
 
         if (empty($pessoa)) {
-            return $this->sendError('Pessoa not found');
+            return $this->sendError('Pessoa não encontrada');
         }
 
         $pessoa->delete();
 
-        return $this->sendResponse($id, 'Pessoa deleted successfully');
+        return $this->sendResponse($id, 'Pessoa excluída com sucesso');
+    }
+
+    /**
+     * Autenticação via Facebook - Redireciona usuário para página do Face.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function redirecionaSocial(Request $request)
+    {
+        $pessoa = $this->pessoaRepository->trataInformacoesSocial($request);                
+        $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;        
+        return $this->sendResponse(
+            [
+                'pessoa' => $pessoa->toArray(),
+                'token' => $token
+            ],            
+            'Usuário autenticou via API com Sucesso'
+        );
+    }    
+
+    /**
+     * Autenticação via API
+     *
+     * @return \Illuminate\Http\Response
+     * @return Response
+     */
+    public function login(Request $request)
+    {
+        $pessoa = $this->pessoaRepository->findByField('email', $request->email)->first();
+
+        if ($pessoa) {
+            $token = $this->pessoaRepository->login($pessoa, $request);
+            if ($token) {
+                return $this->sendResponse(
+                    [
+                        'pessoa' => $pessoa->toArray(),
+                        'token' => $token
+                    ],            
+                    'Usuário autenticou via API com Sucesso'                    
+                );
+            } else {
+                return $this->sendError('A senha digitada está incorreta');
+            }
+        } else {
+            return $this->sendError('Usuário inexistente');
+        }
+    }
+
+    /**
+     * Metodo para retornar as Ofertas que foram adicinadas a lista de desejos da $idPessoa
+     *
+     * @param mixed $idPessoa
+     */
+    public function getOfertas($id)
+    {
+        if (Auth::user()->id == $id) {
+            $pessoa = $this->pessoaRepository->findWithoutFail($id);
+
+            if ($pessoa) {
+                return $this->sendResponse(
+                    [
+                        'ofertas' => $pessoa->listaDesejos->toArray(),
+                    ],
+                    'Listagem das Ofertas adicinadas á lista de desejos'
+                );
+            } else {
+                return $this->sendError('Pessoa não encontrada');
+            }
+        } else {
+            return $this->sendError('Pessoa não encontrada');
+        }
+        
+    }
+
+    /**
+     * Metodo para associar/desassociar uma oferta a uma pessoa
+     *
+     * @param mixed $idPessoa
+     */
+    public function postOfertas(Request $request, $id)
+    {
+        if (Auth::user()->id == $id) {
+            $pessoa = $this->pessoaRepository->findWithoutFail($id);
+
+            if ($pessoa) {
+
+                $oferta = $this->ofertaRepository->findWithoutFail($request->oferta_id);
+                if (!$oferta) {
+                    return $this->sendError('Oferta não encontrada');
+                }
+
+                $result = $this->pessoaRepository->toggleOfertaListaDesejo($pessoa, $oferta);
+                if ($result) {
+                    return $this->sendResponse(
+                        [
+                            'ofertas' => $pessoa->listaDesejos->toArray(),
+                        ],
+                        'Oferta adicionada a lista de desejos com sucesso!'
+                    );
+                } else {
+                    return $this->sendResponse(
+                        [
+                            'ofertas' => $pessoa->listaDesejos->toArray(),
+                        ],
+                        'Oferta removida da lista de desejos com sucesso!'
+                    );
+
+                }
+
+            } else {
+                return $this->sendError('Pessoa não encontrada');
+            }
+        } else {
+            return $this->sendError('Pessoa não encontrada');
+        }
+
+        
     }
 }

@@ -21,10 +21,12 @@ class CreatePessoasTable extends Migration
 
             $table->string('celular')->nullable();
             $table->string('telefone_fixo')->nullable();
+            $table->string('status_cadastro')->default(1);
 
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->string('social_token')->nullable();
             $table->rememberToken();
 
             $table->string('nome')->nullable();
@@ -36,6 +38,9 @@ class CreatePessoasTable extends Migration
             $table->string('bairro')->nullable();
             $table->string('complemento')->nullable();
 
+            $table->enum('genero', ['Masculino', 'Feminino', 'Prefiro Não Informar'])->nullable();
+
+            $table->timestamp('data_vencimento_pontos')->nullable();
             $table->timestamp('data_ultima_compra')->nullable();
             $table->timestamp('data_nascimento')->nullable();
 

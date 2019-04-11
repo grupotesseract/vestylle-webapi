@@ -4,6 +4,8 @@ namespace App\Http\Requests\API;
 
 use App\Models\Pessoa;
 use InfyOm\Generator\Request\APIRequest;
+use Illuminate\Validation\Rule;
+
 
 class CreatePessoaAPIRequest extends APIRequest
 {
