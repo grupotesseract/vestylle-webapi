@@ -60,7 +60,7 @@ class PessoaRepository extends BaseRepository
      * @return \Illuminate\Http\Response
      */
     public function trataInformacoesSocial($usuarioSocial)
-    {        
+    {
         $pessoa = $this->firstOrNew(['email' => $usuarioSocial->email]);
         $pessoa->nome = $usuarioSocial->nome;
         $pessoa->social_token = $usuarioSocial->social_token;
@@ -108,17 +108,17 @@ class PessoaRepository extends BaseRepository
 
         if (!$pessoa || !is_object($pessoa)) {
             return false;
-        } 
+        }
 
         $Cidade = Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
         $cidadeId = $Cidade ? $Cidade->id : null;
 
         $result = Pessoa::create([
             'id_vestylle'  => $pessoa->idpessoa,
-            "celular" => $pessoa->celular,            
+            "celular" => $pessoa->celular,
             "nome" => $pessoa->nome,
             "cpf" => $pessoa->cnpj_cpf,
-            "email" => $pessoa->email,
+            "email" => trim($pessoa->email) ? $pessoa->email : null,
             "cep" => $pessoa->cep,
             "endereco" => $pessoa->endereco,
             "numero" => $pessoa->numero,
@@ -156,7 +156,7 @@ class PessoaRepository extends BaseRepository
 
         $result = $pessoaObj->update([
             'id_vestylle'  => $pessoa->idpessoa,
-            "celular" => $pessoa->celular,            
+            "celular" => $pessoa->celular,
             "cep" => $pessoa->cep,
             "endereco" => $pessoa->endereco,
             "numero" => $pessoa->numero,
@@ -327,7 +327,7 @@ class PessoaRepository extends BaseRepository
             }
         }
     }
-    
+
     /**
     * Metodo para dar toggle em uma Oferta á lista de desejos
      *
