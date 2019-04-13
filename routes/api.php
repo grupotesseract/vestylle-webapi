@@ -1,36 +1,50 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| API Routes - Rotas acessiveis via autenticação
 |--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
 */
+Route::group(['middleware' => ['auth:api']], function () {
 
-Route::get('/subscriptions', 'SubscriptionController@index');
-Route::post('/subscription', 'SubscriptionController@store');
+    Route::resource('pessoas', 'PessoaAPIController')->except(['store', 'index', 'destroy']);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    //Get/Toggle Lista de desejos - Aplicando middleware pessoaid pra checar se é a mesma pessoa
+    Route::get('pessoas/{id}/ofertas', 'PessoaAPIController@getOfertas')->middleware('pessoaid');
+    Route::post('pessoas/{id}/ofertas', 'PessoaAPIController@postOfertas')->middleware('pessoaid');
+
+    Route::resource('cupons', 'CuponAPIController')->except(['update', 'destroy','store']);
+    Route::resource('ofertas', 'OfertaAPIController')->except(['update', 'destroy','store']);
+
 });
 
 
-Route::resource('pessoas', 'PessoaAPIController');
-Route::get('pessoas/{id}/ofertas', 'PessoaAPIController@getOfertas');
-Route::post('pessoas/{id}/ofertas', 'PessoaAPIController@postOfertas');
+/*
+|--------------------------------------------------------------------------
+| API Routes - Rotas Publicas
+|--------------------------------------------------------------------------
+|
+| Login, Store de pessoas, fale conosco, GET de quase tudo.
+|
+*/
 
+//??
+Route::get('/subscriptions', 'SubscriptionController@index');
+Route::post('/subscription', 'SubscriptionController@store');
+
+Route::post('pessoas', 'PessoaAPIController@store');
 Route::post('/login', 'PessoaAPIController@login');
+
 Route::post('login/facebook', 'PessoaAPIController@redirecionaSocial');
 //Route::get('login/facebook/callback', 'PessoaAPIController@trataInformacoesSocial');
-Route::resource('fale_conoscos', 'FaleConoscoAPIController')->except(['update', 'destroy']);
-Route::resource('cupons', 'CuponAPIController');
-Route::resource('ofertas', 'OfertaAPIController');
+
+Route::get('cupons', 'CuponAPIController@index');
+Route::get('cupons/{id}', 'CuponAPIController@show');
+
+Route::post('fale_conoscos', 'FaleConoscoAPIController@store');
+Route::get('lojas', 'LojaAPIController@show');
+Route::get('ofertas', 'OfertaAPIController@index');
+Route::get('ofertas/{id}', 'OfertaAPIController@show');
 
 
-Route::resource('lojas', 'LojaAPIController');

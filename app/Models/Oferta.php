@@ -99,7 +99,7 @@ class Oferta extends Model
      *
      * @return void
      */
-    public function segmentos()
+    public function categorias()
     {
         return $this->morphMany('App\Models\Categoria', 'owner');
     }

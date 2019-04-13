@@ -1,0 +1,27 @@
+#/bin/bash
+
+PROJECT_PATH="/var/www/html/vestylle.grupotesseract.com.br/backend"
+BARE_REPOSITORY="${PROJECT_PATH}.git"
+
+if [ ! -d "${PROJECT_PATH}" ]; then
+  git clone "${BARE_REPOSITORY}" -b master "${PROJECT_PATH}"
+  cd "${PROJECT_PATH}" || exit
+else
+  cd "${PROJECT_PATH}" || exit
+  unset GIT_DIR
+  git checkout -f master
+  git pull origin master
+fi
+
+export NVM_DIR=$HOME/.nvm
+export NODE_VERSION=8.12.0
+
+. $HOME/.nvm/nvm.sh
+nvm install $NODE_VERSION
+nvm use $NODE_VERSION
+npm i -g yarn
+yarn
+yarn prod
+
+composer install
+php artisan migrate --force
