@@ -11,16 +11,16 @@ class CategoriasTableSeeder extends Seeder
      */
     public function run()
     {
-        $segmentacao = \App\Models\Categoria::create([
+        $categoria = \App\Models\Categoria::create([
             'descricao' => 'HOBBY',
             'conteudo' => 'MUSICA',            
         ]);
         
         \App\Models\Pessoa::inRandomOrder()->get()->first()->
-            segmentos()->create(['categoria_id' => $categoria->id]);
+            segmentacoes()->create(['categoria_id' => $categoria->id]);
 
         \App\Models\Oferta::inRandomOrder()->get()->first()->
-        segmentos()->create(['categoria_id' => $categoria->id]);
+        segmentacoes()->create(['categoria_id' => $categoria->id]);
 
         $categoria = \App\Models\Categoria::create([
             'descricao' => 'CALÇADO',
@@ -28,10 +28,10 @@ class CategoriasTableSeeder extends Seeder
         ]);
 
         \App\Models\Pessoa::inRandomOrder()->get()->first()->
-            segmentos()->create(['categoria_id' => $categoria->id]);
+            segmentacoes()->create(['categoria_id' => $categoria->id]);
 
         \App\Models\Oferta::inRandomOrder()->get()->first()->
-        segmentos()->create(['categoria_id' => $categoria->id]);
+        segmentacoes()->create(['categoria_id' => $categoria->id]);
 
         $categoria = \App\Models\Categoria::create([
             'descricao' => 'ESTILO',
@@ -39,9 +39,9 @@ class CategoriasTableSeeder extends Seeder
         ]);
 
         \App\Models\Pessoa::inRandomOrder()->get()->first()->
-            segmentos()->create(['categoria_id' => $categoria->id]);
+            segmentacoes()->create(['categoria_id' => $categoria->id]);
 
         \App\Models\Oferta::inRandomOrder()->get()->first()->
-        segmentos()->create(['categoria_id' => $categoria->id]);
+        segmentacoes()->create(['categoria_id' => $categoria->id]);
     }
 }

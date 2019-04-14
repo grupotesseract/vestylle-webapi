@@ -7,22 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Categoria extends Model
 {
     public $fillable = [
-        'owner_type',
-        'owner_id',
-        'segmentacao_id'        
-    ];
+        'descricao',
+        'conteudo',
+        'valor'
+    ];    
 
-    public function segmentos()
-    {
-        return $this->morphTo();
-    }
-
-     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      **/
-    public function segmentacao()
+    public function segmentacoes()
     {
-        return $this->belongsTo(\App\Models\Segmentacao::class);
+        return $this->hasMany('App\Models\Segmentacao');
     }
 }
 

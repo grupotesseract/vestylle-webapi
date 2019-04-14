@@ -134,9 +134,9 @@ class Pessoa extends Authenticatable
      *
      * @return void
      */
-    public function categorias()
+    public function segmentacoes()
     {
-        return $this->morphMany('App\Models\Categoria', 'owner');
+        return $this->morphMany('App\Models\Segmentacao', 'owner');
     }
 
     /**

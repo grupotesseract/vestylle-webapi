@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Segmentacao extends Model
-{
+{   
     
     public $fillable = [
-        'descricao',
-        'conteudo',
-        'valor'
+        'owner_type',
+        'owner_id',
+        'categoria_id'        
     ];
     
     /**
@@ -20,12 +20,17 @@ class Segmentacao extends Model
      */
     protected $table = 'segmentacoes';
 
-     /**
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     **/
-    public function categorias()
+     public function categorias()
     {
-        return $this->hasMany('App\Models\Categoria');
+        return $this->morphTo();
+    }
+
+     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function categoria()
+    {
+        return $this->belongsTo(\App\Models\Categoria::class);
     }
 
 }
