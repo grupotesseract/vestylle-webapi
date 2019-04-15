@@ -36,7 +36,7 @@ Route::post('/subscription', 'SubscriptionController@store');
 Route::post('pessoas', 'PessoaAPIController@store');
 Route::post('/login', 'PessoaAPIController@login');
 
-Route::get('login/facebook', 'PessoaAPIController@redirecionaSocial');
+Route::post('login/facebook', 'PessoaAPIController@redirecionaSocial');
 //Route::get('login/facebook/callback', 'PessoaAPIController@trataInformacoesSocial');
 
 Route::get('cupons', 'CuponAPIController@index');
