@@ -28,13 +28,20 @@ class PessoasTableSeeder extends Seeder
         }
 
         foreach ($pessoas as $pessoa) {
-            $pessoaCriada = $repositorio->createFromVestylle($pessoa->cnpj_cpf);
-            $this->command->info(".");
+            $pessoaApp = $repositorio->findWhere(['cpf' => $pessoa->cnpj_cpf]);
+            
+            if ($pessoaApp->count() == 0) {
+                $pessoaCriada = $repositorio->createFromVestylle($pessoa->cnpj_cpf);
+                $this->command->info(".");
 
-            if (env('SEED_DADOS_PESSOA')) {
-                $repositorio->updatePontosPessoa($pessoaCriada);
-                $repositorio->updateVencimentoPontosPessoa($pessoaCriada);
-                $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
+                if (env('SEED_DADOS_PESSOA')) {
+                    $repositorio->updatePontosPessoa($pessoaCriada);
+                    $repositorio->updateVencimentoPontosPessoa($pessoaCriada);
+                    $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
+                }
+            }
+            else {
+                $this->command->info("Pulando pessoa ". $pessoa->cnpj_cpf);
             }
         }
 
