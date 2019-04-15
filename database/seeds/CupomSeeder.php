@@ -11,6 +11,6 @@ class CupomSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Cupon::class, 500)->create();
+        factory(App\Models\Cupon::class, 5)->create();
     }
 }
