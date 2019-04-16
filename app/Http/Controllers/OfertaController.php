@@ -13,6 +13,7 @@ use App\Http\Requests\CreateOfertaRequest;
 use App\Http\Requests\UpdateOfertaRequest;
 use App\Http\Controllers\AppBaseController;
 use App\DataTables\Scopes\PessoasPorOferta;
+use App\DataTables\Scopes\PessoasPorCupon;
 
 class OfertaController extends AppBaseController
 {
