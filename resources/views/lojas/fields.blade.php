@@ -37,7 +37,7 @@
 <!-- Whatsapp Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('whatsapp', 'Whatsapp:') !!}
-    {!! Form::text('whatsapp', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('whatsapp', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Telefone Field -->
@@ -49,7 +49,7 @@
 <!-- Horario Funcionamento Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('horario_funcionamento', 'Horário de Funcionamento:') !!}
-    {!! Form::text('horario_funcionamento', null, ['class' => 'form-control']) !!}
+    {!! Form::textarea('horario_funcionamento', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->

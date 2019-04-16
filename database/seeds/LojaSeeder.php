@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class OfertaSeeder extends Seeder
+class LojaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,7 @@ class OfertaSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Oferta::class, 10)->create();
+        factory(App\Models\Loja::class, 1)->create();
     }
 }
+

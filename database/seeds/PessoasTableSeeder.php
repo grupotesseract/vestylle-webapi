@@ -13,29 +13,39 @@ class PessoasTableSeeder extends Seeder
     public function run()
     {
         \Eloquent::unguard();
-        
+
         $vestylleDBHelper = new VestylleDBHelper();
+        $repositorio = new \App\Repositories\PessoaRepository(app());
 
         $count = 0;
         $dias = 10;
-        
+
         while ($count <= 10)
-        {       
+        {
             $pessoas = $vestylleDBHelper->getUltimosRegistros(($vestylleDBHelper::LIMITE_DIAS), $dias);
             $count = count($pessoas);
-            $dias++;        
+            $dias++;
         }
 
         foreach ($pessoas as $pessoa) {
-            $repositorio = new \App\Repositories\PessoaRepository(app());
-            $pessoaCriada = $repositorio->createFromVestylle($pessoa->cnpj_cpf); 
+            $pessoaApp = $repositorio->findWhere(['cpf' => $pessoa->cnpj_cpf]);
             
-            if (env('SEED_DADOS_PESSOA')) {            
-                $repositorio->updatePontosPessoa($pessoaCriada); 
-                $repositorio->updateVencimentoPontosPessoa($pessoaCriada);
-                $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
+            if ($pessoaApp->count() == 0) {
+                $pessoaCriada = $repositorio->createFromVestylle($pessoa->cnpj_cpf);
+                $this->command->info(".");
+
+                if (env('SEED_DADOS_PESSOA')) {
+                    $repositorio->updatePontosPessoa($pessoaCriada);
+                    $repositorio->updateVencimentoPontosPessoa($pessoaCriada);
+                    $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
+                }
+            }
+            else {
+                $this->command->info("Pulando pessoa ". $pessoa->cnpj_cpf);
             }
         }
+
+        $this->command->info("Pessoas criadas, precisou voltar ~$dias dias. ");
 
     }
 }
