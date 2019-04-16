@@ -188,7 +188,11 @@ class PessoaAPIController extends AppBaseController
      */
     public function login(Request $request)
     {
-        $pessoa = $this->pessoaRepository->findByField('email', $request->email)->first();
+        if (filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+            $pessoa = $this->pessoaRepository->findByField('email', $request->email)->first();
+        } else {
+            $pessoa = $this->pessoaRepository->findByField('cpf', $request->email)->first();
+        }        
 
         if ($pessoa) {
             $token = $this->pessoaRepository->login($pessoa, $request);
