@@ -141,4 +141,22 @@ class Pessoa extends Authenticatable
 
         return $this->cupons()->sync($cuponsDePrimeiroLogin);
     }
+
+
+    /**
+     * Mutator para a dataNascimento
+     */
+    public function setDataNascimentoAttribute($value)
+    {
+        $isCarbon = is_object($value);
+
+        if ($isCarbon) {
+            return $this->attributes['data_nascimento'] = $value->format('Y-m-d');
+        }
+
+        $dataFormatada = preg_match('/\//', $value);
+        return $this->attributes['data_nascimento'] = $dataFormatada
+            ? \Carbon\Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d')
+            : $value;
+    }
 }
