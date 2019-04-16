@@ -311,12 +311,13 @@ class PessoaRepository extends BaseRepository
 
         //Pega todas as pessoas alteradas lá no periodo especificado
         $retornoVestylle = $this->vestylleDB->getIdsUltimasCompras($tipoLimite, $valorLimite);
+        \Log::info(json_encode($retornoVestylle));
 
-        if (count($retornoVestylle)) {
+        if ($retornoVestylle && count($retornoVestylle)) {
             $numPessoasAtualizadas = 0;
 
             //Obter pessoas que existem no nosso BD
-            $pessoasParaAtualizar = \Pessoa::whereIn('id_vestylle', $retornoVestylle)->get();
+            $pessoasParaAtualizar = Pessoa::whereIn('id_vestylle', $retornoVestylle)->get();
 
             //Para cada uma dessas atualizar, pontos, vencimento e ultima compra
             foreach ($pessoasParaAtualizar as $Pessoa) {
