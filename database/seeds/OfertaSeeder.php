@@ -11,6 +11,6 @@ class OfertaSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Oferta::class, 500)->create();
+        factory(App\Models\Oferta::class, 10)->create();
     }
 }
