@@ -38,75 +38,67 @@ class FotoRepository extends BaseRepository
      */
     public function uploadAndCreate($request)
     {
+        $files = $request->allFiles()['files'];
         $request = is_array($request) ? $request : $request->all();
 
-        //Testando se o file é valido
-        $file = $request['foto'];
+        foreach ($files as $file) {
+            //Quando a imagem é croppada, ele envia o blob da imagem oque nao conta como object
+            if ($file && ! is_object($file)) {
+                $filename = time();
+                $image = \Image::make($file);
+                //Criando path inicial para direcionar o arquivo
+                $destinationPath = storage_path().'/images/';
+                //Pega o formato da imagem
+                $extension = 'jpeg';
+                $upload_success = $image->save($destinationPath.$filename.'.'.$extension);
+                //Se o upload da foto ocorreu com sucesso
+                if ($upload_success) {
 
-        //Quando a imagem é croppada, ele envia o blob da imagem oque nao conta como object
-        if ($file && ! is_object($file)) {
-            $filename = time();
-            $image = \Image::make($file);
-            //Criando path inicial para direcionar o arquivo
-            $destinationPath = storage_path().'/images/';
-            //Pega o formato da imagem
-            $extension = 'jpeg';
-            $upload_success = $image->save($destinationPath.$filename.'.'.$extension);
-            //Se o upload da foto ocorreu com sucesso
-            if ($upload_success) {
+                    //adicionando as informações da foto na request
+                    $file->image_name = $filename;
+                    $file->image_path = $destinationPath;
+                    $file->image_extension = $extension;
 
-                //adicionando as informações da foto na request
-                $request += [
-                    'image_name' => $filename,
-                    'image_path' => $destinationPath,
-                    'image_extension' => $extension,
-                ];
-
-                //Criando e persistindo no BD uma nova foto já associada ao user
-                $novaFoto = $this->model->create($request);
-
-                return $novaFoto;
-
-            // Se nao tiver funcionado, retornar false no success para o js se manisfestar
+                    //Criando e persistindo no BD uma nova foto já associada ao user
+                    $novasFotos[] = $this->model->create((array) $file);
+                    // Se nao tiver funcionado, retornar false no success para o js se manisfestar
+                } else {
+                    return [
+                        'success' => false,
+                    ];
+                }
             } else {
-                return [
-                    'success' => false,
-                ];
-            }
-        } else {
 
-            //Criando path inicial para direcionar o arquivo
-            $destinationPath = storage_path().'/images/';
-            //Pega o formato da imagem
-            $extension = $file->getClientOriginalExtension();
+                //Criando path inicial para direcionar o arquivo
+                $destinationPath = storage_path().'/images/';
+                //Pega o formato da imagem
+                $extension = $file->getClientOriginalExtension();
 
-            //usando o intervention para criar a imagem
-            $filename = time();
-            $file = \Image::make($file->getRealPath());
-            $upload_success = $file->save($destinationPath.$filename.'.'.$extension);
+                //usando o intervention para criar a imagem
+                $filename = time();
+                $image = \Image::make($file->getRealPath());
+                $upload_success = $image->save($destinationPath.$filename.'.'.$extension);
 
-            //Se o upload da foto ocorreu com sucesso
-            if ($upload_success) {
+                //Se o upload da foto ocorreu com sucesso
+                if ($upload_success) {
 
-                //adicionando as informações da foto na request
-                $request += [
-                    'image_name' => $filename,
-                    'image_path' => $destinationPath,
-                    'image_extension' => $extension,
-                ];
+                    //adicionando as informações da foto na request
+                    $file->image_name = $filename;
+                    $file->image_path = $destinationPath;
+                    $file->image_extension = $extension;
 
-                //Criando e persistindo no BD uma nova foto já associada ao user
-                $novaFoto = $this->model->create($request);
-
-                return $novaFoto;
-
-            // Se nao tiver funcionado, retornar false no success para o js se manisfestar
-            } else {
-                return [
-                    'success' => false,
-                ];
+                    //Criando e persistindo no BD uma nova foto já associada ao user
+                    $novasFotos[] = $this->model->create((array) $file);
+                    // Se nao tiver funcionado, retornar false no success para o js se manisfestar
+                } else {
+                    return [
+                        'success' => false,
+                    ];
+                }
             }
         }
+
+        return $novasFotos;
     }
 
     /**
@@ -116,7 +108,7 @@ class FotoRepository extends BaseRepository
      * @param string $publicId - public id desejado para a foto
      * @param string $pasta - pasta do cloudinary caso esteja usando alguma
      */
-    public function sendToCloudinary($foto, $publicId, $pasta=null)
+    public static function sendToCloudinary($foto, $publicId, $pasta=null)
     {
         $pasta = $pasta ? ['folder' => $pasta] : [];
 
@@ -165,12 +157,12 @@ class FotoRepository extends BaseRepository
      *
      * @param mixed $id
      */
-    public function deleteLocal($id)
+    public static function deleteLocal($id)
     {
-        $Foto = $this->findWithoutFail($id);
+        $foto = Foto::find($id);
 
-        if ($Foto && \File::exists($Foto->fullPath)) {
-            \File::delete($Foto->fullPath);
+        if ($foto && \File::exists($foto->fullPath)) {
+            \File::delete($foto->fullPath);
         }
     }
 }

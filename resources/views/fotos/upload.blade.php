@@ -13,7 +13,7 @@
                 <i class="glyphicon glyphicon-upload"></i> &nbsp; <strong>Trocar</strong>
         </button>
         <div class="hide fileupload">
-            {!! Form::file(isset($name) ? $name : 'foto', isset($extraAttrs) ? $extraAttrs : null) !!}
+            {!! Form::file(isset($name) ? $name : 'files[]', isset($extraAttrs) ? $extraAttrs : null) !!}
         </div>
 
         <button
@@ -45,7 +45,7 @@
 
     </div>
 @else
-    {!! Form::file(isset($name) ? $name : 'foto', isset($extraAttrs) ? $extraAttrs : null) !!}
+    {!! Form::file(isset($name) ? $name : 'files[]', isset($extraAttrs) ? $extraAttrs : null) !!}
 @endif
 
 

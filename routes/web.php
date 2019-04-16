@@ -32,6 +32,7 @@ Route::resource('pessoas', 'PessoaController');
 
 Route::resource('cupons', 'CuponController');
 Route::get('cupons/pessoa/{id}', 'CuponController@getCuponsPessoa');
+Route::post('upload_image', 'UploadImageController@sendFiles');
 
 Route::resource('pessoas', 'PessoaController');
 Route::resource('faleConoscos', 'FaleConoscoController');

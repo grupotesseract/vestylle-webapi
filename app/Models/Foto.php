@@ -50,6 +50,10 @@ class Foto extends Model
         'file' => 'required'
     ];
 
+    public $appends = [
+        'urlCloudinary'
+    ];
+
 
     /**
      * Antes de deletar uma foto deve deletar o arquivo do cloudinary
@@ -96,9 +100,9 @@ class Foto extends Model
     public function getURLCloudinaryAttribute()
     {
         return '//res.cloudinary.com/'
-            .env('CLOUDINARY_CLOUD_NAME')
+            .config('cloudinary.CLOUDINARY_CLOUD_NAME')
             .'/image/upload/f_auto,q_auto/'
-            .env('CLOUDINARY_CLOUD_FOLDER', '')
+            .config('cloudinary.CLOUDINARY_CLOUD_FOLDER')
             ."/$this->cloudinary_id";
     }
 

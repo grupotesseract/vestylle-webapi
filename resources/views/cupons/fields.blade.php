@@ -14,30 +14,42 @@
     {!! Form::date('data_validade', $cupon->data_validade ?? null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Cupom Primeiro Login Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('cupom_primeiro_login', 'Adicionar ao usuário no primeiro login') !!}
-    {!! Form::checkbox('cupom_primeiro_login', null, ['class' => 'form-control', 'value' => $cupon->cupom_primeiro_login ?? false]) !!}
-</div>
-
 <!-- Texto Cupom Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('texto_cupom', 'Texto') !!}
     {!! Form::text('texto_cupom', null, ['class' => 'form-control']) !!}
 </div>
 
-@empty($cupon->oferta_id)
-    <!-- Foto Caminho Field -->
-    <div class="form-group col-sm-6">
-        {!! Form::label('foto_caminho', 'Foto do Cupom:') !!}
-        {!! Form::file('foto_caminho', null, ['class' => 'form-control']) !!}
-    </div>
-@endempty
+<!-- Cupom Primeiro Login Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('cupom_primeiro_login', 'Adicionar ao usuário no primeiro login') !!}
+    {!! Form::checkbox('cupom_primeiro_login', null, ['class' => 'form-control', 'value' => $cupon->cupom_primeiro_login ?? false]) !!}
+</div>
 
 <!-- Oferta Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('oferta_id', 'Descrição da Oferta:') !!}
-    {!! Form::select('oferta_id', $ofertas->pluck('descricao_oferta', 'id')->unique(), ['class' => 'form-control'], ['placeholder' => 'Escolha uma Oferta']) !!}
+    {!! Form::select('oferta_id', $ofertas->pluck('descricao_oferta', 'id'), $cupon->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha uma Oferta']) !!}
+</div>
+
+@if (isset($cupon->fotos) && is_null($cupon->oferta_id))
+<div class="row">
+    <div class="col-md-6">
+        <image-slider :images="{{ $cupon->fotos }}"></image-slider>
+    </div>
+</div>
+@endif
+
+@isset ($cupon->oferta->fotos)
+<div class="row">
+    <div class="col-md-6">
+        <image-slider :images="{{ $cupon->oferta->fotos }}"></image-slider>
+    </div>
+</div>
+@endisset
+
+<div class="form-group col-sm-12">
+    <upload-multiple-images v-model="files" v-on:upload="files = $event" :model="'App\\Models\\Cupon'" :model_id="'{!! isset($cupon) ? intval($cupon->id) : null !!}'" :input_name="'fotos[]'" :post_url="'upload_image'"></upload-multiple-images>
 </div>
 
 <!-- Submit Field -->
