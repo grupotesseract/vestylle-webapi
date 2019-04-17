@@ -60,6 +60,11 @@ class PessoaAPIController extends AppBaseController
     {
         $input = $request->all();
 
+        if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+            $input['cpf'] = $request->email;
+            $input['email'] = null;
+        } 
+
         $pessoa = $this->pessoaRepository->create($input);
         $pessoa->password = bcrypt($request->password);
         $pessoa->save();
