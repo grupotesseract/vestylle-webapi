@@ -63,8 +63,14 @@ class PessoaAPIController extends AppBaseController
         if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
             $input['cpf'] = $request->email;
             $input['email'] = null;
-        } 
 
+            $pessoa = $this->pessoaRepository->findByField(['cpf' => $input['cpf']]);
+
+            if ($pessoa->count() > 0) {
+                return $this->sendError('Este CPF já está cadastrado!');
+            }    
+        }         
+        
         $pessoa = $this->pessoaRepository->create($input);
         $pessoa->password = bcrypt($request->password);
         $pessoa->save();
