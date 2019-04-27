@@ -130,6 +130,16 @@ class Pessoa extends Authenticatable
     }
 
     /**
+     * Relação de polimorfica com segmentação/categorias
+     *
+     * @return void
+     */
+    public function segmentacoes()
+    {
+        return $this->morphMany('App\Models\Segmentacao', 'owner');
+    }
+
+    /**
      * Método para alimentar tabela pivô cupons_pessoas
      * com cupons marcados pra primeiro login associando o usuário novo
      *
