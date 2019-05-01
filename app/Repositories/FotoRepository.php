@@ -44,7 +44,7 @@ class FotoRepository extends BaseRepository
         foreach ($files as $file) {
             //Quando a imagem é croppada, ele envia o blob da imagem oque nao conta como object
             if ($file && ! is_object($file)) {
-                $filename = time();
+                $filename = microtime();
                 $image = \Image::make($file);
                 //Criando path inicial para direcionar o arquivo
                 $destinationPath = storage_path().'/images/';
@@ -75,7 +75,7 @@ class FotoRepository extends BaseRepository
                 $extension = $file->getClientOriginalExtension();
 
                 //usando o intervention para criar a imagem
-                $filename = time();
+                $filename = microtime();
                 $image = \Image::make($file->getRealPath());
                 $upload_success = $image->save($destinationPath.$filename.'.'.$extension);
 
