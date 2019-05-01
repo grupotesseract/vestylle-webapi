@@ -130,6 +130,16 @@ class Pessoa extends Authenticatable
     }
 
     /**
+     * Relação de polimorfica com segmentação/categorias
+     *
+     * @return void
+     */
+    public function segmentacoes()
+    {
+        return $this->morphMany('App\Models\Segmentacao', 'owner');
+    }
+
+    /**
      * Método para alimentar tabela pivô cupons_pessoas
      * com cupons marcados pra primeiro login associando o usuário novo
      *
@@ -140,5 +150,23 @@ class Pessoa extends Authenticatable
         $cuponsDePrimeiroLogin = Cupon::primeiroLogin()->pluck('id')->all();
 
         return $this->cupons()->sync($cuponsDePrimeiroLogin);
+    }
+
+
+    /**
+     * Mutator para a dataNascimento
+     */
+    public function setDataNascimentoAttribute($value)
+    {
+        $isCarbon = is_object($value);
+
+        if ($isCarbon) {
+            return $this->attributes['data_nascimento'] = $value->format('Y-m-d');
+        }
+
+        $dataFormatada = preg_match('/\//', $value);
+        return $this->attributes['data_nascimento'] = $dataFormatada
+            ? \Carbon\Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d')
+            : $value;
     }
 }

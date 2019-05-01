@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use Flash;
 use Response;
 use App\Http\Requests;
-use App\Jobs\SincronizarComCloudinary;
 use App\Models\Oferta;
+use Illuminate\Http\Request;
 use App\DataTables\OfertaDataTable;
 use App\DataTables\PessoaDataTable;
 use App\Repositories\FotoRepository;
+use App\Jobs\SincronizarComCloudinary;
 use App\Repositories\OfertaRepository;
 use App\Http\Requests\CreateOfertaRequest;
 use App\Http\Requests\UpdateOfertaRequest;
 use App\Http\Controllers\AppBaseController;
 use App\DataTables\Scopes\PessoasPorOferta;
-use Illuminate\Http\Request;
 
 class OfertaController extends AppBaseController
 {

@@ -95,6 +95,16 @@ class Oferta extends Model
     }
 
     /**
+     * Relação de polimorfica com segmentação/categorias
+     *
+     * @return void
+     */
+    public function segmentacoes()
+    {
+        return $this->morphMany('App\Models\Segmentacao', 'owner');
+    }
+
+    /**
      * Acessor para obter a URL da foto da Oferta.
      *
      * @return string - URL da foto ou de um placeholder com tamanho equivalente

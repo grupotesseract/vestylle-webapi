@@ -20,7 +20,7 @@ class PessoasTableSeeder extends Seeder
         $count = 0;
         $dias = 10;
 
-        while ($count <= 10)
+        while ($count <= 5)
         {
             $pessoas = $vestylleDBHelper->getUltimosRegistros(($vestylleDBHelper::LIMITE_DIAS), $dias);
             $count = count($pessoas);
@@ -29,7 +29,7 @@ class PessoasTableSeeder extends Seeder
 
         foreach ($pessoas as $pessoa) {
             $pessoaApp = $repositorio->findWhere(['cpf' => $pessoa->cnpj_cpf]);
-            
+
             if ($pessoaApp->count() == 0) {
                 $pessoaCriada = $repositorio->createFromVestylle($pessoa->cnpj_cpf);
                 $this->command->info(".");
