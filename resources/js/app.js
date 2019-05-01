@@ -8,7 +8,7 @@
 import './bootstrap';
 
 
-// window.Vue = require('vue');
+window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -18,7 +18,8 @@ import './bootstrap';
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('upload-multiple-images', require('./components/VueUploadMultipleImage.vue'));
+Vue.component('image-slider', require('./components/VueImageSlider.vue'));
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
@@ -29,6 +30,9 @@ import './bootstrap';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// const app = new Vue({
-//     el: '#app'
-// });
+const app = new Vue({
+    el: '#app',
+    data: {
+        files: Array
+    }
+});

@@ -34,6 +34,7 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::resource('faleConoscos', 'FaleConoscoController');
     Route::resource('ofertas', 'OfertaController');
     Route::resource('lojas', 'LojaController');
-});
 
+    Route::post('upload_image', 'UploadImageController@sendFiles');
+});
 

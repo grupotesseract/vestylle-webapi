@@ -5,24 +5,30 @@ namespace App\Http\Controllers;
 use Flash;
 use Response;
 use App\Models\Oferta;
+use App\Models\Cupon;
 use App\Models\Pessoa;
+use App\Jobs\SincronizarComCloudinary;
 use App\Http\Requests;
 use App\DataTables\CuponDataTable;
+use App\Repositories\FotoRepository;
 use App\DataTables\PessoaDataTable;
 use App\Repositories\CuponRepository;
 use App\Http\Requests\CreateCuponRequest;
 use App\Http\Requests\UpdateCuponRequest;
 use App\DataTables\Scopes\PessoasPorCupon;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
 
 class CuponController extends AppBaseController
 {
     /** @var  CuponRepository */
     private $cuponRepository;
+    private $fotoRepository;
 
-    public function __construct(CuponRepository $cuponRepo)
+    public function __construct(CuponRepository $cuponRepo, FotoRepository $fotoRepo)
     {
         $this->cuponRepository = $cuponRepo;
+        $this->fotoRepository = $fotoRepo;
     }
 
     /**
@@ -54,26 +60,36 @@ class CuponController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateCuponRequest $request)
+    public function store(Request $request)
     {
         $input = $request->all();
 
+        $validated = $request->validate(Cupon::$rules);
+
         $input['cupom_primeiro_login'] = isset($input['cupom_primeiro_login']) ? true : false;
-
-        $hasFoto = $request->hasFile('foto_caminho');
-
-        if ($hasFoto) {
-            $foto = $request->file('foto_caminho');
-            $foto_original_name = $foto->getClientOriginalName();
-            $foto_path = $foto->storeAs('public', $foto_original_name);
-            $input['foto_caminho'] = $foto_original_name;
-        }
 
         $cupon = $this->cuponRepository->create($input);
 
+        $fotos = $request->allFiles()['files'] ?? false;
+        $hasFotos = !empty($fotos);
+
+        if ($hasFotos) {
+            if ($cupon->fotos) {
+                $cupon->fotos()->delete();
+            }
+
+            $fotos = $this->fotoRepository->uploadAndCreate($request);
+            $cupon->fotos()->saveMany($fotos);
+
+            //Upload p/ Cloudinary e delete local
+            foreach ($fotos as $foto) {
+                $this->dispatch(new SincronizarComCloudinary($foto));
+            }
+        }
+
         Flash::success('Cupom criado com sucesso.');
 
-        return redirect(route('cupons.index'));
+        return redirect(route('cupons.show', $cupon));
     }
 
     /**
@@ -126,11 +142,13 @@ class CuponController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateCuponRequest $request)
+    public function update($id, Request $request)
     {
         $input = $request->all();
         $input['cupom_primeiro_login'] = isset($input['cupom_primeiro_login']) ? true : false;
         $cupon = $this->cuponRepository->findWithoutFail($id);
+
+        $validated = $request->validate(Cupon::$rules);
 
         if (empty($cupon)) {
             Flash::error('Cupom não encontrado');
@@ -138,20 +156,26 @@ class CuponController extends AppBaseController
             return redirect(route('cupons.index'));
         }
 
-        $hasFoto = $request->hasFile('foto_caminho');
+        $fotos = $request->allFiles()['files'] ?? false;
+        $hasFotos = !empty($fotos);
+        if ($hasFotos) {
+            if ($cupon->fotos) {
+                $cupon->fotos()->delete();
+            }
 
-        if ($hasFoto) {
-            $foto = $request->file('foto_caminho');
-            $foto_original_name = $foto->getClientOriginalName();
-            $foto_path = $foto->storeAs('public', $foto_original_name);
-            $input['foto_caminho'] = $foto_original_name;
+            $fotos = $this->fotoRepository->uploadAndCreate($request);
+            $cupon->fotos()->saveMany($fotos);
+
+            foreach ($fotos as $foto) {
+                $this->dispatch(new SincronizarComCloudinary($foto));
+            }
         }
 
         $cupon = $this->cuponRepository->update($input, $id);
 
         Flash::success('Cupom atualizado com sucesso.');
 
-        return redirect(route('cupons.index'));
+        return redirect(route('cupons.edit', $cupon));
     }
 
     /**
@@ -169,6 +193,10 @@ class CuponController extends AppBaseController
             Flash::error('Cupom não encontrado');
 
             return redirect(route('cupons.index'));
+        }
+
+        if ($cupon->fotos) {
+            $cupon->fotos()->delete();
         }
 
         $this->cuponRepository->delete($id);

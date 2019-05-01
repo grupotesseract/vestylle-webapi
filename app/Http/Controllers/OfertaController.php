@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use Flash;
 use Response;
 use App\Http\Requests;
+use App\Models\Oferta;
+use Illuminate\Http\Request;
 use App\DataTables\OfertaDataTable;
 use App\DataTables\PessoaDataTable;
 use App\Repositories\FotoRepository;
+use App\Jobs\SincronizarComCloudinary;
 use App\Repositories\OfertaRepository;
 use App\Http\Requests\CreateOfertaRequest;
 use App\Http\Requests\UpdateOfertaRequest;
 use App\Http\Controllers\AppBaseController;
 use App\DataTables\Scopes\PessoasPorOferta;
-use App\DataTables\Scopes\PessoasPorCupon;
 
 class OfertaController extends AppBaseController
 {
@@ -55,30 +57,33 @@ class OfertaController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateOfertaRequest $request)
+    public function store(Request $request)
     {
         $input = $request->all();
 
+        $validated = $request->validate(Oferta::$rules);
+
         $oferta = $this->ofertaRepository->create($input);
 
-        $hasFoto = $request->hasFile('foto');
-        if ($hasFoto) {
-            if ($oferta->foto) {
-                $oferta->foto->delete();
+        $fotos = $request->allFiles()['files'] ?? false;
+        $hasFotos = !empty($fotos);
+
+        if ($hasFotos) {
+            if ($oferta->fotos) {
+                $oferta->fotos()->delete();
             }
 
-            $foto = $this->fotoRepository->uploadAndCreate($request);
-            $oferta->foto()->save($foto);
+            $fotos = $this->fotoRepository->uploadAndCreate($request);
+            $oferta->fotos()->saveMany($fotos);
 
-            //Upload p/ Cloudinary e delete local
-            $publicId = "oferta_".time();
-            $this->fotoRepository->sendToCloudinary($foto, $publicId, env('CLOUDINARY_CLOUD_FOLDER'));
-            $this->fotoRepository->deleteLocal($foto->id);
+            foreach ($fotos as $foto) {
+                $this->dispatch(new SincronizarComCloudinary($foto));
+            }
         }
 
         Flash::success('Oferta criada com sucesso.');
 
-        return redirect(route('ofertas.index'));
+        return redirect(route('ofertas.show', $oferta));
     }
 
     /**
@@ -129,7 +134,7 @@ class OfertaController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateOfertaRequest $request)
+    public function update($id, Request $request)
     {
         $input = $request->all();
         $oferta = $this->ofertaRepository->findWithoutFail($id);
@@ -140,19 +145,21 @@ class OfertaController extends AppBaseController
             return redirect(route('ofertas.index'));
         }
 
-        $hasFoto = $request->foto;
-        if ($hasFoto) {
-            if ($oferta->foto) {
-                $oferta->foto->delete();
+        $validated = $request->validate(Oferta::$rules);
+
+        $fotos = $request->allFiles()['files'] ?? false;
+        $hasFotos = !empty($fotos);
+        if ($hasFotos) {
+            if ($oferta->fotos) {
+                $oferta->fotos()->delete();
             }
 
-            $foto = $this->fotoRepository->uploadAndCreate($request);
-            $oferta->foto()->save($foto);
+            $fotos = $this->fotoRepository->uploadAndCreate($request);
+            $oferta->fotos()->saveMany($fotos);
 
-            //Upload p/ Cloudinary e delete local
-            $publicId = "oferta_".time();
-            $this->fotoRepository->sendToCloudinary($foto, $publicId, env('CLOUDINARY_CLOUD_FOLDER'));
-            $this->fotoRepository->deleteLocal($foto->id);
+            foreach ($fotos as $foto) {
+                $this->dispatch(new SincronizarComCloudinary($foto));
+            }
         }
 
         $oferta = $this->ofertaRepository->update($input, $id);
@@ -177,6 +184,10 @@ class OfertaController extends AppBaseController
             Flash::error('Oferta não encontrada');
 
             return redirect(route('ofertas.index'));
+        }
+
+        if ($oferta->fotos) {
+            $oferta->fotos()->delete();
         }
 
         $this->ofertaRepository->delete($id);

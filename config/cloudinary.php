@@ -1,0 +1,8 @@
+<?php
+
+return [
+    'CLOUDINARY_CLOUD_NAME' => env('CLOUDINARY_CLOUD_NAME', 'tesseract'),
+    'CLOUDINARY_CLOUD_FOLDER' => env('CLOUDINARY_CLOUD_FOLDER', 'vestylle'),
+    'CLOUDINARY_API_KEY' => env('CLOUDINARY_API_KEY'),
+    'CLOUDINARY_API_SECRET' => env('CLOUDINARY_API_SECRET'),
+];

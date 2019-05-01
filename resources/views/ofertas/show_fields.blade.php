@@ -45,9 +45,10 @@
     </div>
 
 </div>
-<div class="col-md-6">
-    <!-- Foto Oferta Field -->
-    <div class="form-group">
-        <img src="{{ $oferta->urlFoto }}" width="300" height="300" alt="oferta">
+@if ($oferta->fotos)
+<div class="row">
+    <div class="col-md-6">
+        <image-slider :images="{{ $oferta->fotos }}"></image-slider>
     </div>
 </div>
+@endif

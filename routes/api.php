@@ -47,4 +47,4 @@ Route::get('lojas', 'LojaAPIController@show');
 Route::get('ofertas', 'OfertaAPIController@index');
 Route::get('ofertas/{id}', 'OfertaAPIController@show');
 
-
+Route::resource('lojas', 'LojaAPIController');

@@ -53,7 +53,7 @@ class Oferta extends Model
      * @var array
      */
     public static $rules = [
-        'descricao_oferta' => 'required',        
+        'descricao_oferta' => 'required',
         'titulo' => 'required | max: 150',
         'subtitulo' => 'required | max: 150',
         'preco' => 'required',
@@ -85,13 +85,13 @@ class Oferta extends Model
     }
 
     /**
-     * Relação de polimorfica com fotos
+     * Relação polimórfica 1 x N com fotos
      *
      * @return void
      */
-    public function foto()
+    public function fotos()
     {
-        return $this->morphOne(\App\Models\Foto::class, 'owner');
+        return $this->morphMany(\App\Models\Foto::class, 'owner');
     }
 
     /**
@@ -111,8 +111,8 @@ class Oferta extends Model
      */
     public function getUrlFotoAttribute()
     {
-        return $this->foto
-            ? $this->foto->urlCloudinary
+        return $this->fotos()->orderBy('updated_at', 'desc')->first()
+            ? $this->fotos()->orderBy('updated_at', 'desc')->first()->urlCloudinary
                 : '//via.placeholder.com/500x500';
     }
 

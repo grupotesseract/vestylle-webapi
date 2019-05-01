@@ -122,6 +122,10 @@ class CuponAPIController extends AppBaseController
             return $this->sendError('Cupon not found');
         }
 
+        if ($cupon->fotos) {
+            $cupon->fotos()->delete();
+        }
+
         $cupon->delete();
 
         return $this->sendResponse($id, 'Cupom excluído com sucesso');
