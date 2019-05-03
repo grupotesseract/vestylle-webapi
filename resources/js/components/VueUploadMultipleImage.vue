@@ -38,7 +38,7 @@
             handleFiles() {
                 let uploadedFiles = this.$refs.files.files;
 
-                if (uploadedFiles.length > 10) {
+                if (uploadedFiles.length > 10 || this.files.length == 10) {
                     swal({
                         title: 'Ops!',
                         type: 'warning',
@@ -152,6 +152,7 @@
     }
 
     div.file-listing img{
+        object-fit: cover;
         height: 200px;
         width: 200px;
     }
