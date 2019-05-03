@@ -69,10 +69,6 @@ class OfertaController extends AppBaseController
         $hasFotos = !empty($fotos);
 
         if ($hasFotos) {
-            if ($oferta->fotos) {
-                $oferta->fotos()->delete();
-            }
-
             $fotos = $this->fotoRepository->uploadAndCreate($request);
             $oferta->fotos()->saveMany($fotos);
 
@@ -149,11 +145,16 @@ class OfertaController extends AppBaseController
 
         $fotos = $request->allFiles()['files'] ?? false;
         $hasFotos = !empty($fotos);
-        if ($hasFotos) {
-            if ($oferta->fotos) {
-                $oferta->fotos()->delete();
-            }
+        $canUpload = $hasFotos ? \App\Helpers\Helpers::checkUploadLimit($oferta, count($fotos)) : true;
 
+        if ($canUpload == false) {
+            $oferta = $this->ofertaRepository->update($input, $id);
+            Flash::error('Número máximo de imagens atingido. Tente novamente');
+            Flash::success('Oferta atualizada com sucesso.');
+            return redirect(route('ofertas.edit', $oferta));
+        }
+
+        if ($hasFotos) {
             $fotos = $this->fotoRepository->uploadAndCreate($request);
             $oferta->fotos()->saveMany($fotos);
 

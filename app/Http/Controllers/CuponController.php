@@ -74,10 +74,6 @@ class CuponController extends AppBaseController
         $hasFotos = !empty($fotos);
 
         if ($hasFotos) {
-            if ($cupon->fotos) {
-                $cupon->fotos()->delete();
-            }
-
             $fotos = $this->fotoRepository->uploadAndCreate($request);
             $cupon->fotos()->saveMany($fotos);
 
@@ -158,11 +154,16 @@ class CuponController extends AppBaseController
 
         $fotos = $request->allFiles()['files'] ?? false;
         $hasFotos = !empty($fotos);
-        if ($hasFotos) {
-            if ($cupon->fotos) {
-                $cupon->fotos()->delete();
-            }
+        $canUpload  = $hasFotos ? \App\Helpers\Helpers::checkUploadLimit($cupon, count($fotos)) : true;
 
+        if ($canUpload == false) {
+            $cupon = $this->cuponRepository->update($input, $id);
+            Flash::error('Número máximo de imagens atingido. Tente novamente');
+            Flash::success('Cupom atualizado com sucesso.');
+            return redirect(route('cupons.edit', $cupon));
+        }
+
+        if ($hasFotos) {
             $fotos = $this->fotoRepository->uploadAndCreate($request);
             $cupon->fotos()->saveMany($fotos);
 

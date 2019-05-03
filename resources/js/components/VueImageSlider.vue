@@ -1,10 +1,11 @@
 <template>
-    <div class="row slider-container">
+    <div class="row slider-container" v-if="images.length > 0">
         <div class="col">
             <a class="prev-image-link" @click="prev"><i class="fa fa-chevron-left"></i></a>
         </div>
         <div class="col" v-for="number in [currentNumber]">
-          <img class="slider-image" :alt="'Foto indisponível'" :src="currentImage"/>
+          <button type="button" class="btn btn-danger remove-img-button" title="Excluir imagem" @click="removeImg(currentImage)"><i class="fa fa-trash"></i></button>
+          <img class="slider-image" :alt="'Foto indisponível'" :src="currentImage.urlCloudinary"/>
         </div>
         <div class="col">
             <a class="next-image-link" @click="next"><i class="fa fa-chevron-right"></i></a>
@@ -27,15 +28,34 @@
             },
             prev: function() {
                 this.currentNumber -= 1
+            },
+            removeImg(currentImage) {
+                const imgIndex = this.images.indexOf(currentImage);
+                axios.delete('/imagens/' + currentImage.id,
+                    {},
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }
+                ).then(function(data) {
+                    this.images.splice(imgIndex, 1 );
+                    this.next();
+                    swal({
+                        title: 'Imagem removida com sucesso',
+                        type: 'success',
+                        showConfirmButton: true
+                    });
+                }.bind(this)).catch(function(data) {
+                    console.log('error');
+                });
             }
         },
         computed: {
             currentImage: function() {
               const currentNumber = this.currentNumber;
               const images = this.images;
-              console.log(images);
-              console.log(images[Math.abs(currentNumber) % images.length].urlCloudinary);
-              return images[Math.abs(currentNumber) % images.length].urlCloudinary;
+              return images[Math.abs(currentNumber) % images.length];
             }
         }
     }
@@ -63,6 +83,13 @@
     .slider-image {
         height: 30em;
         width: 30em;
+        object-fit: cover;
+        animation: fadein 0.8s;
+    }
+
+    .remove-img-button {
+        position: absolute;
+        margin-left: 23em;
         animation: fadein 0.8s;
     }
 
