@@ -252,6 +252,37 @@ class VestylleDBHelper
     }
 
     /**
+     * Metodo para obter os IDS das Pessoas que tiverem saldos atualizados
+     *
+     * @return int || false
+     */
+    public function getIdsUltimosSaldos($tipoLimite=self::LIMITE_DIAS, $valorLimite=2)
+    {
+        $query = "SELECT DONOID from vegas_teste.fidmovim" ;
+        $query .= " WHERE CNSCADMOM > " . str_replace("#", $valorLimite, $tipoLimite);
+
+        try {
+            $result = $this->query()->select($query);
+        } catch (\Exception $e) {
+            \Log::error("\n[ERRO] - Erro ao obter ultimos registros. Log: " . $e->getMessage());
+            return false;
+        }
+
+        if ($result && count($result)) {
+            $arrIds =  collect($result)->pluck('pessoa')->all();
+
+            //Retornando apenas valores nao nulos
+            return array_filter($arrIds, function($value) {
+                return $value ? $value : false;
+            });
+        }
+
+        //Se chegou ate aqui, deu ruim :(
+        return false;
+
+    }
+
+    /**
      * Metodo para obter X ultimos CPF's para facilitar o teste
      *
      * @OBS - Esse método nao faz parte do fluxo normal da aplicação, ele é usado somente para testes!

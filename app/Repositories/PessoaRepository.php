@@ -310,7 +310,11 @@ class PessoaRepository extends BaseRepository
         $this->startConnectorVestylle();
 
         //Pega todas as pessoas alteradas lá no periodo especificado
-        $retornoVestylle = $this->vestylleDB->getIdsUltimasCompras($tipoLimite, $valorLimite);
+        $retornoVestylleCompras = $this->vestylleDB->getIdsUltimasCompras($tipoLimite, $valorLimite);
+        \Log::info(json_encode($retornoVestylleCompras));
+        $retornoVestylleSaldos = $this->vestylleDB->getIdsUltimosSaldos($tipoLimite, $valorLimite);
+        \Log::info(json_encode($retornoVestylleSaldos));
+        $retornoVestylle = array_unique(array_merge($retornoVestylleCompras, $retornoVestylleSaldos));
         \Log::info(json_encode($retornoVestylle));
 
         if ($retornoVestylle && count($retornoVestylle)) {
