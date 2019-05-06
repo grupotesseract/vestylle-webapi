@@ -16,7 +16,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::resource('cupons', 'CuponAPIController')->except(['update', 'destroy','store']);
     Route::resource('ofertas', 'OfertaAPIController')->except(['update', 'destroy','store']);
-
+    Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
 });
 
 
@@ -47,4 +47,4 @@ Route::get('lojas', 'LojaAPIController@show');
 Route::get('ofertas', 'OfertaAPIController@index');
 Route::get('ofertas/{id}', 'OfertaAPIController@show');
 
-
+Route::resource('lojas', 'LojaAPIController');

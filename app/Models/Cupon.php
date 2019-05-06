@@ -85,6 +85,16 @@ class Cupon extends Model
     }
 
     /**
+     * Relação polimórfica 1 x N com fotos
+     *
+     * @return void
+     */
+    public function fotos()
+    {
+        return $this->morphMany(\App\Models\Foto::class, 'owner');
+    }
+
+    /**
      * Mutator que traz a foto da oferta no lugar da foto
      * do cupom caso eles estejam relacionados
      *

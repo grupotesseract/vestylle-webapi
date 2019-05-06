@@ -52,9 +52,10 @@
     </div>
 </div>
 
-<div class="col-md-6">
-    <!-- Foto da oferta -->
-    <div class="form-group">
-        <img src="{!! url('storage/' . $cupon->foto_caminho) !!}" width="300" height="300" alt="foto do cupom">
+@if ($cupon->fotos)
+<div class="row">
+    <div class="col-md-6">
+        <image-slider :images="{{ $cupon->fotos }}"></image-slider>
     </div>
 </div>
+@endif

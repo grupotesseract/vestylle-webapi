@@ -122,6 +122,10 @@ class OfertaAPIController extends AppBaseController
             return $this->sendError('Oferta not found');
         }
 
+        if ($oferta->fotos) {
+            $oferta->fotos()->delete();
+        }
+
         $oferta->delete();
 
         return $this->sendResponse($id, 'Oferta excluída com sucesso');

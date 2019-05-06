@@ -37,7 +37,7 @@
 
 @if (!Auth::guest())
 <body class="skin-black sidebar-mini">
-    <div class="wrapper">
+    <div id="app" class="wrapper">
         <!-- Main Header -->
         <header class="main-header">
 
@@ -81,7 +81,9 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.3/cropper.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.33.1/dist/sweetalert2.all.min.js"></script>
 
+
     <script src="{{ asset('js/cropper_config.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}" ></script>
 
     @yield('scripts')
 </body>

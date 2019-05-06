@@ -28,8 +28,10 @@ yarn
 yarn prod
 
 composer install
+
 if [[ ${BRANCH} == 'develop' ]]; then
   php artisan migrate:fresh --seed
+  php artisan passport:client --personal
 else
   php artisan migrate --force
 fi

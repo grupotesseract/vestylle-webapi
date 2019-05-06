@@ -26,31 +26,19 @@
     {!! Form::text('texto_oferta', null, ['class' => 'form-control']) !!}
 </div>
 
-
-{{-- Campos para o UPLOAD / CROP de foto. Só incluindo o crop no edit --}}
-{{-- Passando para a blade fotos.upload o id do form, da img e o aspectRatio --}}
-<div class="form-group col-sm-12 text-center">
-    @if (\Route::is('*edit*'))
-
-        <img id="foto-oferta" class="" src="{{$oferta->urlFoto}}" alt=""/>
-
-        @include('fotos.upload', [
-            'comCropper' => true,
-            'aspectRatio' => 1,
-            'formID' => '#form-oferta',
-            'previewID' => '#foto-oferta'
-        ])
-    @else
-        @include('fotos.upload', [
-            'comCropper' => false,
-            'aspectRatio' => 1,
-            'formID' => '#form-oferta',
-            'previewID' => '#foto-oferta'
-        ])
-    @endif
+@isset ($oferta->fotos)
+<div class="row">
+    <div class="col-md-6">
+        <image-slider :images="{{ $oferta->fotos }}"></image-slider>
+    </div>
 </div>
+@endisset
 
 <div class="clearfix"></div>
+
+<div class="form-group col-sm-12">
+    <upload-multiple-images v-model="files" v-on:upload="files = $event" :model="'App\\Models\\Oferta'" :model_id="'{!! isset($oferta) ? intval($oferta->id) : null !!}'" :input_name="'fotos[]'" :post_url="'upload_image'"></upload-multiple-images>
+</div>
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">

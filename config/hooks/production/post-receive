@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 PROJECT_PATH="/var/www/html/vestylle.grupotesseract.com.br/backend"
 BARE_REPOSITORY="${PROJECT_PATH}.git"
