@@ -71,7 +71,7 @@ class Oferta extends Model
      */
     public function cupons()
     {
-        return $this->hasMany('App\Cupon');
+        return $this->hasMany('App\Models\Cupon');
     }
 
     /**
