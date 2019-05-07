@@ -315,16 +315,17 @@ class PessoaRepository extends BaseRepository
         $retornoVestylleSaldos = $this->vestylleDB->getIdsUltimosSaldos($tipoLimite, $valorLimite);
         \Log::info(json_encode($retornoVestylleSaldos));
         $retornoVestylle = array_unique(array_merge($retornoVestylleCompras, $retornoVestylleSaldos));
-        \Log::info(json_encode($retornoVestylle));
-
-        if ($retornoVestylle && count($retornoVestylle)) {
+        \Log::info('Retorno Vestylle :'.json_encode(array_values($retornoVestylle)));
+        
+        if (count($retornoVestylle) > 0) {
             $numPessoasAtualizadas = 0;
 
             //Obter pessoas que existem no nosso BD
-            $pessoasParaAtualizar = Pessoa::whereIn('id_vestylle', $retornoVestylle)->get();
+            $pessoasParaAtualizar = Pessoa::whereIn('id_vestylle', array_values($retornoVestylle))->get();
 
             //Para cada uma dessas atualizar, pontos, vencimento e ultima compra
             foreach ($pessoasParaAtualizar as $Pessoa) {
+                \Log::info('oi');
                 $this->updatePontosPessoa($Pessoa);
                 $this->updateVencimentoPontosPessoa($Pessoa);
                 $this->updateDataUltimaCompraPessoa($Pessoa);

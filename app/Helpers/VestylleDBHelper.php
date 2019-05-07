@@ -238,12 +238,14 @@ class VestylleDBHelper
         }
 
         if ($result && count($result)) {
-            $arrIds =  collect($result)->pluck('pessoa')->all();
-
+            $arrIds =  collect($result)->pluck('pessoa')->all();            
             //Retornando apenas valores nao nulos
-            return array_filter($arrIds, function($value) {
+            
+            $values = array_filter($arrIds, function($value) {
                 return $value ? $value : false;
             });
+
+            return array_values($values);
         }
 
         //Se chegou ate aqui, deu ruim :(
@@ -269,12 +271,13 @@ class VestylleDBHelper
         }
 
         if ($result && count($result)) {
-            $arrIds =  collect($result)->pluck('pessoa')->all();
-
+            $arrIds =  collect($result)->pluck('DONOID')->all();            
             //Retornando apenas valores nao nulos
-            return array_filter($arrIds, function($value) {
+            $values = array_filter($arrIds, function($value) {
                 return $value ? $value : false;
             });
+
+            return array_values($values);
         }
 
         //Se chegou ate aqui, deu ruim :(
