@@ -61,11 +61,15 @@ class PessoaRepository extends BaseRepository
      */
     public function trataInformacoesSocial($usuarioSocial)
     {
-        $pessoa = $this->firstOrNew(['email' => $usuarioSocial->email]);
-        $pessoa->nome = $usuarioSocial->nome;
-        $pessoa->social_token = $usuarioSocial->social_token;
-        $pessoa->save();
-        return $pessoa;
+        if (!is_null($usuarioSocial->email)) {                    
+            $pessoa = $this->firstOrNew(['email' => $usuarioSocial->email]);
+            $pessoa->nome = $usuarioSocial->nome;
+            $pessoa->social_token = $usuarioSocial->social_token;
+            $pessoa->save();
+            return $pessoa;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -311,17 +315,22 @@ class PessoaRepository extends BaseRepository
         $this->startConnectorVestylle();
 
         //Pega todas as pessoas alteradas lá no periodo especificado
-        $retornoVestylle = $this->vestylleDB->getIdsUltimasCompras($tipoLimite, $valorLimite);
-        \Log::info(json_encode($retornoVestylle));
-
-        if ($retornoVestylle && count($retornoVestylle)) {
+        $retornoVestylleCompras = $this->vestylleDB->getIdsUltimasCompras($tipoLimite, $valorLimite);
+        \Log::info(json_encode($retornoVestylleCompras));
+        $retornoVestylleSaldos = $this->vestylleDB->getIdsUltimosSaldos($tipoLimite, $valorLimite);
+        \Log::info(json_encode($retornoVestylleSaldos));
+        $retornoVestylle = array_unique(array_merge($retornoVestylleCompras, $retornoVestylleSaldos));
+        \Log::info('Retorno Vestylle :'.json_encode(array_values($retornoVestylle)));
+        
+        if (count($retornoVestylle) > 0) {
             $numPessoasAtualizadas = 0;
 
             //Obter pessoas que existem no nosso BD
-            $pessoasParaAtualizar = Pessoa::whereIn('id_vestylle', $retornoVestylle)->get();
+            $pessoasParaAtualizar = Pessoa::whereIn('id_vestylle', array_values($retornoVestylle))->get();
 
             //Para cada uma dessas atualizar, pontos, vencimento e ultima compra
             foreach ($pessoasParaAtualizar as $Pessoa) {
+                \Log::info('oi');
                 $this->updatePontosPessoa($Pessoa);
                 $this->updateVencimentoPontosPessoa($Pessoa);
                 $this->updateDataUltimaCompraPessoa($Pessoa);
