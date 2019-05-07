@@ -38,7 +38,7 @@ class OfertaAPIController extends AppBaseController
     {
         $this->ofertaRepository->pushCriteria(new RequestCriteria($request));
         $this->ofertaRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $ofertas = $this->ofertaRepository->all();
+        $ofertas = $this->ofertaRepository->with('cupons')->all();
 
         return $this->sendResponse($ofertas->toArray(), 'Ofertas encontradas com sucesso');
     }
@@ -71,7 +71,7 @@ class OfertaAPIController extends AppBaseController
     public function show($id)
     {
         /** @var Oferta $oferta */
-        $oferta = $this->ofertaRepository->findWithoutFail($id);
+        $oferta = $this->ofertaRepository->with('cupons')->findWithoutFail($id);
 
         if (empty($oferta)) {
             return $this->sendError('Oferta not found');

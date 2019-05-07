@@ -35,7 +35,6 @@ class SincronizarComCloudinary implements ShouldQueue
         $publicId = uniqid('vestylle_upload_') . rand(1,420);
         FotoRepository::sendToCloudinary($this->foto, $publicId, config('cloudinary.CLOUDINARY_CLOUD_FOLDER'));
         FotoRepository::deleteLocal($this->foto->id);
-        sleep(1);
     }
 
     /**

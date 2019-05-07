@@ -17,11 +17,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('pessoas/{id}/ofertas', 'PessoaAPIController@getOfertas')->middleware('pessoaid');
     Route::post('pessoas/{id}/ofertas', 'PessoaAPIController@postOfertas')->middleware('pessoaid');
 
-    //TODO
-    // # Rota para listar os cupons ativos da pessoa?
-    // # Rota para listar os cupons utilizados da pessoa?
-    // # Rota para listar as infos de 1 cupom dessa pessoa? (para mostrar o ID unico CupomxPessoa)
-
+    Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
 });
 
 

@@ -181,14 +181,19 @@ class PessoaAPIController extends AppBaseController
     public function redirecionaSocial(Request $request)
     {
         $pessoa = $this->pessoaRepository->trataInformacoesSocial($request);                
-        $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;        
-        return $this->sendResponse(
-            [
-                'pessoa' => $pessoa->toArray(),
-                'token' => $token
-            ],            
-            'Usuário autenticou via API com Sucesso'
-        );
+        if ($pessoa) {
+            $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;        
+            return $this->sendResponse(
+                [
+                    'pessoa' => $pessoa->toArray(),
+                    'token' => $token
+                ],            
+                'Usuário autenticou via API com Sucesso'
+            );        
+        } else {
+            return $this->sendError('Usuário inexistente');            
+        }
+
     }    
 
     /**

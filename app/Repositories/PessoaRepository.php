@@ -61,11 +61,15 @@ class PessoaRepository extends BaseRepository
      */
     public function trataInformacoesSocial($usuarioSocial)
     {
-        $pessoa = $this->firstOrNew(['email' => $usuarioSocial->email]);
-        $pessoa->nome = $usuarioSocial->nome;
-        $pessoa->social_token = $usuarioSocial->social_token;
-        $pessoa->save();
-        return $pessoa;
+        if (!is_null($usuarioSocial->email)) {                    
+            $pessoa = $this->firstOrNew(['email' => $usuarioSocial->email]);
+            $pessoa->nome = $usuarioSocial->nome;
+            $pessoa->social_token = $usuarioSocial->social_token;
+            $pessoa->save();
+            return $pessoa;
+        } else {
+            return false;
+        }
     }
 
     /**
