@@ -156,6 +156,7 @@ class PessoaRepository extends BaseRepository
 
         $result = $pessoaObj->update([
             'id_vestylle'  => $pessoa->idpessoa,
+            'nome' => trim($pessoaObj->nome) ? $pessoaObj->nome : $pessoa->nome,
             "celular" => $pessoa->celular,
             "cep" => $pessoa->cep,
             "endereco" => $pessoa->endereco,
