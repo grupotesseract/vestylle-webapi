@@ -95,16 +95,19 @@ class Cupon extends Model
     }
 
     /**
-     * Mutator que traz a foto da oferta no lugar da foto
-     * do cupom caso eles estejam relacionados
+     * Acessor que traz a a primeira foto do cupon, caso nao exista nenhuma
+     * trazer da oferta, caso eles estejam relacionados
      *
      * @return void
      */
     public function getFotoCaminhoAttribute()
     {
+        if ($this->fotos()->count()) {
+            return $this->fotos()->first()->urlCloudinary;
+        }
+
         if ($this->oferta) {
             return $this->oferta->foto_oferta;
         }
-        return $this->attributes['foto_caminho'];
     }
 }
