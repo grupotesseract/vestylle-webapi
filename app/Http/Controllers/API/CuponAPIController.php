@@ -159,6 +159,12 @@ class CuponAPIController extends AppBaseController
             return $this->sendError('Pessoa não encontrada');
         }
 
+        $cupom_ativado = \App\Models\CuponPessoa::jaFoiAtivado($pessoa_id, $cupom_id);
+
+        if ($cupom_ativado) {
+            return $this->sendResponse($cupom_ativado, 'O Cupom já está ativado');
+        }
+
         $codigo_unico = $cupom->gerarCodigoUnico();
         $cupom->ativar($pessoa_id, $codigo_unico);
 

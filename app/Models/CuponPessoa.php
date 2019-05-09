@@ -33,4 +33,30 @@ class CuponPessoa extends Model
     {
         return $this->belongsTo('App\Models\Cupon', 'cupom_id');
     }
+
+    /**
+     * Retorna true se o cupom já foi ativado pra uma determinada pessoa
+     *
+     * @param $cupom_id id do cupom
+     * @param $pessoa_id id da pessoa
+     *
+     * @return false || (array)Cupom
+     */
+    public static function jaFoiAtivado($cupom_id, $pessoa_id)
+    {
+        $ativado = \App\Models\CuponPessoa::where([
+            'cupom_id' => $cupom_id,
+            'pessoa_id' => $pessoa_id,
+        ])->exists();
+
+        if ($ativado) {
+            $cupom_pessoa = \App\Models\CuponPessoa::where([ 'cupom_id' => $cupom_id, 'pessoa_id' => $pessoa_id, ])->first();
+            $cupom = $cupom_pessoa->cupom->toArray();
+            $cupom['codigo_unico'] = $cupom_pessoa->codigo_unico;
+
+            return $cupom;
+        }
+
+        return false;
+    }
 }
