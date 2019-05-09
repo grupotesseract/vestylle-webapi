@@ -68,9 +68,9 @@ class PessoaAPIController extends AppBaseController
 
             if ($pessoa->count() > 0) {
                 return $this->sendError('Este CPF já está cadastrado!');
-            }    
-        }         
-        
+            }
+        }
+
         $pessoa = $this->pessoaRepository->create($input);
         $pessoa->password = bcrypt($request->password);
         $pessoa->save();
@@ -180,21 +180,21 @@ class PessoaAPIController extends AppBaseController
      */
     public function redirecionaSocial(Request $request)
     {
-        $pessoa = $this->pessoaRepository->trataInformacoesSocial($request);                
+        $pessoa = $this->pessoaRepository->trataInformacoesSocial($request);
         if ($pessoa) {
-            $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;        
+            $token = $pessoa->createToken('Laravel Password Grant Client')->accessToken;
             return $this->sendResponse(
                 [
                     'pessoa' => $pessoa->toArray(),
                     'token' => $token
-                ],            
+                ],
                 'Usuário autenticou via API com Sucesso'
-            );        
+            );
         } else {
-            return $this->sendError('Usuário inexistente');            
+            return $this->sendError('Usuário inexistente');
         }
 
-    }    
+    }
 
     /**
      * Autenticação via API
@@ -208,7 +208,7 @@ class PessoaAPIController extends AppBaseController
             $pessoa = $this->pessoaRepository->findByField('email', $request->email)->first();
         } else {
             $pessoa = $this->pessoaRepository->findByField('cpf', $request->email)->first();
-        }        
+        }
 
         if ($pessoa) {
             $token = $this->pessoaRepository->login($pessoa, $request);
@@ -217,8 +217,8 @@ class PessoaAPIController extends AppBaseController
                     [
                         'pessoa' => $pessoa->toArray(),
                         'token' => $token
-                    ],            
-                    'Usuário autenticou via API com Sucesso'                    
+                    ],
+                    'Usuário autenticou via API com Sucesso'
                 );
             } else {
                 return $this->sendError('A senha digitada está incorreta');
@@ -251,7 +251,7 @@ class PessoaAPIController extends AppBaseController
         } else {
             return $this->sendError('Pessoa não encontrada');
         }
-        
+
     }
 
     /**
@@ -296,6 +296,6 @@ class PessoaAPIController extends AppBaseController
             return $this->sendError('Pessoa não encontrada');
         }
 
-        
+
     }
 }

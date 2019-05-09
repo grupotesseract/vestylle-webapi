@@ -74,7 +74,7 @@ class CuponAPIController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            return $this->sendError('Cupon not found');
+            return $this->sendError('Cupom não encontrado');
         }
 
         return $this->sendResponse($cupon->toArray(), 'Cupom encontrado com sucesso');
@@ -97,7 +97,7 @@ class CuponAPIController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            return $this->sendError('Cupon not found');
+            return $this->sendError('Cupom não encontrado');
         }
 
         $cupon = $this->cuponRepository->update($input, $id);
@@ -119,15 +119,53 @@ class CuponAPIController extends AppBaseController
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         if (empty($cupon)) {
-            return $this->sendError('Cupon not found');
+            return $this->sendError('Cupom não encontrado');
         }
 
         if ($cupon->fotos) {
             $cupon->fotos()->delete();
         }
 
+        if ($cupon->pessoas) {
+            \DB::statement("DELETE FROM cupons_pessoas WHERE cupom_id = $cupon->id");
+        }
+
         $cupon->delete();
 
         return $this->sendResponse($id, 'Cupom excluído com sucesso');
     }
+
+    /**
+     * Método que atribui um código único ao cupom e
+     * o associa a uma pessoa
+     *
+     * @param $cupom_id id do cupom
+     * @param $request Request com pessoa_id no input
+     *
+     * @return Cupom com o código recém gerado
+     */
+    public function ativar($cupom_id, Request $request)
+    {
+        $cupom = \App\Models\Cupon::find($cupom_id);
+
+        if (!$cupom) {
+            return $this->sendError('Cupom não encontrado');
+        }
+
+        $pessoa_id = $request->input('pessoa_id');
+        $pessoa = \App\Models\Pessoa::find($pessoa_id);
+
+        if (!$pessoa) {
+            return $this->sendError('Pessoa não encontrada');
+        }
+
+        $codigo_unico = $cupom->gerarCodigoUnico();
+        $cupom->ativar($pessoa_id, $codigo_unico);
+
+        $response = $cupom->toArray();
+        $response['codigo_unico'] = $codigo_unico;
+
+        return $this->sendResponse($response, 'Cupom ativado com sucesso');
+    }
+
 }

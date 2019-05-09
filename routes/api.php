@@ -18,7 +18,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('pessoas/{id}/ofertas', 'PessoaAPIController@postOfertas')->middleware('pessoaid');
 
     Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
+    Route::post('cupons/{id}/ativar', 'CuponAPIController@ativar');
 });
+
 
 
 /*

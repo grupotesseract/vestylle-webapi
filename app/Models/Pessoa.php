@@ -149,6 +149,10 @@ class Pessoa extends Authenticatable
     {
         $cuponsDePrimeiroLogin = Cupon::primeiroLogin()->pluck('id')->all();
 
+        $cupom_dummy = new \App\Models\Cupon();
+        $dadosTabelaPivo = array_fill(0, count($cuponsDePrimeiroLogin), ['codigo_unico' => $cupom_dummy->gerarCodigoUnico()]);
+        $cuponsDePrimeiroLogin  = array_combine($cuponsDePrimeiroLogin, $dadosTabelaPivo);
+
         return $this->cupons()->sync($cuponsDePrimeiroLogin);
     }
 

@@ -110,4 +110,34 @@ class Cupon extends Model
             return $this->oferta->foto_oferta;
         }
     }
+
+    /**
+     * Alimenta a relação com a pessoa e com o código único gerado
+     * na rota de ativação
+     *
+     * @return void
+     */
+    public function ativar($pessoa_id, $codigo_unico)
+    {
+        \App\Models\CuponPessoa::create([
+            'cupom_id' => $this->id,
+            'pessoa_id' => $pessoa_id,
+            'codigo_unico' => $codigo_unico,
+        ]);
+    }
+
+    /**
+     * Gera um código para inserção
+     * na coluna codigo_unico
+     * da tabela pivô cupons_pessoas
+     *
+     * @return string
+     */
+    public function gerarCodigoUnico()
+    {
+        $tamanhoDoCodigo = 9;
+        $codigo = substr(strtoupper(uniqid("#" . rand(0,420))), 0, $tamanhoDoCodigo);
+
+        return $codigo;
+    }
 }
