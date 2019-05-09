@@ -168,6 +168,10 @@ class PessoaAPIController extends AppBaseController
             return $this->sendError('Pessoa não encontrada');
         }
 
+        if ($pessoa->cupons) {
+            \DB::statement("DELETE FROM cupons_pessoas WHERE pessoa_id = $pessoa->id");
+        }
+
         $pessoa->delete();
 
         return $this->sendResponse($id, 'Pessoa excluída com sucesso');

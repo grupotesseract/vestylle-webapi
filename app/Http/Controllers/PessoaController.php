@@ -144,6 +144,10 @@ class PessoaController extends AppBaseController
             return redirect(route('pessoas.index'));
         }
 
+        if ($pessoa->cupons) {
+            \DB::statement("DELETE FROM cupons_pessoas WHERE pessoa_id = $pessoa->id");
+        }
+
         $this->pessoaRepository->delete($id);
 
         Flash::success('Pessoa excluída com sucesso.');
