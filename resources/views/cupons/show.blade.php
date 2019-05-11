@@ -18,7 +18,7 @@
 
 
                     <div class="col-xs-12">
-                    <h4>Pessoas que ativaram esse cupom</h4>
+                    <h4>Pessoas que ativaram esse cupomÇ</h4>
 
                     <br>
                     @include('pessoas.table')

@@ -49,7 +49,11 @@ class FaleConoscoDataTable extends DataTable
                 'buttons' => [
                     ['extend' => 'export', 'text' => '<i class="fa fa-download"></i> Exportar'],
                     ['extend' => 'print', 'text' => '<i class="fa fa-print"></i> Imprimir'],
-                    ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar']
+                    ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar'],
+                    [
+                        'extend' => 'colvis',
+                        'text'    => 'Filtrar Colunas',
+                    ]
                 ],
                 'language' => [
                     'url' => url('//cdn.datatables.net/plug-ins/1.10.18/i18n/Portuguese-Brasil.json')

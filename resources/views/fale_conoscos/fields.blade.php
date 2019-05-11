@@ -1,6 +1,6 @@
 <!-- Pessoa Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('pessoa_id', 'Pessoa Id:') !!}
+    {!! Form::label('pessoa_id', 'Id da Pessoa:') !!}
     {!! Form::number('pessoa_id', null, ['class' => 'form-control']) !!}
 </div>
 

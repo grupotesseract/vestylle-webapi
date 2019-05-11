@@ -1,28 +1,28 @@
 <div class="form-group col-sm-6">
-    {!! Form::label('titulo', 'Título da oferta') !!}
+    {!! Form::label('titulo', 'Título da Oferta') !!}
     {!! Form::text('titulo', null, ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group col-sm-6">
-    {!! Form::label('subtitulo', 'Subtítulo da oferta') !!}
+    {!! Form::label('subtitulo', 'Subtítulo da Oferta') !!}
     {!! Form::text('subtitulo', null, ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group col-sm-6">
-    {!! Form::label('preco', 'Preço da oferta') !!}
+    {!! Form::label('preco', 'Preço da Oferta') !!}
     {!! Form::text('preco', null, ['class' => 'form-control']) !!}
 </div>
 
 
 <!-- Descricao Oferta Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('descricao_oferta', 'Descrição da oferta') !!}
+    {!! Form::label('descricao_oferta', 'Descrição da Oferta') !!}
     {!! Form::text('descricao_oferta', null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Texto Oferta Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('texto_oferta', 'Texto da oferta') !!}
+    {!! Form::label('texto_oferta', 'Texto da Oferta') !!}
     {!! Form::text('texto_oferta', null, ['class' => 'form-control']) !!}
 </div>
 
