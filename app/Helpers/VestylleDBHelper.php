@@ -89,6 +89,50 @@ class VestylleDBHelper
     }
 
     /**
+     * Método pra trazer categorias cadastradas na base Vestylle
+     *
+     * @return array || false - O resultado da query ou false
+     */
+    public function getCategorias()
+    {
+        $query = "SELECT DISTINCT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor FROM vegas_teste.pesinfo WHERE TIPOINFO IN (
+            'ESTILO','CASUAL','HOBBY','NUNCALC','Nº','PRTBAIXO','PRTCIMA')";
+        
+        try {
+            $result = $this->query()->select($query);
+        } catch (\Exception $e) {
+            \Log::error("\n[ERRO] - Erro ao obter categorias. Log: " . $e->getMessage());
+            return false;
+        }
+
+        $arr = collect($result)->toArray();            
+
+        return $arr;
+            
+    }
+
+    /**
+     * Método pra trazer categorias cadastradas na base Vestylle
+     *
+     * @return array || false - O resultado da query ou false
+     */
+    public function getSegmentos()
+    {
+        $query = "SELECT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor, IDPESSOA as id_vestylle FROM vegas_teste.pesinfo WHERE TIPOINFO IN (
+            'ESTILO','CASUAL','HOBBY','NUNCALC','Nº','PRTBAIXO','PRTCIMA')";
+        
+        try {
+            $result = $this->query()->select($query);
+        } catch (\Exception $e) {
+            \Log::error("\n[ERRO] - Erro ao obter categorias. Log: " . $e->getMessage());
+            return false;
+        }
+
+        return $result;
+            
+    }
+
+    /**
      * Metodo para obter o saldo de pontos de uma pessoa
      *
      * @param Pessoa $pessoa

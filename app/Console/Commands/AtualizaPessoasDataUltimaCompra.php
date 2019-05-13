@@ -39,5 +39,6 @@ class AtualizaPessoasDataUltimaCompra extends Command
     {
         $pessoaRepository = new \App\Repositories\PessoaRepository( app() );
         $pessoaRepository->updatePessoasUltimasCompras();
+        $pessoaRepository->updateCategorias();
     }
 }

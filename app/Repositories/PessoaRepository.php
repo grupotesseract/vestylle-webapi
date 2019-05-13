@@ -8,6 +8,7 @@ use App\Models\Cidade;
 use App\Helpers\VestylleDBHelper;
 use InfyOm\Generator\Common\BaseRepository;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Categoria;
 
 /**
  * Class PessoaRepository
@@ -303,6 +304,23 @@ class PessoaRepository extends BaseRepository
         }
 
         return count($pessoasParaAtualizar);
+    }
+
+    /**
+     * Método pra trazer as categorias da base da Vestylle, e atualizar em nossa base
+     *
+     * @return void
+     */
+    public function updateCategorias()
+    {
+        $this->startConnectorVestylle();
+
+        //Pega todas as pessoas alteradas lá no periodo especificado
+        $retornoVestylle = $this->vestylleDB->getCategorias();                
+        foreach ($retornoVestylle as $categoria) {
+            Categoria::create((array) $categoria);
+        }        
+        
     }
 
     /**
