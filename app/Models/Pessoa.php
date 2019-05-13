@@ -140,24 +140,6 @@ class Pessoa extends Authenticatable
     }
 
     /**
-     * Método para alimentar tabela pivô cupons_pessoas
-     * com cupons marcados pra primeiro login associando o usuário novo
-     *
-     * @return void
-     */
-    public function associarCuponsDePrimeiroLogin()
-    {
-        $cuponsDePrimeiroLogin = Cupon::primeiroLogin()->pluck('id')->all();
-
-        $cupom_dummy = new \App\Models\Cupon();
-        $dadosTabelaPivo = array_fill(0, count($cuponsDePrimeiroLogin), ['codigo_unico' => $cupom_dummy->gerarCodigoUnico()]);
-        $cuponsDePrimeiroLogin  = array_combine($cuponsDePrimeiroLogin, $dadosTabelaPivo);
-
-        return $this->cupons()->sync($cuponsDePrimeiroLogin);
-    }
-
-
-    /**
      * Mutator para a dataNascimento
      */
     public function setDataNascimentoAttribute($value)

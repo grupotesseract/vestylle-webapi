@@ -66,8 +66,6 @@ class CuponController extends AppBaseController
 
         $validated = $request->validate(Cupon::$rules);
 
-        $input['cupom_primeiro_login'] = isset($input['cupom_primeiro_login']) ? true : false;
-
         $cupon = $this->cuponRepository->create($input);
 
         $fotos = $request->allFiles()['files'] ?? false;

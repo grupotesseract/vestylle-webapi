@@ -77,8 +77,6 @@ class PessoaAPIController extends AppBaseController
 
         $pegouDadosVestylle = $this->pessoaRepository->updateFromVestylle($pessoa);
 
-        $pessoa->associarCuponsDePrimeiroLogin();
-
         //Se tem id_vestylle --> Pegar Pontos, Vencimento dos Pontos e Data de ultima compra da pessoa
         if ($pegouDadosVestylle) {
             $this->pessoaRepository->updatePontosPessoa($pessoa);

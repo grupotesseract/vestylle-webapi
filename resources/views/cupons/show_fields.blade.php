@@ -21,12 +21,6 @@
         <p>{!! $cupon->data_validade !!}</p>
     </div>
 
-    <!-- Cupom Primeiro Login Field -->
-    <div class="form-group">
-        {!! Form::label('cupom_primeiro_login', 'Adicionar ao usuário no primeiro login') !!}
-        <p>{!! $cupon->cupom_primeiro_login ? 'Sim' : 'Não' !!}</p>
-    </div>
-
     <!-- Texto Cupom Field -->
     <div class="form-group">
         {!! Form::label('texto_cupom', 'Texto do cupom:') !!}
