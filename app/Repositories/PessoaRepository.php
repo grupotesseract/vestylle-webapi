@@ -347,8 +347,7 @@ class PessoaRepository extends BaseRepository
             $pessoasParaAtualizar = Pessoa::whereIn('id_vestylle', array_values($retornoVestylle))->get();
 
             //Para cada uma dessas atualizar, pontos, vencimento e ultima compra
-            foreach ($pessoasParaAtualizar as $Pessoa) {
-                \Log::info('oi');
+            foreach ($pessoasParaAtualizar as $Pessoa) {                
                 $this->updatePontosPessoa($Pessoa);
                 $this->updateVencimentoPontosPessoa($Pessoa);
                 $this->updateDataUltimaCompraPessoa($Pessoa);
