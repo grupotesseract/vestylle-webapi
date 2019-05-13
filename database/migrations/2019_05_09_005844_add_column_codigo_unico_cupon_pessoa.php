@@ -14,8 +14,7 @@ class AddColumnCodigoUnicoCuponPessoa extends Migration
     public function up()
     {
         Schema::table('cupons_pessoas', function(Blueprint $table) {
-            // Essa length 9 é em virtude o formato do código: #xxxxxxxx
-            $table->string('codigo_unico', 9)->unique();
+            $table->string('codigo_unico', 100)->unique();
         });
     }
 

@@ -125,12 +125,13 @@ class Cupon extends Model
      * na coluna codigo_unico
      * da tabela pivô cupons_pessoas
      *
+     * @param $id_vestylle_pessoa Id da pessoa no sistema da vestylle
+     *
      * @return string
      */
-    public function gerarCodigoUnico()
+    public function gerarCodigoUnico($id_vestylle_pessoa)
     {
-        $tamanhoDoCodigo = 9;
-        $codigo = substr(strtoupper(uniqid("#" . rand(0,420))), 0, $tamanhoDoCodigo);
+        $codigo = "#" . $id_vestylle_pessoa . '-' . $this->id;
 
         return $codigo;
     }
