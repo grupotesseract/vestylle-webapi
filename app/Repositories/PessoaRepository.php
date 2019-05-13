@@ -318,7 +318,7 @@ class PessoaRepository extends BaseRepository
         //Pega todas as pessoas alteradas lá no periodo especificado
         $retornoVestylle = $this->vestylleDB->getCategorias();                
         foreach ($retornoVestylle as $categoria) {
-            Categoria::create((array) $categoria);
+            Categoria::updateOrCreate((array) $categoria);
         }        
         
     }
