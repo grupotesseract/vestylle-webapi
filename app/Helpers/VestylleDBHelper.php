@@ -116,9 +116,9 @@ class VestylleDBHelper
      *
      * @return array || false - O resultado da query ou false
      */
-    public function getSegmentos()
+    public function getSegmentosPessoa(Pessoa $pessoa)
     {
-        $query = "SELECT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor, IDPESSOA as id_vestylle FROM vegas_teste.pesinfo WHERE TIPOINFO IN (
+        $query = "SELECT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor FROM vegas_teste.pesinfo WHERE IDPESSOA = $pessoa->id_vestylle AND TIPOINFO IN (
             'ESTILO','CASUAL','HOBBY','NUNCALC','Nº','PRTBAIXO','PRTCIMA')";
         
         try {
@@ -128,7 +128,9 @@ class VestylleDBHelper
             return false;
         }
 
-        return $result;
+        $arr = collect($result);            
+
+        return $arr;
             
     }
 

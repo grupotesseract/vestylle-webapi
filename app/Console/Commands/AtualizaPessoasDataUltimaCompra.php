@@ -38,7 +38,7 @@ class AtualizaPessoasDataUltimaCompra extends Command
     public function handle()
     {
         $pessoaRepository = new \App\Repositories\PessoaRepository( app() );
-        $pessoaRepository->updatePessoasUltimasCompras();
         $pessoaRepository->updateCategorias();
+        $pessoaRepository->updatePessoasUltimasCompras();        
     }
 }

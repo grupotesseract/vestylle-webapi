@@ -37,7 +37,7 @@ class PessoasTableSeeder extends Seeder
                 if (env('SEED_DADOS_PESSOA')) {
                     $repositorio->updatePontosPessoa($pessoaCriada);
                     $repositorio->updateVencimentoPontosPessoa($pessoaCriada);
-                    $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
+                    $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);                    
                 }
             }
             else {

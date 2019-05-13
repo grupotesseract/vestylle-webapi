@@ -318,8 +318,41 @@ class PessoaRepository extends BaseRepository
         //Pega todas as pessoas alteradas lá no periodo especificado
         $retornoVestylle = $this->vestylleDB->getCategorias();                
         foreach ($retornoVestylle as $categoria) {
+            $categoria->conteudo = strtoupper($categoria->conteudo);
             Categoria::updateOrCreate((array) $categoria);
+        }     
+        
+        $pessoas = Pessoa::whereNotNull('id_vestylle')->get();
+
+        foreach ($pessoas as $Pessoa) {
+            $this->updateSegmentos($Pessoa);
         }        
+    }
+
+    /**
+     * Método pra associar as categorias aos usuários da nossa base
+     *
+     * @param Pessoa $pessoa
+     * @return void
+     */
+    public function updateSegmentos(Pessoa $pessoa)
+    {
+        $this->startConnectorVestylle();
+        $retornoVestylle = $this->vestylleDB->getSegmentosPessoa($pessoa);
+        
+        if ($retornoVestylle) {                              
+            foreach ($retornoVestylle as $categoria) {            
+                $categoria->conteudo = strtoupper($categoria->conteudo);                                
+                $categoriaIds[] = Categoria::where((array) $categoria)->get()->first()->id;
+                
+            }
+            
+            $pessoa->segmentacoes()->whereNotIn('categoria_id', $categoriaIds)->delete();
+            
+            foreach ($categoriaIds as $categoriaId) {
+                $pessoa->segmentacoes()->create(['categoria_id' => $categoriaId]);
+            }
+        }
         
     }
 
@@ -350,7 +383,7 @@ class PessoaRepository extends BaseRepository
             foreach ($pessoasParaAtualizar as $Pessoa) {                
                 $this->updatePontosPessoa($Pessoa);
                 $this->updateVencimentoPontosPessoa($Pessoa);
-                $this->updateDataUltimaCompraPessoa($Pessoa);
+                $this->updateDataUltimaCompraPessoa($Pessoa);                
                 $numPessoasAtualizadas++;
             }
         }
