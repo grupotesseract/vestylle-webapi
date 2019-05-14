@@ -116,13 +116,13 @@ class PessoaRepository extends BaseRepository
 
         $Cidade = Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
         $cidadeId = $Cidade ? $Cidade->id : null;
-
+        
         $result = Pessoa::create([
             'id_vestylle'  => $pessoa->idpessoa,
             "celular" => $pessoa->celular,
             "nome" => $pessoa->nome,
             "cpf" => $pessoa->cnpj_cpf,
-            "email" => trim($pessoa->email) ? $pessoa->email : null,
+            "email" => trim($pessoa->email) ? strtolower($pessoa->email) : null,
             "cep" => $pessoa->cep,
             "endereco" => $pessoa->endereco,
             "numero" => $pessoa->numero,
@@ -241,6 +241,28 @@ class PessoaRepository extends BaseRepository
     }
 
     /**
+     * Atualiza a data de nascimento de uma pessoa
+     *
+     * @param Pessoa $pessoa
+     */
+    public function updateNascimentoPessoa(Pessoa $pessoa)
+    {
+        $this->startConnectorVestylle();
+        $result = $this->vestylleDB->getNascimentoPessoa($pessoa);
+
+        //Se vier result, for array, nao estiver vazio e o objeto tiver a propriedade NASC
+        if ($result && is_array($result) && !empty($result) && property_exists($result[0], 'NASC')) {
+            $updated = $pessoa->update([
+                'data_nascimento' => $result[0]->{"NASC"}
+            ]);
+
+            return $updated;
+        }
+
+        return false;
+    }
+
+    /**
      * Metodo para remover acentos / caracteres especiais e retornar a string lowercase
      *
      * @param mixed $str
@@ -314,9 +336,10 @@ class PessoaRepository extends BaseRepository
     {
         $this->startConnectorVestylle();
 
-        //Pega todas as pessoas alteradas lá no periodo especificado
+        //Pega todas as pessoas que fizeram compras, alteradas lá no periodo especificado
         $retornoVestylleCompras = $this->vestylleDB->getIdsUltimasCompras($tipoLimite, $valorLimite);
         \Log::info(json_encode($retornoVestylleCompras));
+        //Pega todas as pessoas que tiveram saldo alterado, no periodo especificado
         $retornoVestylleSaldos = $this->vestylleDB->getIdsUltimosSaldos($tipoLimite, $valorLimite);
         \Log::info(json_encode($retornoVestylleSaldos));
         $retornoVestylle = array_unique(array_merge($retornoVestylleCompras, $retornoVestylleSaldos));
@@ -334,6 +357,7 @@ class PessoaRepository extends BaseRepository
                 $this->updatePontosPessoa($Pessoa);
                 $this->updateVencimentoPontosPessoa($Pessoa);
                 $this->updateDataUltimaCompraPessoa($Pessoa);
+                $this->updateNascimentoPessoa($Pessoa);
                 $numPessoasAtualizadas++;
             }
         }
