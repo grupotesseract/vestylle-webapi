@@ -285,17 +285,19 @@ class VestylleDBHelper
 
         if ($result && count($result)) {
             $arrIds =  collect($result)->pluck('pessoa')->all();            
-            //Retornando apenas valores nao nulos
             
-            $values = array_filter($arrIds, function($value) {
-                return $value ? $value : false;
-            });
+            //Retornando apenas valores nao nulos            
+            $values = array_filter(
+                $arrIds, function ($value) {
+                    return $value ? $value : false;
+                }
+            );
 
-            return array_values($values);
+            return count($values) > 0 ? array_values($values) : [];
         }
 
         //Se chegou ate aqui, deu ruim :(
-        return false;
+        return [];
 
     }
 
@@ -318,16 +320,18 @@ class VestylleDBHelper
 
         if ($result && count($result)) {
             $arrIds =  collect($result)->pluck('DONOID')->all();            
+            
             //Retornando apenas valores nao nulos
-            $values = array_filter($arrIds, function($value) {
-                return $value ? $value : false;
-            });
-
-            return array_values($values);
+            $values = array_filter(
+                $arrIds, function ($value) {
+                    return $value ? $value : false;
+                }
+            );
+            return count($values) > 0 ? array_values($values) : [];
         }
 
         //Se chegou ate aqui, deu ruim :(
-        return false;
+        return [];
 
     }
 
