@@ -18,6 +18,7 @@ class CreateOfertasTable extends Migration
             $table->text('descricao_oferta');
             $table->text('foto_oferta');
             $table->integer('porcentagem_off')->nullable();
+            $table->string('codigo_promocional')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

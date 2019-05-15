@@ -22,14 +22,24 @@ $factory->define(App\Models\Oferta::class, function (Faker $faker) {
         'em oferta só hoje'
     ];
 
+    $porcentagens = [
+        10,
+        20,
+        50
+    ];
+
     $produtoAleatorio = Arr::random($nomesDeProdutos);
     $promocaoAleatoria = Arr::random($frasesDePromocao);
+    $porcentagemAleatoria = Arr::random($porcentagens);
 
     return [
         'titulo' => $produtoAleatorio,
         'subtitulo' => 'Oferta fícticia simulando peças do tipo ' . $produtoAleatorio,        
         'descricao_oferta' => 'Oferta de ' . $produtoAleatorio,
         'texto_oferta' => $produtoAleatorio . ' ' . $promocaoAleatoria,
+        'porcentagem_off' => $porcentagemAleatoria,
+        'codigo_promocional' => 'OFER-'.$produtoAleatorio
+        
     ];
 });
 

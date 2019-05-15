@@ -32,6 +32,7 @@ class Cupon extends Model
         'foto_caminho',
         'titulo',
         'subtitulo',
+        'aparece_listagem'
     ];
 
     /**
@@ -46,6 +47,7 @@ class Cupon extends Model
         'foto_caminho' => 'string',
         'titulo' => 'string',
         'subtitulo' => 'string',
+        'aparece_listagem' => 'boolean'
     ];
 
     /**

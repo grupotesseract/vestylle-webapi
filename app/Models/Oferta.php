@@ -29,7 +29,8 @@ class Oferta extends Model
         'texto_oferta',
         'foto_oferta',
         'titulo',
-        'subtitulo',        
+        'subtitulo',
+        'codigo_promocional'        
     ];
 
     /**
@@ -42,7 +43,8 @@ class Oferta extends Model
         'texto_oferta' => 'string',
         'foto_oferta' => 'string',
         'titulo' => 'string',
-        'subtitulo' => 'string',        
+        'subtitulo' => 'string',    
+        'codigo_promocional' => 'string'    
     ];
 
     /**
