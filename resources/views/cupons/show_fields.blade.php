@@ -17,31 +17,37 @@
 
     <!-- Data Validade Field -->
     <div class="form-group">
-        {!! Form::label('data_validade', 'Data de validade:') !!}
+        {!! Form::label('data_validade', 'Data de Validade:') !!}
         <p>{!! $cupon->data_validade !!}</p>
+    </div>
+
+    <!-- Cupom Primeiro Login Field -->
+    <div class="form-group">
+        {!! Form::label('cupom_primeiro_login', 'Adicionar ao usuário no primeiro login:') !!}
+        <p>{!! $cupon->cupom_primeiro_login ? 'Sim' : 'Não' !!}</p>
     </div>
 
     <!-- Texto Cupom Field -->
     <div class="form-group">
-        {!! Form::label('texto_cupom', 'Texto do cupom:') !!}
+        {!! Form::label('texto_cupom', 'Texto do Cupom:') !!}
         <p>{!! $cupon->texto_cupom !!}</p>
     </div>
 
     <!-- Oferta Id Field -->
     <div class="form-group">
-        {!! Form::label('oferta_id', 'Código da oferta:') !!}
+        {!! Form::label('oferta_id', 'Código da Oferta:') !!}
         <p>{!! $cupon->oferta_id !!}</p>
     </div>
 
     <!-- Created At Field -->
     <div class="form-group">
-        {!! Form::label('created_at', 'Criado em:') !!}
+        {!! Form::label('created_at', 'Criado Em:') !!}
         <p>{!! $cupon->created_at !!}</p>
     </div>
 
     <!-- Updated At Field -->
     <div class="form-group">
-        {!! Form::label('updated_at', 'Atualizado em:') !!}
+        {!! Form::label('updated_at', 'Atualizado Em:') !!}
         <p>{!! $cupon->updated_at !!}</p>
     </div>
 </div>
