@@ -137,7 +137,6 @@ class LojaController extends AppBaseController
         $validated = $request->validate(Loja::$rules);
 
         if (empty($loja)) {
-            \Log::info("\nolá");
             Flash::error('Loja not found');
 
             return redirect(route('lojas.index'));
