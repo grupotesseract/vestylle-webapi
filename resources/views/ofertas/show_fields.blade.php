@@ -13,12 +13,7 @@
     <div class="form-group">
         {!! Form::label('subtitulo', 'Subtítulo da Oferta') !!}
         <p>{!! $oferta->subtitulo !!}</p>
-    </div>
-
-    <div class="form-group">
-        {!! Form::label('preco', 'Preço da oferta') !!}
-        <p>{!! 'R$ ' . $oferta->preco !!}</p>
-    </div>
+    </div>    
 
     <!-- Descricao Oferta Field -->
     <div class="form-group">
