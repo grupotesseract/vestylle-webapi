@@ -17,6 +17,7 @@ class CreateOfertasTable extends Migration
             $table->increments('id');
             $table->text('descricao_oferta');
             $table->text('foto_oferta');
+            $table->integer('porcentagem_off')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
