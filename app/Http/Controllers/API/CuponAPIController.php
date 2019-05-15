@@ -38,9 +38,9 @@ class CuponAPIController extends AppBaseController
     {
         $this->cuponRepository->pushCriteria(new RequestCriteria($request));
         $this->cuponRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $cupons = $this->cuponRepository->all();
+        $cupons = $this->cuponRepository->with('fotos')->all();
 
-        return $this->sendResponse($cupons->toArray(), 'Cupom encontrado com sucesso');
+        return $this->sendResponse($cupons->toArray(), 'Cupons carregados com sucesso');
     }
 
     /**
@@ -70,8 +70,7 @@ class CuponAPIController extends AppBaseController
      */
     public function show($id)
     {
-        /** @var Cupon $cupon */
-        $cupon = $this->cuponRepository->findWithoutFail($id);
+        $cupon = $this->cuponRepository->with('fotos')->findWithoutFail($id);
 
         if (empty($cupon)) {
             return $this->sendError('Cupom não encontrado');
@@ -93,8 +92,7 @@ class CuponAPIController extends AppBaseController
     {
         $input = $request->all();
 
-        /** @var Cupon $cupon */
-        $cupon = $this->cuponRepository->findWithoutFail($id);
+        $cupon = $this->cuponRepository->with('fotos')->findWithoutFail($id);
 
         if (empty($cupon)) {
             return $this->sendError('Cupom não encontrado');
@@ -146,7 +144,7 @@ class CuponAPIController extends AppBaseController
      */
     public function ativar($cupom_id, Request $request)
     {
-        $cupom = \App\Models\Cupon::find($cupom_id);
+        $cupom = \App\Models\Cupon::with('fotos')->find($cupom_id);
 
         if (!$cupom) {
             return $this->sendError('Cupom não encontrado');

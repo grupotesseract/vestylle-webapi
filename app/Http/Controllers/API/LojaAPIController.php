@@ -38,7 +38,7 @@ class LojaAPIController extends AppBaseController
     {
         $this->lojaRepository->pushCriteria(new RequestCriteria($request));
         $this->lojaRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $lojas = $this->lojaRepository->all();
+        $lojas = $this->lojaRepository->with('fotos')->all();
 
         return $this->sendResponse($lojas->toArray(), 'Lojas retrieved successfully');
     }
@@ -71,7 +71,7 @@ class LojaAPIController extends AppBaseController
     public function show()
     {
         /** @var Loja $loja */
-        $loja = $this->lojaRepository->first();
+        $loja = $this->lojaRepository->with('fotos')->first();
 
         if (empty($loja)) {
             return $this->sendError('Loja not found');
@@ -93,8 +93,7 @@ class LojaAPIController extends AppBaseController
     {
         $input = $request->all();
 
-        /** @var Loja $loja */
-        $loja = $this->lojaRepository->findWithoutFail($id);
+        $loja = $this->lojaRepository->with('fotos')->findWithoutFail($id);
 
         if (empty($loja)) {
             return $this->sendError('Loja not found');
