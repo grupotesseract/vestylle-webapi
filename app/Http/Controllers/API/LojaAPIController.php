@@ -122,6 +122,10 @@ class LojaAPIController extends AppBaseController
             return $this->sendError('Loja not found');
         }
 
+        if ($loja->fotos) {
+            $loja->fotos()->delete();
+        }
+
         $loja->delete();
 
         return $this->sendResponse($id, 'Loja deleted successfully');
