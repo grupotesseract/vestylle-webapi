@@ -6,13 +6,13 @@
 
 <!-- Id Vestylle Field -->
 <div class="form-group">
-    {!! Form::label('id_vestylle', 'Id Vestylle:') !!}
+    {!! Form::label('id_vestylle', 'Id da Vestylle:') !!}
     <p>{!! $pessoa->id_vestylle !!}</p>
 </div>
 
 <!-- Saldo Pontos Field -->
 <div class="form-group">
-    {!! Form::label('saldo_pontos', 'Saldo Pontos:') !!}
+    {!! Form::label('saldo_pontos', 'Saldo de Pontos:') !!}
     <p>{!! $pessoa->saldo_pontos !!}</p>
 </div>
 
@@ -36,13 +36,13 @@
 
 <!-- Email Verified At Field -->
 <div class="form-group">
-    {!! Form::label('email_verified_at', 'Email Verified At:') !!}
+    {!! Form::label('email_verified_at', 'Email Verificado Em:') !!}
     <p>{!! $pessoa->email_verified_at !!}</p>
 </div>
 
 <!-- Password Field -->
 <div class="form-group">
-    {!! Form::label('password', 'Password:') !!}
+    {!! Form::label('password', 'Senha:') !!}
     <p>{!! $pessoa->password !!}</p>
 </div>
 
@@ -60,25 +60,25 @@
 
 <!-- Cpf Field -->
 <div class="form-group">
-    {!! Form::label('cpf', 'Cpf:') !!}
+    {!! Form::label('cpf', 'CPF:') !!}
     <p>{!! $pessoa->cpf !!}</p>
 </div>
 
 <!-- Cep Field -->
 <div class="form-group">
-    {!! Form::label('cep', 'Cep:') !!}
+    {!! Form::label('cep', 'CEP:') !!}
     <p>{!! $pessoa->cep !!}</p>
 </div>
 
 <!-- Endereco Field -->
 <div class="form-group">
-    {!! Form::label('endereco', 'Endereco:') !!}
+    {!! Form::label('endereco', 'Endereço:') !!}
     <p>{!! $pessoa->endereco !!}</p>
 </div>
 
 <!-- Numero Field -->
 <div class="form-group">
-    {!! Form::label('numero', 'Numero:') !!}
+    {!! Form::label('numero', 'Número:') !!}
     <p>{!! $pessoa->numero !!}</p>
 </div>
 
@@ -96,37 +96,37 @@
 
 <!-- Data Ultima Compra Field -->
 <div class="form-group">
-    {!! Form::label('data_ultima_compra', 'Data Ultima Compra:') !!}
+    {!! Form::label('data_ultima_compra', 'Data da Última Compra:') !!}
     <p>{!! $pessoa->data_ultima_compra !!}</p>
 </div>
 
 <!-- Data Nascimento Field -->
 <div class="form-group">
-    {!! Form::label('data_nascimento', 'Data Nascimento:') !!}
+    {!! Form::label('data_nascimento', 'Data de Nascimento:') !!}
     <p>{!! $pessoa->data_nascimento !!}</p>
 </div>
 
 <!-- Cidade Id Field -->
 <div class="form-group">
-    {!! Form::label('cidade_id', 'Cidade Id:') !!}
+    {!! Form::label('cidade_id', 'Id da Cidade:') !!}
     <p>{!! $pessoa->cidade_id !!}</p>
 </div>
 
 <!-- Created At Field -->
 <div class="form-group">
-    {!! Form::label('created_at', 'Created At:') !!}
+    {!! Form::label('created_at', 'Data de Criação:') !!}
     <p>{!! $pessoa->created_at !!}</p>
 </div>
 
 <!-- Updated At Field -->
 <div class="form-group">
-    {!! Form::label('updated_at', 'Updated At:') !!}
+    {!! Form::label('updated_at', 'Data de Atualização:') !!}
     <p>{!! $pessoa->updated_at !!}</p>
 </div>
 
 <!-- Deleted At Field -->
 <div class="form-group">
-    {!! Form::label('deleted_at', 'Deleted At:') !!}
+    {!! Form::label('deleted_at', 'Data de Exclusão:') !!}
     <p>{!! $pessoa->deleted_at !!}</p>
 </div>
 

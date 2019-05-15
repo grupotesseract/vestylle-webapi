@@ -8,6 +8,7 @@ use App\Models\Cidade;
 use App\Helpers\VestylleDBHelper;
 use InfyOm\Generator\Common\BaseRepository;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Categoria;
 
 /**
  * Class PessoaRepository
@@ -328,6 +329,56 @@ class PessoaRepository extends BaseRepository
     }
 
     /**
+     * Método pra trazer as categorias da base da Vestylle, e atualizar em nossa base
+     *
+     * @return void
+     */
+    public function updateCategorias()
+    {
+        $this->startConnectorVestylle();
+
+        //Pega todas as pessoas alteradas lá no periodo especificado
+        $retornoVestylle = $this->vestylleDB->getCategorias();                
+        foreach ($retornoVestylle as $categoria) {
+            $categoria->conteudo = strtoupper($categoria->conteudo);
+            Categoria::updateOrCreate((array) $categoria);
+        }     
+        
+        $pessoas = Pessoa::whereNotNull('id_vestylle')->get();
+
+        foreach ($pessoas as $Pessoa) {
+            $this->updateSegmentos($Pessoa);
+        }        
+    }
+
+    /**
+     * Método pra associar as categorias aos usuários da nossa base
+     *
+     * @param Pessoa $pessoa
+     * @return void
+     */
+    public function updateSegmentos(Pessoa $pessoa)
+    {
+        $this->startConnectorVestylle();
+        $retornoVestylle = $this->vestylleDB->getSegmentosPessoa($pessoa);
+        
+        if ($retornoVestylle) {                              
+            foreach ($retornoVestylle as $categoria) {            
+                $categoria->conteudo = strtoupper($categoria->conteudo);                                
+                $categoriaIds[] = Categoria::where((array) $categoria)->get()->first()->id;
+                
+            }
+            
+            $pessoa->segmentacoes()->whereNotIn('categoria_id', $categoriaIds)->delete();
+            
+            foreach ($categoriaIds as $categoriaId) {
+                $pessoa->segmentacoes()->create(['categoria_id' => $categoriaId]);
+            }
+        }
+        
+    }
+
+    /**
      * Metodo para atualizar as Pessoas que fizeram compra em um determinado periodo
      *
      * @return void
@@ -352,12 +403,12 @@ class PessoaRepository extends BaseRepository
             $pessoasParaAtualizar = Pessoa::whereIn('id_vestylle', array_values($retornoVestylle))->get();
 
             //Para cada uma dessas atualizar, pontos, vencimento e ultima compra
-            foreach ($pessoasParaAtualizar as $Pessoa) {
-                \Log::info('oi');
+            foreach ($pessoasParaAtualizar as $Pessoa) {                
                 $this->updatePontosPessoa($Pessoa);
                 $this->updateVencimentoPontosPessoa($Pessoa);
                 $this->updateDataUltimaCompraPessoa($Pessoa);
                 $this->updateNascimentoPessoa($Pessoa);
+                $this->updateDataUltimaCompraPessoa($Pessoa);                
                 $numPessoasAtualizadas++;
             }
         }

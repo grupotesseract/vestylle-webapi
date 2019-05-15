@@ -6,7 +6,7 @@
 
 <!-- Pessoa Id Field -->
 <div class="form-group">
-    {!! Form::label('pessoa_id', 'Pessoa Id:') !!}
+    {!! Form::label('pessoa_id', 'Id da Pessoa:') !!}
     <p>{!! $faleConosco->pessoa_id !!}</p>
 </div>
 
@@ -30,13 +30,13 @@
 
 <!-- Created At Field -->
 <div class="form-group">
-    {!! Form::label('created_at', 'Created At:') !!}
+    {!! Form::label('created_at', 'Criado Em:') !!}
     <p>{!! $faleConosco->created_at !!}</p>
 </div>
 
 <!-- Updated At Field -->
 <div class="form-group">
-    {!! Form::label('updated_at', 'Updated At:') !!}
+    {!! Form::label('updated_at', 'Atualizado Em:') !!}
     <p>{!! $faleConosco->updated_at !!}</p>
 </div>
 

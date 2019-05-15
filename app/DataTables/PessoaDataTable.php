@@ -47,10 +47,13 @@ class PessoaDataTable extends DataTable
                 'dom'     => 'Bfrtip',
                 'order'   => [[0, 'desc']],
                 'buttons' => [
-                    ['extend' => 'create','text' => '<i class="fa fa-plus"></i> Adicionar'],
                     ['extend' => 'export', 'text' => '<i class="fa fa-download"></i> Exportar'],
                     ['extend' => 'print', 'text' => '<i class="fa fa-print"></i> Imprimir'],
                     ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar'],
+                    [
+                        'extend' => 'colvis',
+                        'text'    => 'Filtrar Colunas',
+                    ]
                 ],
                 'language' => ['url' => '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese-Brasil.json'],
             ]);
@@ -64,22 +67,22 @@ class PessoaDataTable extends DataTable
     protected function getColumns()
     {
         return [
-//            'id_vestylle',
+            // 'id_vestylle',
             'saldo_pontos',
             'celular',
-//            'telefone_fixo',
+            'telefone_fixo',
             'email',
-//            'email_verified_at',
+            // 'email_verified_at',
             'nome',
-            'cpf',
-            'cep',
-//            'endereco',
-//            'numero',
-//            'bairro',
-//            'complemento',
+            // 'cpf',
+            // 'cep',
+            // 'endereco',
+            // 'numero',
+            // 'bairro',
+            // 'complemento',
             'data_ultima_compra',
             'data_nascimento',
-//            'cidade_id'
+            // 'cidade_id'
         ];
     }
 

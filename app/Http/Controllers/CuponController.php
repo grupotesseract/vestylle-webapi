@@ -66,8 +66,6 @@ class CuponController extends AppBaseController
 
         $validated = $request->validate(Cupon::$rules);
 
-        $input['cupom_primeiro_login'] = isset($input['cupom_primeiro_login']) ? true : false;
-
         $cupon = $this->cuponRepository->create($input);
 
         $fotos = $request->allFiles()['files'] ?? false;
@@ -198,6 +196,10 @@ class CuponController extends AppBaseController
 
         if ($cupon->fotos) {
             $cupon->fotos()->delete();
+        }
+
+        if ($cupon->pessoas) {
+            \DB::statement("DELETE FROM cupons_pessoas WHERE cupom_id = $cupon->id");
         }
 
         $this->cuponRepository->delete($id);

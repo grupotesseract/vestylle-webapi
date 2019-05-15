@@ -28,12 +28,18 @@ Route::get('/', function () {
 */
 Route::group(['middleware' => ['role:admin']], function () {
     Route::get('/home', 'HomeController@index');
-    Route::resource('pessoas', 'PessoaController');
+    Route::resource('pessoas', 'PessoaController')->except([
+        'create', 'store'
+    ]);
     Route::resource('cupons', 'CuponController');
     Route::get('cupons/pessoa/{id}', 'CuponController@getCuponsPessoa');
-    Route::resource('faleConoscos', 'FaleConoscoController');
+    Route::resource('faleConoscos', 'FaleConoscoController')->except([
+        'create', 'store'
+    ]);
     Route::resource('ofertas', 'OfertaController');
-    Route::resource('lojas', 'LojaController');
+    Route::resource('lojas', 'LojaController')->except([
+        'create', 'store'
+    ]);
 
     Route::post('upload_image', 'UploadImageController@sendFiles');
     Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');

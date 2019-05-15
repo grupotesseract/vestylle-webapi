@@ -16,7 +16,7 @@
     </div>
 
     <div class="form-group">
-        {!! Form::label('preco', 'Preço da oferta') !!}
+        {!! Form::label('preco', 'Preço da Oferta') !!}
         <p>{!! 'R$ ' . $oferta->preco !!}</p>
     </div>
 
@@ -34,13 +34,13 @@
 
     <!-- Created At Field -->
     <div class="form-group">
-        {!! Form::label('created_at', 'Criada em:') !!}
+        {!! Form::label('created_at', 'Criada Em:') !!}
         <p>{!! $oferta->created_at !!}</p>
     </div>
 
     <!-- Updated At Field -->
     <div class="form-group">
-        {!! Form::label('updated_at', 'Atualizada em:') !!}
+        {!! Form::label('updated_at', 'Atualizada Em:') !!}
         <p>{!! $oferta->updated_at !!}</p>
     </div>
 

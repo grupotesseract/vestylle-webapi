@@ -89,6 +89,52 @@ class VestylleDBHelper
     }
 
     /**
+     * Método pra trazer categorias cadastradas na base Vestylle
+     *
+     * @return array || false - O resultado da query ou false
+     */
+    public function getCategorias()
+    {
+        $query = "SELECT DISTINCT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor FROM vegas_teste.pesinfo WHERE TIPOINFO IN (
+            'ESTILO','CASUAL','HOBBY','NUNCALC','Nº','PRTBAIXO','PRTCIMA')";
+        
+        try {
+            $result = $this->query()->select($query);
+        } catch (\Exception $e) {
+            \Log::error("\n[ERRO] - Erro ao obter categorias. Log: " . $e->getMessage());
+            return false;
+        }
+
+        $arr = collect($result)->toArray();            
+
+        return $arr;
+            
+    }
+
+    /**
+     * Método pra trazer categorias cadastradas na base Vestylle
+     *
+     * @return array || false - O resultado da query ou false
+     */
+    public function getSegmentosPessoa(Pessoa $pessoa)
+    {
+        $query = "SELECT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor FROM vegas_teste.pesinfo WHERE IDPESSOA = $pessoa->id_vestylle AND TIPOINFO IN (
+            'ESTILO','CASUAL','HOBBY','NUNCALC','Nº','PRTBAIXO','PRTCIMA')";
+        
+        try {
+            $result = $this->query()->select($query);
+        } catch (\Exception $e) {
+            \Log::error("\n[ERRO] - Erro ao obter categorias. Log: " . $e->getMessage());
+            return false;
+        }
+
+        $arr = collect($result);            
+
+        return $arr;
+            
+    }
+
+    /**
      * Metodo para obter o saldo de pontos de uma pessoa
      *
      * @param Pessoa $pessoa
@@ -260,17 +306,19 @@ class VestylleDBHelper
 
         if ($result && count($result)) {
             $arrIds =  collect($result)->pluck('pessoa')->all();            
-            //Retornando apenas valores nao nulos
             
-            $values = array_filter($arrIds, function($value) {
-                return $value ? $value : false;
-            });
+            //Retornando apenas valores nao nulos            
+            $values = array_filter(
+                $arrIds, function ($value) {
+                    return $value ? $value : false;
+                }
+            );
 
-            return array_values($values);
+            return count($values) > 0 ? array_values($values) : [];
         }
 
         //Se chegou ate aqui, deu ruim :(
-        return false;
+        return [];
 
     }
 
@@ -293,16 +341,18 @@ class VestylleDBHelper
 
         if ($result && count($result)) {
             $arrIds =  collect($result)->pluck('DONOID')->all();            
+            
             //Retornando apenas valores nao nulos
-            $values = array_filter($arrIds, function($value) {
-                return $value ? $value : false;
-            });
-
-            return array_values($values);
+            $values = array_filter(
+                $arrIds, function ($value) {
+                    return $value ? $value : false;
+                }
+            );
+            return count($values) > 0 ? array_values($values) : [];
         }
 
         //Se chegou ate aqui, deu ruim :(
-        return false;
+        return [];
 
     }
 
