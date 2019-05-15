@@ -8,16 +8,16 @@
     {!! Form::text('subtitulo', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Descricao Oferta Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('descricao_oferta', 'Descrição da Oferta') !!}
-    {!! Form::text('descricao_oferta', null, ['class' => 'form-control']) !!}
-</div>
-
 <!-- Texto Oferta Field -->
-<div class="form-group col-sm-6">
+<div class="form-group col-sm-12">
     {!! Form::label('texto_oferta', 'Texto da Oferta') !!}
     {!! Form::text('texto_oferta', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Descricao Oferta Field -->
+<div class="form-group col-sm-12">
+    {!! Form::label('descricao_oferta', 'Descrição da oferta') !!}
+    {!! Form::textarea('descricao_oferta', null, ['class' => 'form-control']) !!}
 </div>
 
 @isset ($oferta->fotos)

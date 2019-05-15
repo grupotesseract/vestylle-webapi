@@ -14,12 +14,6 @@
     {!! Form::date('data_validade', $cupon->data_validade ?? null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Texto Cupom Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('texto_cupom', 'Texto') !!}
-    {!! Form::text('texto_cupom', null, ['class' => 'form-control']) !!}
-</div>
-
 <!-- Cupom Primeiro Login Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('cupom_primeiro_login', 'Adicionar ao usuário no primeiro login:') !!}
@@ -30,6 +24,12 @@
 <div class="form-group col-sm-6">
     {!! Form::label('oferta_id', 'Descrição da Oferta:') !!}
     {!! Form::select('oferta_id', $ofertas->pluck('descricao_oferta', 'id'), $cupon->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha uma Oferta']) !!}
+</div>
+
+<!-- Texto Cupom Field -->
+<div class="form-group col-sm-12">
+    {!! Form::label('texto_cupom', 'Texto') !!}
+    {!! Form::textarea('texto_cupom', null, ['class' => 'form-control']) !!}
 </div>
 
 @if (isset($cupon->fotos) && is_null($cupon->oferta_id))
