@@ -55,11 +55,9 @@ class PessoaController extends AppBaseController
 
         $pessoa = $this->pessoaRepository->create($input);
 
-        $pessoa->associarCuponsDePrimeiroLogin();
-
         Flash::success('Pessoa criada com sucesso.');
 
-        return redirect(route('pessoas.index'));
+        return view('pessoas.show')->with('pessoa', $pessoa);
     }
 
     /**
@@ -142,6 +140,10 @@ class PessoaController extends AppBaseController
             Flash::error('Pessoa não encontrada');
 
             return redirect(route('pessoas.index'));
+        }
+
+        if ($pessoa->cupons) {
+            \DB::statement("DELETE FROM cupons_pessoas WHERE pessoa_id = $pessoa->id");
         }
 
         $this->pessoaRepository->delete($id);
