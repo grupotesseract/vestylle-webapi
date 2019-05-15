@@ -27,7 +27,6 @@ class Cupon extends Model
 
     public $fillable = [
         'data_validade',
-        'cupom_primeiro_login',
         'texto_cupom',
         'oferta_id',
         'foto_caminho',
@@ -60,11 +59,6 @@ class Cupon extends Model
         'titulo' => 'required | max: 150',
         'subtitulo' => 'required | max: 150',
     ];
-
-    public function scopePrimeiroLogin($query)
-    {
-        return $query->where('cupom_primeiro_login', true);
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -109,5 +103,36 @@ class Cupon extends Model
         if ($this->oferta) {
             return $this->oferta->foto_oferta;
         }
+    }
+
+    /**
+     * Alimenta a relação com a pessoa e com o código único gerado
+     * na rota de ativação
+     *
+     * @return void
+     */
+    public function ativar($pessoa_id, $codigo_unico)
+    {
+        \App\Models\CuponPessoa::create([
+            'cupom_id' => $this->id,
+            'pessoa_id' => $pessoa_id,
+            'codigo_unico' => $codigo_unico,
+        ]);
+    }
+
+    /**
+     * Gera um código para inserção
+     * na coluna codigo_unico
+     * da tabela pivô cupons_pessoas
+     *
+     * @param $id_vestylle_pessoa Id da pessoa no sistema da vestylle
+     *
+     * @return string
+     */
+    public function gerarCodigoUnico($id_vestylle_pessoa)
+    {
+        $codigo = "#" . $id_vestylle_pessoa . '-' . $this->id;
+
+        return $codigo;
     }
 }
