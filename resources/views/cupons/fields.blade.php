@@ -10,7 +10,7 @@
 
 <!-- Data Validade Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('data_validade', 'Valido até') !!}
+    {!! Form::label('data_validade', 'Valido Até') !!}
     {!! Form::date('data_validade', $cupon->data_validade ?? null, ['class' => 'form-control']) !!}
 </div>
 
@@ -22,7 +22,7 @@
 
 <!-- Cupom Primeiro Login Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('cupom_primeiro_login', 'Adicionar ao usuário no primeiro login') !!}
+    {!! Form::label('cupom_primeiro_login', 'Adicionar ao usuário no primeiro login:') !!}
     {!! Form::checkbox('cupom_primeiro_login', null, $cupon->cupom_primeiro_login ?? false) !!}
 </div>
 
