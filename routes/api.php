@@ -11,6 +11,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::resource('pessoas', 'PessoaAPIController')->except(['store', 'index', 'destroy']);
 
     Route::get('pessoas/{id}', 'PessoaAPIController@show')->middleware('pessoaid');
+    Route::get('pessoas/{id}/cupons', 'PessoaAPIController@getCuponsUtilizados');
     Route::post('pessoas/{id}', 'PessoaAPIController@update')->middleware('pessoaid');
 
     //Get/Toggle Lista de desejos - Aplicando middleware pessoaid pra checar se é a mesma pessoa

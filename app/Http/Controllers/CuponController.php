@@ -139,7 +139,6 @@ class CuponController extends AppBaseController
     public function update($id, Request $request)
     {
         $input = $request->all();
-        $input['cupom_primeiro_login'] = isset($input['cupom_primeiro_login']) ? true : false;
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         $validated = $request->validate(Cupon::$rules);

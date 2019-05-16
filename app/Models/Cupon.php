@@ -121,8 +121,7 @@ class Cupon extends Model
     }
 
     /**
-     * Gera um código para inserção
-     * na coluna codigo_unico
+     * Gera um código para inserção na coluna codigo_unico
      * da tabela pivô cupons_pessoas
      *
      * @param $id_vestylle_pessoa Id da pessoa no sistema da vestylle
@@ -135,4 +134,32 @@ class Cupon extends Model
 
         return $codigo;
     }
+
+
+    /**
+     * Acessor para obter o ID encryptado do cupom
+     *
+     * @return string
+     */
+    public function getIdEncryptadoAttribute()
+    {
+        //Laravel helpers ftw o/
+        return encrypt($this->id);
+    }
+
+    /**
+     * Metodo para dar find a partir do idEncryptado
+     *
+     * @see App\Repositories\CuponRepository - findEncryptadoWithoutFail
+     * @param mixed $idEncryptado
+     *
+     * @return void
+     */
+    public static function findEncryptado($idEncryptado)
+    {
+        $id = decrypt($idEncryptado);
+
+        return self::find($id);
+    }
+
 }

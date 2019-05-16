@@ -82,6 +82,7 @@ class PessoaAPIController extends AppBaseController
             $this->pessoaRepository->updatePontosPessoa($pessoa);
             $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
             $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
+            $this->pessoaRepository->updateNascimentoPessoa($pessoa);
             $this->pessoaRepository->updateSegmentos($pessoa);
         }
 
@@ -145,6 +146,7 @@ class PessoaAPIController extends AppBaseController
             $this->pessoaRepository->updatePontosPessoa($pessoa);
             $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
             $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
+            $this->pessoaRepository->updateNascimentoPessoa($pessoa);
             $this->pessoaRepository->updateSegmentos($pessoa);
         }
 
@@ -302,4 +304,25 @@ class PessoaAPIController extends AppBaseController
 
 
     }
+
+    /**
+     * Retorna a listagem dos cupons que a pessoa ativou
+     *
+     * @param $pessoa_id id da pessoa
+     *
+     * @return Response || Error
+     */
+    public function getCuponsUtilizados($pessoa_id)
+    {
+        $pessoa = $this->pessoaRepository->findWithoutFail($pessoa_id);
+
+        if (empty($pessoa)) {
+            return $this->sendError('Pessoa não encontrada');
+        }
+
+        $cuponsUtilizados = \App\Models\CuponPessoa::where('pessoa_id', $pessoa->id)->with('cupom')->get()->toArray();
+
+        return $this->sendResponse($cuponsUtilizados, "Cupons do usuário #$pessoa->id carregados com sucesso");
+    }
+
 }

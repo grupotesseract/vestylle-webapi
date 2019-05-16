@@ -70,6 +70,14 @@
     <p>{!! $loja->updated_at !!}</p>
 </div>
 
+@if ($loja->fotos)
+<div class="row">
+    <div class="col-md-6">
+        <image-slider :images="{{ $loja->fotos }}"></image-slider>
+    </div>
+</div>
+@endif
+
 <script>
 var colorCollection = document.getElementsByClassName("color-background");
 var i;

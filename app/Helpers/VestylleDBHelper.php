@@ -174,6 +174,27 @@ class VestylleDBHelper
         return $result;
     }
 
+    /**
+     * Metodo para obter a data de nascimento de uma pessoa
+     *
+     * @param Pessoa $pessoa
+     * @return array || false - O resultado da query ou false.
+     */
+    public function getNascimentoPessoa(Pessoa $pessoa)
+    {
+        $query = "SELECT NASC FROM vegas_teste.pesdepen WHERE IDPESSOA = $pessoa->id_vestylle AND (TIPO = 'PRINCI' 
+        OR TIPO = '') LIMIT 1" ;
+
+        try {
+            $result = $this->query()->select($query);
+        } catch (\Exception $e) {
+            \Log::error("\n[ERRO] - Erro ao obter data de nascimento uma pessoa. Log: " . $e->getMessage());
+            return false;
+        }
+
+        return $result;
+    }
+
 
     /**
      * Metodo para obter a data da ultima compra de uma pessoa
