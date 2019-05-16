@@ -53,7 +53,7 @@
         @if ($oferta->categorias()->count())
             <div class="form-group">
                 {!! Form::label('categorias', 'Categorias:') !!}
-                <ul style="margin-left:.5rem">
+                <ul>
                     @foreach ($oferta->categorias as $categoria)
                         <li>{{ $categoria->nome }}</li>
                     @endforeach

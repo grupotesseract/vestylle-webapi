@@ -20,6 +20,13 @@
     {!! Form::select('oferta_id', $ofertas->pluck('descricao_oferta', 'id'), $cupon->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha uma Oferta']) !!}
 </div>
 
+{{-- Incluindo o select de categorias, Passando 'Model' se estiver editando --}}
+@if (\Request::is('*edit*'))
+    @include('categorias.partials.select', ['Model' => $cupon])
+@else
+    @include('categorias.partials.select')
+@endif
+
 <!-- Texto Cupom Field -->
 <div class="form-group col-sm-12">
     {!! Form::label('texto_cupom', 'Texto') !!}

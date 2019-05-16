@@ -81,6 +81,11 @@ class CuponController extends AppBaseController
             }
         }
 
+        //Se vier categorias, sync na relação
+        if ($request->categorias) {
+            $cupon->categorias()->sync($request->categorias);
+        }
+
         Flash::success('Cupom criado com sucesso.');
 
         return redirect(route('cupons.show', $cupon));
@@ -167,6 +172,11 @@ class CuponController extends AppBaseController
             foreach ($fotos as $foto) {
                 $this->dispatch(new SincronizarComCloudinary($foto));
             }
+        }
+
+        //Se vier categorias, sync na relação
+        if ($request->categorias) {
+            $cupon->categorias()->sync($request->categorias);
         }
 
         $cupon = $this->cuponRepository->update($input, $id);

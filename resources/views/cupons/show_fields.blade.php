@@ -44,12 +44,21 @@
         {!! Form::label('updated_at', 'Atualizado Em:') !!}
         <p>{!! $cupon->updated_at !!}</p>
     </div>
-</div>
 
-@if ($cupon->fotos)
-<div class="row">
-    <div class="col-md-6">
-        <image-slider :images="{{ $cupon->fotos }}"></image-slider>
-    </div>
+    @if ($cupon->fotos)
+        <div class="form-group">
+            <image-slider :images="{{ $cupon->fotos }}"></image-slider>
+        </div>
+    @endif
+
+    @if ($cupon->categorias()->count())
+        <div class="form-group">
+            {!! Form::label('categorias', 'Categorias:') !!}
+            <ul>
+                @foreach ($cupon->categorias as $categoria)
+                    <li>{{ $categoria->nome }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 </div>
-@endif
