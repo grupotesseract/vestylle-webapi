@@ -13,6 +13,7 @@ class VestylleDBHelper
 
     const LIMITE_HORAS = "NOW() - INTERVAL # HOUR";
     const LIMITE_DIAS = "NOW() - INTERVAL # DAY";
+    const CATEGORIAS = "'ESTILO','HOBBY','NUNCALC','PRTBAIXO','PRTCIMA'";
 
     /**
      * Construtor testando a conexão com o BD da vestylle.
@@ -95,8 +96,9 @@ class VestylleDBHelper
      */
     public function getCategorias()
     {
-        $query = "SELECT DISTINCT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor FROM vegas_teste.pesinfo WHERE TIPOINFO IN (
-            'ESTILO','CASUAL','HOBBY','NUNCALC','Nº','PRTBAIXO','PRTCIMA')";
+        $query = "SELECT DISTINCT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR
+                    as valor FROM vegas_teste.pesinfo 
+                    WHERE TIPOINFO IN (".self::CATEGORIAS.")";
         
         try {
             $result = $this->query()->select($query);
@@ -118,8 +120,9 @@ class VestylleDBHelper
      */
     public function getSegmentosPessoa(Pessoa $pessoa)
     {
-        $query = "SELECT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor FROM vegas_teste.pesinfo WHERE IDPESSOA = $pessoa->id_vestylle AND TIPOINFO IN (
-            'ESTILO','CASUAL','HOBBY','NUNCALC','Nº','PRTBAIXO','PRTCIMA')";
+        $query = "SELECT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor
+                    FROM vegas_teste.pesinfo WHERE IDPESSOA = $pessoa->id_vestylle 
+                    AND TIPOINFO IN (".self::CATEGORIAS.")";
         
         try {
             $result = $this->query()->select($query);
