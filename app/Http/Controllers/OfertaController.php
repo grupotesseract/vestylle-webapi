@@ -77,6 +77,11 @@ class OfertaController extends AppBaseController
             }
         }
 
+        //Se vier categorias, entao sync na relação.
+        if ($request->categorias) {
+            $retorno = $oferta->categorias()->sync($request->categorias);
+        }
+
         Flash::success('Oferta criada com sucesso.');
 
         return redirect(route('ofertas.show', $oferta));
@@ -165,18 +170,9 @@ class OfertaController extends AppBaseController
 
         $oferta = $this->ofertaRepository->update($input, $id);
 
+        //Se vier categorias, entao sync na relação.
         if ($request->categorias) {
-
-            //TODO
-            //Entender relação Categoria x Segmentacao
-            //Tem que ver se a forma que estou pegando as categorias está correta tbm
-            //Aqui eu preciso atrelar as categorias a uma Oferta
-            //
-            dd('tem categorias, como atrelar na Oferta?');
-
-            //$oferta->segmentacoes
-            //$segmentacoes = $this->categoriaRepository->getSegmentacoesPorCategoria($request->categorias);
-            //$oferta->segmentacoes->saveMany($)
+            $retorno = $oferta->categorias()->sync($request->categorias);
         }
 
         Flash::success('Oferta atualizada com sucesso.');
