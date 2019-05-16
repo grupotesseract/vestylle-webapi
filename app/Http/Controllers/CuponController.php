@@ -183,7 +183,7 @@ class CuponController extends AppBaseController
 
         Flash::success('Cupom atualizado com sucesso.');
 
-        return redirect(route('cupons.edit', $cupon));
+        return redirect(route('cupons.show', $cupon));
     }
 
     /**

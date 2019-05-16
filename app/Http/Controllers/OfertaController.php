@@ -177,7 +177,7 @@ class OfertaController extends AppBaseController
 
         Flash::success('Oferta atualizada com sucesso.');
 
-        return redirect(route('ofertas.edit', $oferta));
+        return redirect(route('ofertas.show', $oferta));
     }
 
     /**
