@@ -360,27 +360,16 @@ class PessoaRepository extends BaseRepository
     public function updateSegmentos(Pessoa $pessoa)
     {
         $this->startConnectorVestylle();
-        $retornoVestylle = $this->vestylleDB->getSegmentosPessoa($pessoa);                
+        $retornoVestylle = $this->vestylleDB->getSegmentosPessoa($pessoa);
         
         if ($retornoVestylle->count() > 0) {                              
-
             foreach ($retornoVestylle as $categoria) {            
-                $categoria->conteudo = strtoupper($categoria->conteudo);                                
-                $categorias = Categoria::where((array) $categoria)->get()->first();                
-                if ($categorias) {
-                    $categoriaIds[] = $categorias->id;
-                }                
+                $categoria->conteudo = strtoupper($categoria->conteudo);
+                $categoria = Categoria::where((array) $categoria)->get()->first();                
+                $categoriasIds[] = $categoria->id;
             }            
-
-            if (isset($categoriaIds) && count($categoriaIds) > 0) {
-                $pessoa->segmentacoes()->whereNotIn('categoria_id', $categoriaIds)->delete();
-                
-                foreach ($categoriaIds as $categoriaId) {
-                    $pessoa->segmentacoes()->create(['categoria_id' => $categoriaId]);
-                }
-            }
-        }
-        
+            $pessoa->categorias()->sync($categoriasIds);                
+        }        
     }
 
     /**
