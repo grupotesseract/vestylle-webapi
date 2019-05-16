@@ -38,7 +38,7 @@ class CuponAPIController extends AppBaseController
     {
         $this->cuponRepository->pushCriteria(new RequestCriteria($request));
         $this->cuponRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $cupons = $this->cuponRepository->all();
+        $cupons = $this->cuponRepository->apareceListagem();
 
         return $this->sendResponse($cupons->toArray(), 'Cupom encontrado com sucesso');
     }

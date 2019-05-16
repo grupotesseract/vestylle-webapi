@@ -63,6 +63,15 @@ class Cupon extends Model
     ];
 
     /**
+     * Scope para aplicar na query filtrando pelos cupons que estao com 'aparece_listagem' true
+     * Os cupons aparecem na listagem ou não (comuns || fisicos/promocionais)
+     */
+     public function scopeApareceListagem($query)
+     {
+        return $query->where('aparece_listagem', true);
+     }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function oferta()
