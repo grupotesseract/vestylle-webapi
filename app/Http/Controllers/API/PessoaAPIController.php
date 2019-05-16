@@ -82,6 +82,7 @@ class PessoaAPIController extends AppBaseController
             $this->pessoaRepository->updatePontosPessoa($pessoa);
             $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
             $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
+            $this->pessoaRepository->updateNascimentoPessoa($pessoa);
             $this->pessoaRepository->updateSegmentos($pessoa);
         }
 
@@ -145,6 +146,7 @@ class PessoaAPIController extends AppBaseController
             $this->pessoaRepository->updatePontosPessoa($pessoa);
             $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
             $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
+            $this->pessoaRepository->updateNascimentoPessoa($pessoa);
             $this->pessoaRepository->updateSegmentos($pessoa);
         }
 
