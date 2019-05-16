@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\API\CreateCuponAPIRequest;
 use App\Http\Requests\API\UpdateCuponAPIRequest;
 use App\Models\Cupon;
@@ -72,9 +73,17 @@ class CuponAPIController extends AppBaseController
     public function show($id)
     {
         $cupon = $this->cuponRepository->with('fotos')->findWithoutFail($id);
+        $pessoa_id = Auth::id();
 
         if (empty($cupon)) {
             return $this->sendError('Cupom não encontrado');
+        }
+
+        if ($pessoa_id) {
+            $cupon->codigo_unico = \App\Models\CuponPessoa::where([
+                'cupom_id' => $id,
+                'pessoa_id' => $pessoa_id
+            ])->first()->codigo_unico ?? null;
         }
 
         return $this->sendResponse($cupon->toArray(), 'Cupom encontrado com sucesso');
