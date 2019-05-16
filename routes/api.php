@@ -20,6 +20,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
     Route::post('cupons/{id}/ativar', 'CuponAPIController@ativar');
+    Route::get('cupons/{id}', 'CuponAPIController@show');
 });
 
 
@@ -44,7 +45,6 @@ Route::post('login/facebook', 'PessoaAPIController@redirecionaSocial');
 
 Route::get('lojas', 'LojaAPIController@show');
 Route::get('cupons', 'CuponAPIController@index');
-Route::get('cupons/{id}', 'CuponAPIController@show');
 Route::get('ofertas', 'OfertaAPIController@index');
 Route::get('ofertas/{id}', 'OfertaAPIController@show');
 
