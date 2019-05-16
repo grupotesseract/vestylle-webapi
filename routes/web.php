@@ -44,6 +44,6 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::post('upload_image', 'UploadImageController@sendFiles');
     Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
 
-    Route::get('cupons/{id}/qrcode', 'QRCodeController@getQrcode');
+    Route::get('cupons/{id}/qrcode', 'QRCodeController@getQrcode')->name('qrcode');
 });
 

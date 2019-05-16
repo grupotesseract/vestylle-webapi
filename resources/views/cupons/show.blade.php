@@ -3,7 +3,11 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Cupom
+            Cupom -
+
+            <div class="btn-group">
+                <a class="btn btn-xs btn-default" href="{{ route('qrcode', $cupon->id) }}">Gerar QRCode</a>
+            </div>
         </h1>
     </section>
     <div class="content">

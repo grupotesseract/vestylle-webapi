@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Flash;
 use Illuminate\Http\Request;
 use App\Repositories\CuponRepository;
-use Flash;
 
 class QRCodeController extends Controller
 {
@@ -20,9 +20,9 @@ class QRCodeController extends Controller
 
 
     /**
-     * undocumented function
+     * Metodo para servir uma view com o QRCode de um Cupon.
      *
-     * @return void
+     * @param Request $request
      */
     public function getQrcode(Request $request)
     {
@@ -34,14 +34,9 @@ class QRCodeController extends Controller
             return redirect(route('cupons.index'));
         }
 
+        $valorQRCode = env('URL_FRONT_CUPON').$cupon->IdEncryptado;
 
-        //TODO
-        //1- Criar metodo para encryptar e decryptar o id do cupom
-        //2- Incluir botão 'Ver QrCode no show do cupom'
-        //3- ??
-        //$hash = $cupon->getHash();
-
-        return view('cupons.partials.qrcode')->with('hash', 'lalala');
+        return view('cupons.partials.qrcode')->with('valorQRCode', $valorQRCode);
     }
 
 
