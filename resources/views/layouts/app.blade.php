@@ -31,6 +31,7 @@
     <!-- Cropper.css -->
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.3/cropper.css'>
     <link href="{{ asset('css/cropper-style.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
 
     @yield('css')
 </head>
@@ -81,9 +82,11 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.3/cropper.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.33.1/dist/sweetalert2.all.min.js"></script>
 
-
     <script src="{{ asset('js/cropper_config.js') }}"></script>
     <script src="{{ asset('js/app.js') }}" ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <script src="{{ asset('js/categorias.js') }}" ></script>
 
     @yield('scripts')
 </body>

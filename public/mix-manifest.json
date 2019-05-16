@@ -2,5 +2,6 @@
     "/js/app.js": "/js/app.js",
     "/css/cropper-style.css": "/css/cropper-style.css",
     "/css/app.css": "/css/app.css",
-    "/js/cropper_config.js": "/js/cropper_config.js"
+    "/js/cropper_config.js": "/js/cropper_config.js",
+    "/js/categorias.js": "/js/categorias.js"
 }

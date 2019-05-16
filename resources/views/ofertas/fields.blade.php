@@ -20,6 +20,9 @@
     {!! Form::textarea('descricao_oferta', null, ['class' => 'form-control']) !!}
 </div>
 
+{{-- Incluindo o select de categorias --}}
+@include('categorias.partials.select')
+
 @isset ($oferta->fotos)
 <div class="row">
     <div class="col-md-6">

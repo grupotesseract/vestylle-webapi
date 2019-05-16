@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Segmentacao extends Model
-{   
-    
+{
+
     public $fillable = [
         'owner_type',
         'owner_id',
-        'categoria_id'        
+        'categoria_id'
     ];
-    
+
     /**
      * The table associated with the model.
      *

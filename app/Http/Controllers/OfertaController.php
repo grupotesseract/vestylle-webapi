@@ -165,6 +165,20 @@ class OfertaController extends AppBaseController
 
         $oferta = $this->ofertaRepository->update($input, $id);
 
+        if ($request->categorias) {
+
+            //TODO
+            //Entender relação Categoria x Segmentacao
+            //Tem que ver se a forma que estou pegando as categorias está correta tbm
+            //Aqui eu preciso atrelar as categorias a uma Oferta
+            //
+            dd('tem categorias, como atrelar na Oferta?');
+
+            //$oferta->segmentacoes
+            //$segmentacoes = $this->categoriaRepository->getSegmentacoesPorCategoria($request->categorias);
+            //$oferta->segmentacoes->saveMany($)
+        }
+
         Flash::success('Oferta atualizada com sucesso.');
 
         return redirect(route('ofertas.edit', $oferta));
