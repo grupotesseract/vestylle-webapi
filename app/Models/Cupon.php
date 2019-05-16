@@ -100,6 +100,16 @@ class Cupon extends Model
     }
 
     /**
+     * Relacionamento N x N entre Cupons e Categorias (polimórfico)
+     *
+     * @return void 
+     */
+    public function categorias()
+    {
+        return $this->morphToMany('App\Models\Categoria', 'owner', 'segmentacoes');
+    }
+
+    /**
      * Acessor que traz a a primeira foto do cupon, caso nao exista nenhuma
      * trazer da oferta, caso eles estejam relacionados
      *

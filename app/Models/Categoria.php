@@ -17,12 +17,19 @@ class Categoria extends Model
         'nome'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     **/
-    public function segmentacoes()
+    public function pessoas() 
     {
-        return $this->hasMany('App\Models\Segmentacao');
+        return $this->morphedByMany('App\Models\Pessoa', 'owner', 'segmentacoes');
+    }
+
+    public function ofertas() 
+    {
+        return $this->morphedByMany('App\Models\Oferta', 'owner', 'segmentacoes');
+    }
+
+    public function cupons() 
+    {
+        return $this->morphedByMany('App\Models\Cupon', 'owner', 'segmentacoes');
     }
 
     /**

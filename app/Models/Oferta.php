@@ -94,13 +94,13 @@ class Oferta extends Model
     }
 
     /**
-     * Relação de polimorfica com segmentação/categorias
+     * Relacionamento N x N entre Ofertas e Categorias (polimórfico)
      *
-     * @return void
+     * @return void 
      */
-    public function segmentacoes()
+    public function categorias()
     {
-        return $this->morphMany('App\Models\Segmentacao', 'owner');
+        return $this->morphToMany('App\Models\Categoria', 'owner', 'segmentacoes');
     }
 
 
