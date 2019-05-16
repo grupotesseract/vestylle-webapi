@@ -38,8 +38,9 @@ class CuponAPIController extends AppBaseController
     {
         $this->cuponRepository->pushCriteria(new RequestCriteria($request));
         $this->cuponRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $cupons = $this->cuponRepository->with('fotos')->all();
 
+        //Atenção que o apareceListagem do repositorio precisa ser chamado antes!
+        $cupons = $this->cuponRepository->apareceListagem()->with('fotos')->get();
         return $this->sendResponse($cupons->toArray(), 'Cupons carregados com sucesso');
     }
 

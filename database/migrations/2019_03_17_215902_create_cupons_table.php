@@ -18,6 +18,8 @@ class CreateCuponsTable extends Migration
             $table->integer('oferta_id')->unsigned()->nullable();
             $table->date('data_validade');
             $table->text('texto_cupom');
+            $table->integer('porcentagem_off')->nullable();
+            $table->boolean('aparece_listagem')->default(true);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('oferta_id')->references('id')->on('ofertas');

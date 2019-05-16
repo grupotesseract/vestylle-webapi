@@ -48,4 +48,16 @@ class CuponRepository extends BaseRepository
             return;
         }
     }
+
+
+    /**
+     * Get Cupons que tem 'aparece_listagem' marcado como true
+     *
+     * @return Collection
+     */
+    public function apareceListagem()
+    {
+        return $this->model()::apareceListagem();
+    }
+
 }

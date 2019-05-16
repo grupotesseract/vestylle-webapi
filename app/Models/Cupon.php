@@ -32,6 +32,7 @@ class Cupon extends Model
         'foto_caminho',
         'titulo',
         'subtitulo',
+        'aparece_listagem'
     ];
 
     /**
@@ -46,6 +47,7 @@ class Cupon extends Model
         'foto_caminho' => 'string',
         'titulo' => 'string',
         'subtitulo' => 'string',
+        'aparece_listagem' => 'boolean'
     ];
 
     /**
@@ -59,6 +61,15 @@ class Cupon extends Model
         'titulo' => 'required | max: 150',
         'subtitulo' => 'required | max: 150',
     ];
+
+    /**
+     * Scope para aplicar na query filtrando pelos cupons que estao com 'aparece_listagem' true
+     * Os cupons aparecem na listagem ou não (comuns || fisicos/promocionais)
+     */
+     public function scopeApareceListagem($query)
+     {
+        return $query->where('aparece_listagem', true);
+     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
