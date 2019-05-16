@@ -57,7 +57,7 @@ class CuponRepository extends BaseRepository
      */
     public function apareceListagem()
     {
-        return $this->model()::apareceListagem()->get();
+        return $this->model()::apareceListagem();
     }
 
 }
