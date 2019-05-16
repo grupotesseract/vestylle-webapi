@@ -3,22 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\LojaDataTable;
+use App\Jobs\SincronizarComCloudinary;
 use App\Http\Requests;
 use App\Http\Requests\CreateLojaRequest;
 use App\Http\Requests\UpdateLojaRequest;
 use App\Repositories\LojaRepository;
+use App\Repositories\FotoRepository;
+use App\Models\Loja;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Http\Request;
 
 class LojaController extends AppBaseController
 {
     /** @var  LojaRepository */
     private $lojaRepository;
+    private $fotoRepository;
 
-    public function __construct(LojaRepository $lojaRepo)
+    public function __construct(LojaRepository $lojaRepo, FotoRepository $fotoRepo)
     {
         $this->lojaRepository = $lojaRepo;
+        $this->fotoRepository = $fotoRepo;
     }
 
     /**
@@ -49,13 +55,28 @@ class LojaController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateLojaRequest $request)
+    public function store(Request $request)
     {
         $input = $request->all();
 
+        $validated = $request->validate(Loja::$rules);
+
         $loja = $this->lojaRepository->create($input);
 
-        Flash::success('Loja saved successfully.');
+        $fotos = $request->allFiles()['files'] ?? false;
+        $hasFotos = !empty($fotos);
+
+        if ($hasFotos) {
+            $fotos = $this->fotoRepository->uploadAndCreate($request);
+            $loja->fotos()->saveMany($fotos);
+
+            //Upload p/ Cloudinary e delete local
+            foreach ($fotos as $foto) {
+                $this->dispatch(new SincronizarComCloudinary($foto));
+            }
+        }
+
+        Flash::success('Loja criada com sucesso.');
 
         return redirect(route('lojas.index'));
     }
@@ -108,9 +129,12 @@ class LojaController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateLojaRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->all();
         $loja = $this->lojaRepository->findWithoutFail($id);
+
+        $validated = $request->validate(Loja::$rules);
 
         if (empty($loja)) {
             Flash::error('Loja not found');
@@ -118,9 +142,27 @@ class LojaController extends AppBaseController
             return redirect(route('lojas.index'));
         }
 
-        $loja = $this->lojaRepository->update($request->all(), $id);
+        $fotos = $request->allFiles()['files'] ?? false;
+        $hasFotos = !empty($fotos);
+        $canUpload = $hasFotos ? \App\Helpers\Helpers::checkUploadLimit($loja, count($fotos)) : true;
 
-        Flash::success('Loja updated successfully.');
+        if ($canUpload == false) {
+            $loja = $this->lojaRepository->update($input, $id);
+            Flash::error('Número máximo de imagens atingido. Tente novamente');
+            Flash::success('Loja atualizada com sucesso.');
+            return redirect(route('lojas.edit', $loja));
+        }
+
+        if ($hasFotos) {
+            $fotos = $this->fotoRepository->uploadAndCreate($request);
+            $loja->fotos()->saveMany($fotos);
+
+            foreach ($fotos as $foto) {
+                $this->dispatch(new SincronizarComCloudinary($foto));
+            }
+        }
+
+        Flash::success('Loja atualizada com sucesso.');
 
         return redirect(route('lojas.index'));
     }
@@ -140,6 +182,10 @@ class LojaController extends AppBaseController
             Flash::error('Loja not found');
 
             return redirect(route('lojas.index'));
+        }
+
+        if ($loja->fotos) {
+            $loja->fotos()->delete();
         }
 
         $this->lojaRepository->delete($id);
