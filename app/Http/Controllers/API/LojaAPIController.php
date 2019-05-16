@@ -22,6 +22,11 @@ class LojaAPIController extends AppBaseController
     /** @var  LojaRepository */
     private $lojaRepository;
 
+    /**
+     * __construct
+     *
+     * @param LojaRepository $lojaRepo
+     */
     public function __construct(LojaRepository $lojaRepo)
     {
         $this->lojaRepository = $lojaRepo;
