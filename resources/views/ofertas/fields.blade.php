@@ -20,6 +20,13 @@
     {!! Form::textarea('descricao_oferta', null, ['class' => 'form-control']) !!}
 </div>
 
+{{-- Incluindo o select de categorias, Passando 'Model' se estiver editando --}}
+@if (\Request::is('*edit*'))
+    @include('categorias.partials.select', ['Model' => $oferta])
+@else
+    @include('categorias.partials.select')
+@endif
+
 @isset ($oferta->fotos)
 <div class="row">
     <div class="col-md-6">

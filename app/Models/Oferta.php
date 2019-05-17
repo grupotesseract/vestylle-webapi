@@ -30,7 +30,7 @@ class Oferta extends Model
         'foto_oferta',
         'titulo',
         'subtitulo',
-        'codigo_promocional'        
+        'codigo_promocional'
     ];
 
     /**
@@ -43,8 +43,8 @@ class Oferta extends Model
         'texto_oferta' => 'string',
         'foto_oferta' => 'string',
         'titulo' => 'string',
-        'subtitulo' => 'string',    
-        'codigo_promocional' => 'string'    
+        'subtitulo' => 'string',
+        'codigo_promocional' => 'string'
     ];
 
     /**
@@ -55,7 +55,7 @@ class Oferta extends Model
     public static $rules = [
         'descricao_oferta' => 'required',
         'titulo' => 'required | max: 150',
-        'subtitulo' => 'required | max: 150',        
+        'subtitulo' => 'required | max: 150',
     ];
 
     public $appends = [
@@ -102,6 +102,8 @@ class Oferta extends Model
     {
         return $this->morphToMany('App\Models\Categoria', 'owner', 'segmentacoes');
     }
+
+
 
     /**
      * Acessor para obter a URL da foto da Oferta.

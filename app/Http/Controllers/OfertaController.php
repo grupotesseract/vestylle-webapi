@@ -77,6 +77,11 @@ class OfertaController extends AppBaseController
             }
         }
 
+        //Se vier categorias, entao sync na relação.
+        if ($request->categorias) {
+            $retorno = $oferta->categorias()->sync($request->categorias);
+        }
+
         Flash::success('Oferta criada com sucesso.');
 
         return redirect(route('ofertas.show', $oferta));
@@ -165,9 +170,14 @@ class OfertaController extends AppBaseController
 
         $oferta = $this->ofertaRepository->update($input, $id);
 
+        //Se vier categorias, entao sync na relação.
+        if ($request->categorias) {
+            $retorno = $oferta->categorias()->sync($request->categorias);
+        }
+
         Flash::success('Oferta atualizada com sucesso.');
 
-        return redirect(route('ofertas.edit', $oferta));
+        return redirect(route('ofertas.show', $oferta));
     }
 
     /**
