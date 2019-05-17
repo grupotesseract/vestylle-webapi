@@ -9,9 +9,7 @@ use App\DataTables\PessoaDataTable;
 use App\DataTables\OfertaDataTable;
 use App\DataTables\CategoriaDataTable;
 use App\Repositories\CategoriaRepository;
-use App\DataTables\Scopes\CuponsPorCategoria;
-use App\DataTables\Scopes\PessoasPorCategoria;
-use App\DataTables\Scopes\OfertasPorCategoria;
+use App\DataTables\Scopes\ScopePorCategoria;
 
 class CategoriaController extends Controller
 {
@@ -73,7 +71,7 @@ class CategoriaController extends Controller
             return redirect(route('categorias.index'));
         }
 
-        return $pessoaDataTable->addScope(new PessoasPorCategoria($id))
+        return $pessoaDataTable->addScope(new ScopePorCategoria($id))
             ->render('categorias.pessoas', compact('categoria'));
     }
 
@@ -94,7 +92,7 @@ class CategoriaController extends Controller
             return redirect(route('categorias.index'));
         }
 
-        return $ofertaDataTable->addScope(new OfertasPorCategoria($id))
+        return $ofertaDataTable->addScope(new ScopePorCategoria($id))
             ->render('categorias.ofertas', compact('categoria'));
     }
 
@@ -115,7 +113,7 @@ class CategoriaController extends Controller
             return redirect(route('categorias.index'));
         }
 
-        return $cuponDataTable->addScope(new CuponsPorCategoria($id))
+        return $cuponDataTable->addScope(new ScopePorCategoria($id))
             ->render('categorias.cupons', compact('categoria'));
     }
 }

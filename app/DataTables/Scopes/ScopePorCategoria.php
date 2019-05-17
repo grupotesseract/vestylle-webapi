@@ -4,7 +4,7 @@ namespace App\DataTables\Scopes;
 
 use Yajra\DataTables\Contracts\DataTableScope;
 
-class PessoasPorCategoria implements DataTableScope
+class ScopePorCategoria implements DataTableScope
 {
 
     private $categoriaID;
@@ -26,8 +26,8 @@ class PessoasPorCategoria implements DataTableScope
     public function apply($query)
     {
         $categoriaID = $this->categoriaID;
-        return $query->whereHas('categorias', function($qPessoa) use ($categoriaID) {
-            $qPessoa->where('categoria_id', $categoriaID);
+        return $query->whereHas('categorias', function($qScope use ($categoriaID) {
+            $qScope->where('categoria_id', $categoriaID);
         });
     }
 }
