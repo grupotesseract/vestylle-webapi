@@ -19,7 +19,6 @@
                     <hr>
                     <br>
 
-
                     <div class="col-xs-12">
                     <h4>Pessoas que ativaram esse cupom</h4>
 

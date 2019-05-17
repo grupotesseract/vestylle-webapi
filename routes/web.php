@@ -46,8 +46,11 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     Route::get('cupons/{id}/qrcode', 'QRCodeController@getQrcode')->name('qrcode');
 
-    Route::get('categorias', 'CategoriaController@index');
+    Route::get('categorias', 'CategoriaController@index')->name('categorias.index');
     Route::get('categorias/{id}', 'CategoriaController@show')->name('categorias.show');
+    Route::get('categorias/{id}/pessoas', 'CategoriaController@showPessoas')->name('categorias.pessoas');
+    Route::get('categorias/{id}/ofertas', 'CategoriaController@showofertas')->name('categorias.ofertas');
+    Route::get('categorias/{id}/cupons', 'CategoriaController@showcupons')->name('categorias.cupons');
 
 });
 
