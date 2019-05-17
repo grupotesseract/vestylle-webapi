@@ -16,7 +16,7 @@ class TipoInformacao extends Model
 {
     use SoftDeletes;
 
-    public $table = 'tipo_informacaos';
+    public $table = 'tipo_informacoes';
     
 
     protected $dates = ['deleted_at'];
