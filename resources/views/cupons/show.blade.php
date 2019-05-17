@@ -6,7 +6,7 @@
             Cupom -
 
             <div class="btn-group">
-                <a class="btn btn-xs btn-default" href="{{ route('qrcode', $cupon->id) }}">Gerar QRCode</a>
+                <a class="btn btn-xs btn-primary" href="{{ route('qrcode', $cupon->id) }}">Gerar QRCode</a>
             </div>
         </h1>
     </section>
@@ -15,7 +15,6 @@
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
                     @include('cupons.show_fields')
-
 
                     <hr>
                     <br>
