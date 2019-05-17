@@ -47,3 +47,6 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::get('cupons/{id}/qrcode', 'QRCodeController@getQrcode')->name('qrcode');
 });
 
+
+
+Route::resource('tipoInformacaos', 'TipoInformacaoController');
