@@ -34,13 +34,11 @@ class CategoriaRepository extends BaseRepository
     /**
      * Metodo para obter o array de categorias possiveis para adicionar a um cupon/oferta
      *
-     * @OBS: Checar se esse o unique nao pode acabar deixando pessoas de fora sendo que agrupa os 'ids'
-     *
      * @return Collection
      */
     public static function getCategoriasSelect()
     {
-        return Categoria::all()->pluck('nome', 'id')->unique();
+        return Categoria::all()->pluck('nome', 'id');
     }
 
 

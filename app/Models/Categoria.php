@@ -12,22 +12,39 @@ class Categoria extends Model
         'valor'
     ];
 
-
     protected $appends = [
-        'nome'
+        'nome',
+        'numPessoas',
+        'numCupons',
+        'numOfertas'
     ];
 
-    public function pessoas() 
+    /**
+     * Relacionamento N x N entre Categorias e Pessoas(polimórfico)
+     *
+     * @return Relationship
+     */
+    public function pessoas()
     {
         return $this->morphedByMany('App\Models\Pessoa', 'owner', 'segmentacoes');
     }
 
-    public function ofertas() 
+    /**
+     * Relacionamento N x N entre Categorias e Ofertas(polimórfico)
+     *
+     * @return Relationship
+     */
+    public function ofertas()
     {
         return $this->morphedByMany('App\Models\Oferta', 'owner', 'segmentacoes');
     }
 
-    public function cupons() 
+    /**
+     * Relacionamento N x N entre Categorias e Cupons(polimórfico)
+     *
+     * @return Relationship
+     */
+    public function cupons()
     {
         return $this->morphedByMany('App\Models\Cupon', 'owner', 'segmentacoes');
     }
@@ -62,5 +79,38 @@ class Categoria extends Model
      {
         return $value == '0.00' ? '' : $value;
      }
+
+
+    /**
+     * Acessor para obter a qnt de pessoas com essa categoria
+     *
+     * @return string
+     */
+     public function getNumPessoasAttribute()
+     {
+        return $this->pessoas()->count();
+     }
+
+
+    /**
+     * Acessor para obter a qnt de cupons com essa categoria
+     *
+     * @return string
+     */
+     public function getNumCuponsAttribute()
+     {
+        return $this->cupons()->count();
+     }
+
+    /**
+     * Acessor para obter a qnt de ofertas com essa categoria
+     *
+     * @return string
+     */
+     public function getNumOfertasAttribute()
+     {
+        return $this->ofertas()->count();
+     }
+
 }
 

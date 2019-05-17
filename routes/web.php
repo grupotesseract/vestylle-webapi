@@ -45,5 +45,9 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
 
     Route::get('cupons/{id}/qrcode', 'QRCodeController@getQrcode')->name('qrcode');
+
+    Route::get('categorias', 'CategoriaController@index');
+    Route::get('categorias/{id}', 'CategoriaController@show')->name('categorias.show');
+
 });
 
