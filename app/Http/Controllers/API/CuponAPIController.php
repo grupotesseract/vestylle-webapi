@@ -186,4 +186,31 @@ class CuponAPIController extends AppBaseController
         return $this->sendResponse($response, 'Cupom ativado com sucesso');
     }
 
+    /**
+     * Display the specified Cupon.
+     * GET|HEAD /cupons/{id}
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function showEncryptado($idEncryptado)
+    {
+        $cupon = $this->cuponRepository->with('fotos')->findEncryptadoWithoutFail($idEncryptado);
+        $pessoa_id = Auth::id();
+
+        if (empty($cupon)) {
+            return $this->sendError('Cupom não encontrado');
+        }
+
+        if ($pessoa_id) {
+            $cupon->codigo_unico = \App\Models\CuponPessoa::where([
+                'cupom_id' => $id,
+                'pessoa_id' => $pessoa_id
+            ])->first()->codigo_unico ?? null;
+        }
+
+        return $this->sendResponse($cupon->toArray(), 'Cupom encontrado com sucesso');
+    }
+
 }
