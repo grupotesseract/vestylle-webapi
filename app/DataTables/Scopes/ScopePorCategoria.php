@@ -26,7 +26,7 @@ class ScopePorCategoria implements DataTableScope
     public function apply($query)
     {
         $categoriaID = $this->categoriaID;
-        return $query->whereHas('categorias', function($qScope use ($categoriaID) {
+        return $query->whereHas('categorias', function($qScope) use ($categoriaID) {
             $qScope->where('categoria_id', $categoriaID);
         });
     }
