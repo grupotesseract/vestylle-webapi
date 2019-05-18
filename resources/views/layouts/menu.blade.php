@@ -17,3 +17,6 @@
     <a href="{!! route('tipoInformacaos.index') !!}"><i class="fa fa-edit"></i><span>Tipo Informacaos</span></a>
 </li>
 
+<li class="{{ Request::is('categorias*') ? 'active' : '' }}">
+    <a href="/categorias"><i class="fa fa-list-alt"></i><span>Categorias</span></a>
+</li>
