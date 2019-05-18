@@ -42,7 +42,7 @@ class TipoInformacaoDataTable extends DataTable
         return $this->builder()
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->addAction(['width' => '120px', 'printable' => false])
+            ->addAction(['width' => '120px', 'printable' => false, 'title' => 'Ações'])
             ->parameters([
                 'dom'       => 'Bfrtip',
                 'stateSave' => true,
@@ -54,7 +54,9 @@ class TipoInformacaoDataTable extends DataTable
                     ['extend' => 'reset', 'className' => 'btn btn-default btn-sm no-corner',],
                     ['extend' => 'reload', 'className' => 'btn btn-default btn-sm no-corner',],
                 ],
-            ]);
+                'language' => ['url' => '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese-Brasil.json'],
+
+            ]); 
     }
 
     /**
@@ -65,7 +67,7 @@ class TipoInformacaoDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'tipo_informacao'
+            ['data' => 'tipo_informacao', 'title' => 'Tipo de Informação'],            
         ];
     }
 
