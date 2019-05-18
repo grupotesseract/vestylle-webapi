@@ -13,7 +13,7 @@ class VestylleDBHelper
 
     const LIMITE_HORAS = "NOW() - INTERVAL # HOUR";
     const LIMITE_DIAS = "NOW() - INTERVAL # DAY";
-    const CATEGORIAS = "'ESTILO','HOBBY','NUNCALC','PRTBAIXO','PRTCIMA'";
+    //const CATEGORIAS = "'ESTILO','HOBBY','NUNCALC','PRTBAIXO','PRTCIMA'";
 
     /**
      * Construtor testando a conexão com o BD da vestylle.
@@ -96,10 +96,12 @@ class VestylleDBHelper
      */
     public function getCategorias()
     {
+        $tipoInformacoes = \App\Models\TipoInformacao::pluck('tipo_informacao')->toArray();
+        $tipoInformacoesSplit = implode('", "', $tipoInformacoes);        
         $query = "SELECT DISTINCT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR
                     as valor FROM vegas_teste.pesinfo 
-                    WHERE TIPOINFO IN (".self::CATEGORIAS.")";
-        
+                    WHERE TIPOINFO IN (\"$tipoInformacoesSplit\")";        
+       
         try {
             $result = $this->query()->select($query);
         } catch (\Exception $e) {
@@ -120,9 +122,12 @@ class VestylleDBHelper
      */
     public function getSegmentosPessoa(Pessoa $pessoa)
     {
+        $tipoInformacoes = \App\Models\TipoInformacao::pluck('tipo_informacao')->toArray();
+        $tipoInformacoesSplit = implode('", "', $tipoInformacoes);
+
         $query = "SELECT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor
                     FROM vegas_teste.pesinfo WHERE IDPESSOA = $pessoa->id_vestylle 
-                    AND TIPOINFO IN (".self::CATEGORIAS.")";
+                    AND TIPOINFO IN (\"$tipoInformacoesSplit\")";
         
         try {
             $result = $this->query()->select($query);
