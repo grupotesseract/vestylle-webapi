@@ -13,3 +13,6 @@
 <li class="{{ Request::is('lojas*') ? 'active' : '' }}">
     <a href="/lojas/1/edit"><i class="fa fa-home"></i><span>A Loja</span></a>
 </li>
+<li class="{{ Request::is('categorias*') ? 'active' : '' }}">
+    <a href="/categorias"><i class="fa fa-list-alt"></i><span>Categorias</span></a>
+</li>
