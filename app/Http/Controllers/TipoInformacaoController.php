@@ -55,7 +55,7 @@ class TipoInformacaoController extends AppBaseController
 
         $tipoInformacao = $this->tipoInformacaoRepository->create($input);
 
-        Flash::success('Tipo Informacao saved successfully.');
+        Flash::success('Tipo de Informação salvo com sucesso.');
 
         return redirect(route('tipoInformacaos.index'));
     }
@@ -72,7 +72,7 @@ class TipoInformacaoController extends AppBaseController
         $tipoInformacao = $this->tipoInformacaoRepository->findWithoutFail($id);
 
         if (empty($tipoInformacao)) {
-            Flash::error('Tipo Informacao not found');
+            Flash::error('Tipo de Informação não encontrado');
 
             return redirect(route('tipoInformacaos.index'));
         }
@@ -92,7 +92,7 @@ class TipoInformacaoController extends AppBaseController
         $tipoInformacao = $this->tipoInformacaoRepository->findWithoutFail($id);
 
         if (empty($tipoInformacao)) {
-            Flash::error('Tipo Informacao not found');
+            Flash::error('Tipo de Informação não encontrado');
 
             return redirect(route('tipoInformacaos.index'));
         }
@@ -113,14 +113,14 @@ class TipoInformacaoController extends AppBaseController
         $tipoInformacao = $this->tipoInformacaoRepository->findWithoutFail($id);
 
         if (empty($tipoInformacao)) {
-            Flash::error('Tipo Informacao not found');
+            Flash::error('Tipo de Informação não encontrado');
 
             return redirect(route('tipoInformacaos.index'));
         }
 
         $tipoInformacao = $this->tipoInformacaoRepository->update($request->all(), $id);
 
-        Flash::success('Tipo Informacao updated successfully.');
+        Flash::success('Tipo de Informação atualizado com sucesso.');
 
         return redirect(route('tipoInformacaos.index'));
     }
@@ -137,14 +137,14 @@ class TipoInformacaoController extends AppBaseController
         $tipoInformacao = $this->tipoInformacaoRepository->findWithoutFail($id);
 
         if (empty($tipoInformacao)) {
-            Flash::error('Tipo Informacao not found');
+            Flash::error('Tipo de Informação não encontrado');
 
             return redirect(route('tipoInformacaos.index'));
         }
 
         $this->tipoInformacaoRepository->delete($id);
 
-        Flash::success('Tipo Informacao deleted successfully.');
+        Flash::success('Tipo de Informação excluído com sucesso');
 
         return redirect(route('tipoInformacaos.index'));
     }
