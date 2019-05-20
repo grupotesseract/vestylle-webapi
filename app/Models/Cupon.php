@@ -170,4 +170,32 @@ class Cupon extends Model
         return self::where('qrcode', $idEncryptado)->get()->first();
     }
 
+    /**
+     * Scope a query to only include popular users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSegmentadosPorUsuario($query, $pessoa)
+    {
+        $categoriasPessoa = $pessoa->categorias->pluck('id')->toArray();
+
+        return $query->whereHas(
+            'categorias', function ($query) use ($categoriasPessoa) { 
+                $query->whereIn('owner_id', $categoriasPessoa);
+            }
+        );        
+    }
+
+    /**
+     * Scope a query to only include popular users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNaoSegmentados($query)
+    {
+        return $query->doesntHave('categorias');
+    }
+
 }
