@@ -11,6 +11,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::resource('pessoas', 'PessoaAPIController')->except(['store', 'index', 'destroy']);
 
     Route::get('pessoas/{id}', 'PessoaAPIController@show')->middleware('pessoaid');
+    Route::get('pessoas/{id}/cupons', 'PessoaAPIController@getCuponsUtilizados');
     Route::post('pessoas/{id}', 'PessoaAPIController@update')->middleware('pessoaid');
 
     //Get/Toggle Lista de desejos - Aplicando middleware pessoaid pra checar se é a mesma pessoa
@@ -18,7 +19,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('pessoas/{id}/ofertas', 'PessoaAPIController@postOfertas')->middleware('pessoaid');
 
     Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
+    Route::post('cupons/{id}/ativar', 'CuponAPIController@ativar');    
 });
+
+
+
 
 
 /*
@@ -41,7 +46,9 @@ Route::post('login/facebook', 'PessoaAPIController@redirecionaSocial');
 
 Route::get('lojas', 'LojaAPIController@show');
 Route::get('cupons', 'CuponAPIController@index');
-Route::get('cupons/{id}', 'CuponAPIController@show');
 Route::get('ofertas', 'OfertaAPIController@index');
 Route::get('ofertas/{id}', 'OfertaAPIController@show');
+
+Route::get('cupons/{id}', 'CuponAPIController@show');
+Route::get('cupons/encrypt/{idEncryptado}', 'CuponAPIController@showEncryptado');
 

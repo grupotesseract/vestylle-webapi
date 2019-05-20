@@ -15,8 +15,7 @@ class AddColumnTituloSubtituloPrecoOfertas extends Migration
     {
         Schema::table('ofertas', function(Blueprint $table) {
             $table->string('titulo', 150)->nullable();
-            $table->string('subtitulo', 150)->nullable();
-            $table->decimal('preco', 10,2)->nullable();
+            $table->string('subtitulo', 150)->nullable();            
         });
     }
 
@@ -36,8 +35,7 @@ class AddColumnTituloSubtituloPrecoOfertas extends Migration
         if ($hasColumns) {
             Schema::table('ofertas', function(Blueprint $table) {
                 $table->dropColumn('titulo');
-                $table->dropColumn('subtitulo');
-                $table->dropColumn('preco');
+                $table->dropColumn('subtitulo');                
             });
         }
     }

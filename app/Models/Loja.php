@@ -25,7 +25,7 @@ class Loja extends Model
     use SoftDeletes;
 
     public $table = 'lojas';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -76,5 +76,13 @@ class Loja extends Model
         'horario_funcionamento' => 'string|nullable'
     ];
 
-    
+    /**
+     * Relação polimórfica 1 x N com fotos
+     *
+     * @return void
+     */
+    public function fotos()
+    {
+        return $this->morphMany(\App\Models\Foto::class, 'owner');
+    }
 }

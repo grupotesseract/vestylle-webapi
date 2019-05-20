@@ -66,8 +66,6 @@ class CuponController extends AppBaseController
 
         $validated = $request->validate(Cupon::$rules);
 
-        $input['cupom_primeiro_login'] = isset($input['cupom_primeiro_login']) ? true : false;
-
         $cupon = $this->cuponRepository->create($input);
 
         $fotos = $request->allFiles()['files'] ?? false;
@@ -81,6 +79,11 @@ class CuponController extends AppBaseController
             foreach ($fotos as $foto) {
                 $this->dispatch(new SincronizarComCloudinary($foto));
             }
+        }
+
+        //Se vier categorias, sync na relação
+        if ($request->categorias) {
+            $cupon->categorias()->sync($request->categorias);
         }
 
         Flash::success('Cupom criado com sucesso.');
@@ -141,7 +144,6 @@ class CuponController extends AppBaseController
     public function update($id, Request $request)
     {
         $input = $request->all();
-        $input['cupom_primeiro_login'] = isset($input['cupom_primeiro_login']) ? true : false;
         $cupon = $this->cuponRepository->findWithoutFail($id);
 
         $validated = $request->validate(Cupon::$rules);
@@ -172,11 +174,16 @@ class CuponController extends AppBaseController
             }
         }
 
+        //Se vier categorias, sync na relação
+        if ($request->categorias) {
+            $cupon->categorias()->sync($request->categorias);
+        }
+
         $cupon = $this->cuponRepository->update($input, $id);
 
         Flash::success('Cupom atualizado com sucesso.');
 
-        return redirect(route('cupons.edit', $cupon));
+        return redirect(route('cupons.show', $cupon));
     }
 
     /**
@@ -198,6 +205,10 @@ class CuponController extends AppBaseController
 
         if ($cupon->fotos) {
             $cupon->fotos()->delete();
+        }
+
+        if ($cupon->pessoas) {
+            \DB::statement("DELETE FROM cupons_pessoas WHERE cupom_id = $cupon->id");
         }
 
         $this->cuponRepository->delete($id);

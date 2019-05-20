@@ -3,7 +3,11 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Cupom
+            Cupom -
+
+            <div class="btn-group">
+                <a class="btn btn-xs btn-primary" href="{{ route('qrcode', $cupon->id) }}">Gerar QRCode</a>
+            </div>
         </h1>
     </section>
     <div class="content">
@@ -12,10 +16,8 @@
                 <div class="row" style="padding-left: 20px">
                     @include('cupons.show_fields')
 
-
                     <hr>
                     <br>
-
 
                     <div class="col-xs-12">
                     <h4>Pessoas que ativaram esse cupom</h4>

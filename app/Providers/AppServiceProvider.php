@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $repositorio = new \App\Repositories\CategoriaRepository(app());
+        $categorias = $repositorio->getCategoriasSelect();
+        \View::composer('categorias.partials.select', '\App\ViewComposers\CategoriaComposer');
     }
 
     /**

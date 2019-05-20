@@ -54,21 +54,29 @@
 
 <!-- Horario Funcionamento Field -->
 <div class="form-group">
-    {!! Form::label('horario_funcionamento', 'Horário Funcionamento:') !!}
+    {!! Form::label('horario_funcionamento', 'Horário de Funcionamento:') !!}
     <p>{!! $loja->horario_funcionamento !!}</p>
 </div>
 
 <!-- Created At Field -->
 <div class="form-group">
-    {!! Form::label('created_at', 'Created At:') !!}
+    {!! Form::label('created_at', 'Criado Em:') !!}
     <p>{!! $loja->created_at !!}</p>
 </div>
 
 <!-- Updated At Field -->
 <div class="form-group">
-    {!! Form::label('updated_at', 'Updated At:') !!}
+    {!! Form::label('updated_at', 'Atualizado Em:') !!}
     <p>{!! $loja->updated_at !!}</p>
 </div>
+
+@if ($loja->fotos)
+<div class="row">
+    <div class="col-md-6">
+        <image-slider :images="{{ $loja->fotos }}"></image-slider>
+    </div>
+</div>
+@endif
 
 <script>
 var colorCollection = document.getElementsByClassName("color-background");

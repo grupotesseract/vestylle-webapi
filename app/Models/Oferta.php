@@ -30,7 +30,7 @@ class Oferta extends Model
         'foto_oferta',
         'titulo',
         'subtitulo',
-        'preco',
+        'codigo_promocional'
     ];
 
     /**
@@ -44,7 +44,7 @@ class Oferta extends Model
         'foto_oferta' => 'string',
         'titulo' => 'string',
         'subtitulo' => 'string',
-        'preco' => 'decimal:2',
+        'codigo_promocional' => 'string'
     ];
 
     /**
@@ -56,7 +56,6 @@ class Oferta extends Model
         'descricao_oferta' => 'required',
         'titulo' => 'required | max: 150',
         'subtitulo' => 'required | max: 150',
-        'preco' => 'required',
     ];
 
     public $appends = [
@@ -95,14 +94,16 @@ class Oferta extends Model
     }
 
     /**
-     * Relação de polimorfica com segmentação/categorias
+     * Relacionamento N x N entre Ofertas e Categorias (polimórfico)
      *
-     * @return void
+     * @return void 
      */
-    public function segmentacoes()
+    public function categorias()
     {
-        return $this->morphMany('App\Models\Segmentacao', 'owner');
+        return $this->morphToMany('App\Models\Categoria', 'owner', 'segmentacoes');
     }
+
+
 
     /**
      * Acessor para obter a URL da foto da Oferta.

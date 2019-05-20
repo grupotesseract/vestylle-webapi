@@ -32,12 +32,14 @@ class PessoasTableSeeder extends Seeder
 
             if ($pessoaApp->count() == 0) {
                 $pessoaCriada = $repositorio->createFromVestylle($pessoa->cnpj_cpf);
-                $this->command->info(".");
+                $this->command->info("Trazendo dados da pessoa ".$pessoaCriada->nome);
 
                 if (env('SEED_DADOS_PESSOA')) {
                     $repositorio->updatePontosPessoa($pessoaCriada);
                     $repositorio->updateVencimentoPontosPessoa($pessoaCriada);
                     $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
+                    $repositorio->updateNascimentoPessoa($pessoaCriada);
+                    $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);                    
                 }
             }
             else {

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Cupon;
 use InfyOm\Generator\Common\BaseRepository;
+use Exception;
 
 /**
  * Class CuponRepository
@@ -32,4 +33,31 @@ class CuponRepository extends BaseRepository
     {
         return Cupon::class;
     }
+
+    /**
+     * Retorna o cupon referente ao idEncryptado sem falhar caso nao exista
+     *
+     * @param mixed $id
+     * @param string $columns
+     */
+    public function findEncryptadoWithoutFail($id, $columns = ['*'])
+    {
+        try {
+            return $this->model()::findEncryptado($id, $columns);
+        } catch (Exception $e) {
+            return;
+        }
+    }
+
+
+    /**
+     * Get Cupons que tem 'aparece_listagem' marcado como true
+     *
+     * @return Collection
+     */
+    public function apareceListagem()
+    {
+        return $this->model()::apareceListagem();
+    }
+
 }

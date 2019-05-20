@@ -27,12 +27,12 @@ class Cupon extends Model
 
     public $fillable = [
         'data_validade',
-        'cupom_primeiro_login',
         'texto_cupom',
         'oferta_id',
         'foto_caminho',
         'titulo',
         'subtitulo',
+        'aparece_listagem'
     ];
 
     /**
@@ -47,6 +47,7 @@ class Cupon extends Model
         'foto_caminho' => 'string',
         'titulo' => 'string',
         'subtitulo' => 'string',
+        'aparece_listagem' => 'boolean'
     ];
 
     /**
@@ -61,10 +62,14 @@ class Cupon extends Model
         'subtitulo' => 'required | max: 150',
     ];
 
-    public function scopePrimeiroLogin($query)
-    {
-        return $query->where('cupom_primeiro_login', true);
-    }
+    /**
+     * Scope para aplicar na query filtrando pelos cupons que estao com 'aparece_listagem' true
+     * Os cupons aparecem na listagem ou não (comuns || fisicos/promocionais)
+     */
+     public function scopeApareceListagem($query)
+     {
+        return $query->where('aparece_listagem', true);
+     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -95,6 +100,16 @@ class Cupon extends Model
     }
 
     /**
+     * Relacionamento N x N entre Cupons e Categorias (polimórfico)
+     *
+     * @return void 
+     */
+    public function categorias()
+    {
+        return $this->morphToMany('App\Models\Categoria', 'owner', 'segmentacoes');
+    }
+
+    /**
      * Acessor que traz a a primeira foto do cupon, caso nao exista nenhuma
      * trazer da oferta, caso eles estejam relacionados
      *
@@ -110,4 +125,62 @@ class Cupon extends Model
             return $this->oferta->foto_oferta;
         }
     }
+
+    /**
+     * Alimenta a relação com a pessoa e com o código único gerado
+     * na rota de ativação
+     *
+     * @return void
+     */
+    public function ativar($pessoa_id, $codigo_unico)
+    {
+        \App\Models\CuponPessoa::create([
+            'cupom_id' => $this->id,
+            'pessoa_id' => $pessoa_id,
+            'codigo_unico' => $codigo_unico,
+        ]);
+    }
+
+    /**
+     * Gera um código para inserção na coluna codigo_unico
+     * da tabela pivô cupons_pessoas
+     *
+     * @param $id_vestylle_pessoa Id da pessoa no sistema da vestylle
+     *
+     * @return string
+     */
+    public function gerarCodigoUnico($id_vestylle_pessoa)
+    {
+        $codigo = "#" . $id_vestylle_pessoa . '-' . $this->id;
+
+        return $codigo;
+    }
+
+
+    /**
+     * Acessor para obter o ID encryptado do cupom
+     *
+     * @return string
+     */
+    public function getIdEncryptadoAttribute()
+    {
+        //Laravel helpers ftw o/
+        return encrypt($this->id);
+    }
+
+    /**
+     * Metodo para dar find a partir do idEncryptado
+     *
+     * @see App\Repositories\CuponRepository - findEncryptadoWithoutFail
+     * @param mixed $idEncryptado
+     *
+     * @return void
+     */
+    public static function findEncryptado($idEncryptado)
+    {
+        $id = decrypt($idEncryptado);
+
+        return self::find($id);
+    }
+
 }

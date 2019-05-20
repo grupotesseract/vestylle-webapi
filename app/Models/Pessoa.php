@@ -127,31 +127,15 @@ class Pessoa extends Authenticatable
     public function listaDesejos()
     {
         return $this->belongsToMany('App\Models\Oferta', 'lista_desejos', 'pessoa_id', 'oferta_id');
-    }
+    }    
 
     /**
-     * Relação de polimorfica com segmentação/categorias
-     *
-     * @return void
+     * Relacionamento N x N entre Pessoas e Categorias (polimórfico)
      */
-    public function segmentacoes()
+    public function categorias()
     {
-        return $this->morphMany('App\Models\Segmentacao', 'owner');
+        return $this->morphToMany('App\Models\Categoria', 'owner', 'segmentacoes');
     }
-
-    /**
-     * Método para alimentar tabela pivô cupons_pessoas
-     * com cupons marcados pra primeiro login associando o usuário novo
-     *
-     * @return void
-     */
-    public function associarCuponsDePrimeiroLogin()
-    {
-        $cuponsDePrimeiroLogin = Cupon::primeiroLogin()->pluck('id')->all();
-
-        return $this->cupons()->sync($cuponsDePrimeiroLogin);
-    }
-
 
     /**
      * Mutator para a dataNascimento

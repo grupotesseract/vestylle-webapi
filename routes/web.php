@@ -28,14 +28,29 @@ Route::get('/', function () {
 */
 Route::group(['middleware' => ['role:admin']], function () {
     Route::get('/home', 'HomeController@index');
-    Route::resource('pessoas', 'PessoaController');
+    Route::resource('pessoas', 'PessoaController')->except([
+        'create', 'store'
+    ]);
     Route::resource('cupons', 'CuponController');
     Route::get('cupons/pessoa/{id}', 'CuponController@getCuponsPessoa');
-    Route::resource('faleConoscos', 'FaleConoscoController');
+    Route::resource('faleConoscos', 'FaleConoscoController')->except([
+        'create', 'store'
+    ]);
     Route::resource('ofertas', 'OfertaController');
-    Route::resource('lojas', 'LojaController');
+    Route::resource('lojas', 'LojaController')->except([
+        'create', 'store'
+    ]);
 
     Route::post('upload_image', 'UploadImageController@sendFiles');
     Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
+
+    Route::get('cupons/{id}/qrcode', 'QRCodeController@getQrcode')->name('qrcode');
+
+    Route::get('categorias', 'CategoriaController@index')->name('categorias.index');
+    Route::get('categorias/{id}', 'CategoriaController@show')->name('categorias.show');
+    Route::get('categorias/{id}/pessoas', 'CategoriaController@showPessoas')->name('categorias.pessoas');
+    Route::get('categorias/{id}/ofertas', 'CategoriaController@showofertas')->name('categorias.ofertas');
+    Route::get('categorias/{id}/cupons', 'CategoriaController@showcupons')->name('categorias.cupons');
+
 });
 
