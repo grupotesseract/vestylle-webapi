@@ -32,7 +32,8 @@ class Cupon extends Model
         'foto_caminho',
         'titulo',
         'subtitulo',
-        'aparece_listagem'
+        'aparece_listagem',
+        'qrcode'
     ];
 
     /**
@@ -154,19 +155,7 @@ class Cupon extends Model
         $codigo = "#" . $id_vestylle_pessoa . '-' . $this->id;
 
         return $codigo;
-    }
-
-
-    /**
-     * Acessor para obter o ID encryptado do cupom
-     *
-     * @return string
-     */
-    public function getIdEncryptadoAttribute()
-    {
-        //Laravel helpers ftw o/
-        return encrypt($this->id);
-    }
+    }    
 
     /**
      * Metodo para dar find a partir do idEncryptado
@@ -177,10 +166,8 @@ class Cupon extends Model
      * @return void
      */
     public static function findEncryptado($idEncryptado)
-    {
-        $id = decrypt($idEncryptado);
-
-        return self::find($id);
+    {        
+        return self::where('qrcode', $idEncryptado)->get()->first();
     }
 
 }

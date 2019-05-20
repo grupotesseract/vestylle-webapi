@@ -195,7 +195,7 @@ class CuponAPIController extends AppBaseController
      * @return Response
      */
     public function showEncryptado($idEncryptado)
-    {
+    {        
         $cupon = $this->cuponRepository->with('fotos')->findEncryptadoWithoutFail($idEncryptado);
         $pessoa_id = Auth::id();
 
