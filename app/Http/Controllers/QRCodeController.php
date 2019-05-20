@@ -39,7 +39,6 @@ class QRCodeController extends Controller
         $cupon->save();
         $valorQRCode = env('URL_FRONT_CUPON').md5($cupon->qrcode);
         
-
         $filePath = "uploads/$cupon->titulo.png";
         $qrcode = \QrCode::format('png')->size(500)->generate($valorQRCode, $filePath);
 

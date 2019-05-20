@@ -182,7 +182,7 @@ class Cupon extends Model
 
         return $query->whereHas(
             'categorias', function ($query) use ($categoriasPessoa) { 
-                $query->whereIn('owner_id', $categoriasPessoa);
+                $query->whereIn('categoria_id', $categoriasPessoa);
             }
         );        
     }
