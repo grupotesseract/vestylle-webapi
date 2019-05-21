@@ -34,8 +34,11 @@ class QRCodeController extends Controller
             return redirect(route('cupons.index'));
         }
 
-        $valorQRCode = env('URL_FRONT_CUPON').$cupon->IdEncryptado;
-
+        //$valorQRCode = env('URL_FRONT_CUPON').$cupon->IdEncryptado;
+        $cupon->qrcode = md5($cupon->id);
+        $cupon->save();
+        $valorQRCode = env('URL_FRONT_CUPON').$cupon->qrcode;
+        
         $filePath = "uploads/$cupon->titulo.png";
         $qrcode = \QrCode::format('png')->size(500)->generate($valorQRCode, $filePath);
 

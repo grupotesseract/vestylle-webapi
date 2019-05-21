@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\API\CreateOfertaAPIRequest;
 use App\Http\Requests\API\UpdateOfertaAPIRequest;
 use App\Models\Oferta;
@@ -38,7 +39,10 @@ class OfertaAPIController extends AppBaseController
     {
         $this->ofertaRepository->pushCriteria(new RequestCriteria($request));
         $this->ofertaRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $ofertas = $this->ofertaRepository->with(['cupons', 'fotos'])->all();
+        
+        $pessoa = Auth('api')->user();
+
+        $ofertas = $this->ofertaRepository->apareceListagem($pessoa);
 
         return $this->sendResponse($ofertas->toArray(), 'Ofertas encontradas com sucesso');
     }

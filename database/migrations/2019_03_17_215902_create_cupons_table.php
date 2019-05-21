@@ -15,6 +15,9 @@ class CreateCuponsTable extends Migration
     {
         Schema::create('cupons', function (Blueprint $table) {
             $table->increments('id');
+            //Hash calculado a partir do id do cupom
+            $table->string('qrcode')->nullable();
+            ////////////////////////////////////////
             $table->integer('oferta_id')->unsigned()->nullable();
             $table->date('data_validade');
             $table->text('texto_cupom');

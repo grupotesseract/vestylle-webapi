@@ -132,4 +132,32 @@ class Oferta extends Model
         $this->attributes['preco'] = str_replace(',', '.', $value);
     }
 
+    /**
+     * Scope pra trazer listagem segmentada com base nas categorias da pessoa
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSegmentadosPorUsuario($query, $pessoa)
+    {
+        $categoriasPessoa = $pessoa->categorias->pluck('id')->toArray();
+
+        return $query->whereHas(
+            'categorias', function ($query) use ($categoriasPessoa) { 
+                $query->whereIn('categoria_id', $categoriasPessoa);
+            }
+        );        
+    }
+
+    /**
+     * Scope pra trazer listagem sem segmentação
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNaoSegmentados($query)
+    {
+        return $query->doesntHave('categorias');
+    }
+
 }

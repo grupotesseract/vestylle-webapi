@@ -40,8 +40,9 @@ class CuponAPIController extends AppBaseController
         $this->cuponRepository->pushCriteria(new RequestCriteria($request));
         $this->cuponRepository->pushCriteria(new LimitOffsetCriteria($request));
 
+        $pessoa = Auth('api')->user();
         //Atenção que o apareceListagem do repositorio precisa ser chamado antes!
-        $cupons = $this->cuponRepository->apareceListagem()->with('fotos')->get();
+        $cupons = $this->cuponRepository->apareceListagem($pessoa);
         return $this->sendResponse($cupons->toArray(), 'Cupons carregados com sucesso');
     }
 
@@ -195,7 +196,7 @@ class CuponAPIController extends AppBaseController
      * @return Response
      */
     public function showEncryptado($idEncryptado)
-    {
+    {        
         $cupon = $this->cuponRepository->with('fotos')->findEncryptadoWithoutFail($idEncryptado);
         $pessoa_id = Auth::id();
 
