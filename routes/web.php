@@ -54,3 +54,6 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 });
 
+
+
+Route::resource('tipoInformacaos', 'TipoInformacaoController');
