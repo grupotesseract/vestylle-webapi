@@ -171,7 +171,7 @@ class Cupon extends Model
     }
 
     /**
-     * Scope a query to only include popular users.
+     * Scope pra trazer listagem segmentada com base nas categorias da pessoa
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
@@ -188,7 +188,7 @@ class Cupon extends Model
     }
 
     /**
-     * Scope a query to only include popular users.
+     * Scope pra trazer listagem sem segmentação
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
