@@ -52,12 +52,23 @@ class CuponRepository extends BaseRepository
 
     /**
      * Get Cupons que tem 'aparece_listagem' marcado como true
+     * Mescla cupons segmentados pra uma pessoa, e cupons sem segmentos
      *
      * @return Collection
      */
-    public function apareceListagem()
+    public function apareceListagem($pessoa)
     {
-        return $this->model()::apareceListagem();
+        if (!is_null($pessoa)) {
+            $cuponsSegmentados = $this->model()::with('fotos')->apareceListagem()
+                ->SegmentadosPorUsuario($pessoa)->get();
+        }
+
+        $cuponsNaoSegmentados = $this->model()::with('fotos')->apareceListagem()
+            ->NaoSegmentados()->get();
+        
+        $cupons = $cuponsSegmentados->merge($cuponsNaoSegmentados);
+        
+        return $cupons;
     }
 
 }

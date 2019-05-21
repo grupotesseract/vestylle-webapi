@@ -31,4 +31,25 @@ class OfertaRepository extends BaseRepository
     {
         return Oferta::class;
     }
+
+    /**
+     * Get Ofertas 
+     * Mescla ofertas segmentados pra uma pessoa, e ofertas sem segmentos
+     *
+     * @return Collection
+     */
+    public function apareceListagem($pessoa)
+    {
+        if (!is_null($pessoa)) {
+            $ofertasSegmentados = $this->model()::with(['cupons', 'fotos'])
+                ->SegmentadosPorUsuario($pessoa)->get();
+        }
+
+        $ofertasNaoSegmentados = $this->model()::with(['cupons', 'fotos'])
+            ->NaoSegmentados()->get();
+        
+        $ofertas = $ofertasSegmentados->merge($ofertasNaoSegmentados);
+        
+        return $ofertas;
+    }
 }
