@@ -40,15 +40,16 @@ class OfertaRepository extends BaseRepository
      */
     public function apareceListagem($pessoa)
     {
-        if (!is_null($pessoa)) {
-            $ofertasSegmentados = $this->model()::with(['cupons', 'fotos'])
-                ->SegmentadosPorUsuario($pessoa)->get();
-        }
+        $ofertasNaoSegmentados = $this->model()::with('fotos')
+            ->NaoSegmentados()->get();       
 
-        $ofertasNaoSegmentados = $this->model()::with(['cupons', 'fotos'])
-            ->NaoSegmentados()->get();
-        
-        $ofertas = $ofertasSegmentados->merge($ofertasNaoSegmentados);
+        if (!is_null($pessoa)) {
+            $ofertasSegmentados = $this->model()::with('fotos')
+                ->SegmentadosPorUsuario($pessoa)->get();
+            $ofertas = $ofertasSegmentados->merge($ofertasNaoSegmentados);
+        } else {
+            $ofertas = $ofertasNaoSegmentados;
+        }
         
         return $ofertas;
     }
