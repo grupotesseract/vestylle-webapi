@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <!-- Id Field -->
         <div class="form-group">
             {!! Form::label('id', 'Id:') !!}
@@ -40,16 +40,6 @@
             <p>{!! $oferta->updated_at !!}</p>
         </div>
 
-    </div>
-
-    <div class="col-md-6">
-        @if ($oferta->fotos()->count())
-            <div class="form-group">
-                {!! Form::label('fotos', 'Fotos:') !!}
-                <image-slider :images="{{ $oferta->fotos }}"></image-slider>
-            </div>
-        @endif
-
         @if ($oferta->categorias()->count())
             <div class="form-group">
                 {!! Form::label('categorias', 'Categorias:') !!}
@@ -60,5 +50,16 @@
                 </ul>
             </div>
         @endif
+
+    </div>
+
+    <div class="col-md-8">
+        @if ($oferta->fotos()->count())
+            <div class="form-group">
+                {!! Form::label('fotos', 'Fotos:') !!}
+                <image-slider :images="{{ $oferta->fotos }}"></image-slider>
+            </div>
+        @endif
+
     </div>
 </div>
