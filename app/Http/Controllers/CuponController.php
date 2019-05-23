@@ -264,7 +264,7 @@ class CuponController extends AppBaseController
 
         $pessoa->cupons()->updateExistingPivot($cupon->id, ['cupom_utilizado_venda' => true]);
 
-        Flash::error('Cupom marcado como utilizado');
+        Flash::success('Cupom marcado como utilizado');
         return redirect()->back();
     }
 

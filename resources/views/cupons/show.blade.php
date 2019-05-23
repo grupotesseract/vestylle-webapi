@@ -11,6 +11,7 @@
         </h1>
     </section>
     <div class="content">
+        @include('flash::message')
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
