@@ -6,14 +6,15 @@
             Detalhes do cupom -
 
             <div class="btn-group">
-                <a class="btn btn-xs btn-primary" href="{{ route('qrcode', $cupon->id) }}">Gerar QRCode</a>
+                <a class="btn btn-xs btn-default" href="{{ route('qrcode', $cupon->id) }}">
+<i class="fa fa-qrcode"></i>
+                    Gerar QRCode</a>
             </div>
-
             <div class="btn-group">
                 <a class="btn btn-xs btn-default" href="{{ route('cupons.edit', $cupon->id) }}"> <i class="fa fa-pencil"></i> Editar</a>
             </div>
             <div class="btn-group pull-right">
-                <a class="btn btn-default" href="{{ route('cupons.index') }}"></a>
+                <a class="btn btn-default" href="{{ route('cupons.index') }}"> Voltar </a>
             </div>
         </h1>
     </section>

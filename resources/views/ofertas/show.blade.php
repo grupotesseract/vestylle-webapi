@@ -3,7 +3,14 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Oferta
+            Detalhes da oferta -
+
+            <div class="btn-group">
+                <a class="btn btn-xs btn-default" href="{{ route('ofertas.edit', $oferta->id) }}"> <i class="fa fa-pencil"></i> Editar</a>
+            </div>
+            <div class="btn-group pull-right">
+                <a class="btn btn-default" href="{{ route('ofertas.index') }}"> Voltar </a>
+            </div>
         </h1>
     </section>
     <div class="content">

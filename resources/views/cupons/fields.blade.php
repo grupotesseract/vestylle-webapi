@@ -28,12 +28,18 @@
     {!! Form::select('oferta_id', $ofertas->pluck('titulo', 'id'), $cupon->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha uma Oferta']) !!}
 </div>
 
+<!-- Porcentagem OFF Field -->
+<div class="form-group col-sm-1">
+    {!! Form::label('porcentagem_off', '% OFF') !!}
+    {!! Form::text('porcentagem_off', $cupon->porcentagem_off ?? null, ['class' => 'form-control']) !!}
+</div>
 
 <!-- Texto Cupom Field -->
-<div class="form-group col-sm-9">
+<div class="form-group col-sm-8">
     {!! Form::label('texto_cupom', 'Texto descritivo') !!}
-    {!! Form::text('texto_cupom', null, ['class' => 'form-control']) !!}
+    {!! Form::text('texto_cupom', $cupon->texto_cupom ?? null, ['class' => 'form-control']) !!}
 </div>
+
 
 {{-- Incluindo o select de categorias, Passando 'Model' se estiver editando --}}
 @if (\Request::is('*edit*'))

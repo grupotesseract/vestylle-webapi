@@ -33,6 +33,7 @@ class Cupon extends Model
         'titulo',
         'subtitulo',
         'aparece_listagem',
+        'porcentagem_off',
         'qrcode'
     ];
 
