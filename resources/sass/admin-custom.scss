@@ -1,10 +1,22 @@
+
+
+/**
+* Override cores default do select2
+*/
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background-color: #608df1!important;
     border: 1px solid #72767d!important;
 }
-
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
     color: #442c2e!important;
 }
 
+.form-group {
+    min-height: 60px;
+}
 
+.conteudo-centralizado {
+    justify-content:center;
+    align-itens:center;
+    display:flex;
+}

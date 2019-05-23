@@ -132,7 +132,7 @@ class CuponController extends AppBaseController
             return redirect(route('cupons.index'));
         }
 
-        $ofertas = Oferta::get(['id', 'descricao_oferta']);
+        $ofertas = Oferta::get(['id', 'titulo']);
         return view('cupons.edit')->with(compact('cupon', 'ofertas'));
     }
 
