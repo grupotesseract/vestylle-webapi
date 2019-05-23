@@ -77,10 +77,10 @@ class OfertaController extends AppBaseController
             }
         }
 
-        //Se vier categorias, entao sync na relação.
-        if ($request->categorias) {
-            $retorno = $oferta->categorias()->sync($request->categorias);
-        }
+        //pegando categorias da request, se nao tiver,
+        //usar array vazio para remover categorias
+        $categorias = $request->categorias ?? [];
+        $oferta->categorias()->sync($categorias);
 
         Flash::success('Oferta criada com sucesso.');
 
@@ -170,10 +170,10 @@ class OfertaController extends AppBaseController
 
         $oferta = $this->ofertaRepository->update($input, $id);
 
-        //Se vier categorias, entao sync na relação.
-        if ($request->categorias) {
-            $retorno = $oferta->categorias()->sync($request->categorias);
-        }
+        //pegando categorias da request, se nao tiver,
+        //usar array vazio para remover categorias
+        $categorias = $request->categorias ?? [];
+        $oferta->categorias()->sync($categorias);
 
         Flash::success('Oferta atualizada com sucesso.');
 

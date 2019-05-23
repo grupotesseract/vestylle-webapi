@@ -81,10 +81,10 @@ class CuponController extends AppBaseController
             }
         }
 
-        //Se vier categorias, sync na relação
-        if ($request->categorias) {
-            $cupon->categorias()->sync($request->categorias);
-        }
+        //pegando categorias da request, se nao tiver,
+        //usar array vazio para remover categorias
+        $categorias = $request->categorias ?? [];
+        $cupon->categorias()->sync($categorias);
 
         Flash::success('Cupom criado com sucesso.');
 
@@ -174,10 +174,10 @@ class CuponController extends AppBaseController
             }
         }
 
-        //Se vier categorias, sync na relação
-        if ($request->categorias) {
-            $cupon->categorias()->sync($request->categorias);
-        }
+        //pegando categorias da request, se nao tiver,
+        //usar array vazio para remover categorias
+        $categorias = $request->categorias ?? [];
+        $cupon->categorias()->sync($categorias);
 
         $cupon = $this->cuponRepository->update($input, $id);
 
