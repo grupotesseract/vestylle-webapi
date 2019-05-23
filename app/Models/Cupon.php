@@ -201,12 +201,12 @@ class Cupon extends Model
     /**
      * Scope para aplicar na query filtrando por cupons foram utilizados ou nao, por determinada pessoa
      */
-    public function scopeUtilizadoVenda($query, $pessoa, $foiUtilizado = true)
+    public function scopeUtilizadoVenda($query, $pessoa)
     {
         $pessoaId = $pessoa->id;
-        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId, $foiUtilizado) {
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId) {
             $qCuponPessoa->where('pessoa_id', $pessoaId);
-            $qCuponPessoa->where('cupom_utilizado_venda', $foiUtilizado);
+            $qCuponPessoa->where('cupom_utilizado_venda', true);
         });
     }
 

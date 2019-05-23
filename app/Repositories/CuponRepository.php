@@ -61,12 +61,24 @@ class CuponRepository extends BaseRepository
         $cuponsNaoSegmentados = $this->model()::with('fotos')->apareceListagem()
             ->NaoSegmentados()->get();
 
+        //Se pessoa: devemos considerar segmentacao e excluir cupons 'ja utilizados no caixa'
         if (!is_null($pessoa)) {
+
             $cuponsSegmentados = $this->model()::with('fotos')->apareceListagem()
                 ->SegmentadosPorUsuario($pessoa)
-                ->UtilizadoVenda($pessoa, false)
                 ->get();
+
+            //Cupons marcados como utilizados no caixa por essa pessoa
+            $cuponsUtilizadosVenda = $this->model()::with('fotos')->apareceListagem()
+                ->UtilizadoVenda($pessoa)
+                ->get();
+
+            //Mergeando Cupons, assim nao ficam duplicados e existem de ambos grupos
             $cupons = $cuponsSegmentados->merge($cuponsNaoSegmentados);
+
+            //Excluindo cupons ja utilizados apos o merge
+            $cupons = $cuponsNaoSegmentados->diff($cuponsUtilizadosVenda);
+
         } else {
             $cupons = $cuponsNaoSegmentados;
         }
