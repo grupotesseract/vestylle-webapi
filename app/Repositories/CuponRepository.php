@@ -59,16 +59,18 @@ class CuponRepository extends BaseRepository
     public function apareceListagem($pessoa)
     {
         $cuponsNaoSegmentados = $this->model()::with('fotos')->apareceListagem()
-            ->NaoSegmentados()->get();       
+            ->NaoSegmentados()->get();
 
         if (!is_null($pessoa)) {
             $cuponsSegmentados = $this->model()::with('fotos')->apareceListagem()
-                ->SegmentadosPorUsuario($pessoa)->get();
+                ->SegmentadosPorUsuario($pessoa)
+                ->UtilizadoVenda($pessoa, false)
+                ->get();
             $cupons = $cuponsSegmentados->merge($cuponsNaoSegmentados);
         } else {
             $cupons = $cuponsNaoSegmentados;
         }
-        
+
         return $cupons;
     }
 
