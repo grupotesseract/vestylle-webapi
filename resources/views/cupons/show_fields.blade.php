@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="form-group">
             {!! Form::label('titulo', 'Título') !!}
             <p>{!! $cupon->titulo !!}</p>
@@ -45,13 +45,6 @@
             {!! Form::label('updated_at', 'Atualizado Em:') !!}
             <p>{!! $cupon->updated_at !!}</p>
         </div>
-    </div>
-    <div class="col-md-6">
-        @if ($cupon->fotos)
-            <div class="form-group">
-                <image-slider :images="{{ $cupon->fotos }}"></image-slider>
-            </div>
-        @endif
 
         @if ($cupon->categorias()->count())
             <div class="form-group">
@@ -63,5 +56,13 @@
                 </ul>
             </div>
         @endif
+    </div>
+    <div class="col-md-8">
+        @if ($cupon->fotos)
+            <div class="form-group">
+                <image-slider :images="{{ $cupon->fotos }}"></image-slider>
+            </div>
+        @endif
+
     </div>
 </div>
