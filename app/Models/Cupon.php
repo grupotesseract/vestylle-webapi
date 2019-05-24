@@ -103,7 +103,7 @@ class Cupon extends Model
     /**
      * Relacionamento N x N entre Cupons e Categorias (polimórfico)
      *
-     * @return void 
+     * @return void
      */
     public function categorias()
     {
@@ -155,7 +155,7 @@ class Cupon extends Model
         $codigo = "#" . $id_vestylle_pessoa . '-' . $this->id;
 
         return $codigo;
-    }    
+    }
 
     /**
      * Metodo para dar find a partir do idEncryptado
@@ -166,7 +166,7 @@ class Cupon extends Model
      * @return void
      */
     public static function findEncryptado($idEncryptado)
-    {        
+    {
         return self::where('qrcode', $idEncryptado)->get()->first();
     }
 
@@ -181,10 +181,10 @@ class Cupon extends Model
         $categoriasPessoa = $pessoa->categorias->pluck('id')->toArray();
 
         return $query->whereHas(
-            'categorias', function ($query) use ($categoriasPessoa) { 
+            'categorias', function ($query) use ($categoriasPessoa) {
                 $query->whereIn('categoria_id', $categoriasPessoa);
             }
-        );        
+        );
     }
 
     /**
@@ -198,4 +198,13 @@ class Cupon extends Model
         return $query->doesntHave('categorias');
     }
 
+    /**
+     * Scope para filtrar cupons com data de vencimento expirada
+     */
+     public function scopeVencidos($query)
+     {
+         $now = \Carbon\Carbon::now();
+
+        return $query->where('data_validade', '<', $now);
+     }
 }
