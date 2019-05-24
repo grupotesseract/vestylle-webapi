@@ -320,7 +320,7 @@ class PessoaAPIController extends AppBaseController
             return $this->sendError('Pessoa não encontrada');
         }
 
-        $cuponsUtilizados = \App\Models\CuponPessoa::where('pessoa_id', $pessoa->id)->with('cupom')->get()->toArray();
+        $cuponsUtilizados = $pessoa->cupons()->NaoUtilizadoVenda($pessoa)->get()->toArray();
 
         return $this->sendResponse($cuponsUtilizados, "Cupons do usuário #$pessoa->id carregados com sucesso");
     }

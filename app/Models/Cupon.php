@@ -33,6 +33,7 @@ class Cupon extends Model
         'titulo',
         'subtitulo',
         'aparece_listagem',
+        'porcentagem_off',
         'qrcode'
     ];
 
@@ -67,10 +68,10 @@ class Cupon extends Model
      * Scope para aplicar na query filtrando pelos cupons que estao com 'aparece_listagem' true
      * Os cupons aparecem na listagem ou não (comuns || fisicos/promocionais)
      */
-     public function scopeApareceListagem($query)
-     {
+    public function scopeApareceListagem($query)
+    {
         return $query->where('aparece_listagem', true);
-     }
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -103,7 +104,7 @@ class Cupon extends Model
     /**
      * Relacionamento N x N entre Cupons e Categorias (polimórfico)
      *
-     * @return void 
+     * @return void
      */
     public function categorias()
     {
@@ -155,7 +156,7 @@ class Cupon extends Model
         $codigo = "#" . $id_vestylle_pessoa . '-' . $this->id;
 
         return $codigo;
-    }    
+    }
 
     /**
      * Metodo para dar find a partir do idEncryptado
@@ -166,7 +167,7 @@ class Cupon extends Model
      * @return void
      */
     public static function findEncryptado($idEncryptado)
-    {        
+    {
         return self::where('qrcode', $idEncryptado)->get()->first();
     }
 
@@ -181,10 +182,10 @@ class Cupon extends Model
         $categoriasPessoa = $pessoa->categorias->pluck('id')->toArray();
 
         return $query->whereHas(
-            'categorias', function ($query) use ($categoriasPessoa) { 
+            'categorias', function ($query) use ($categoriasPessoa) {
                 $query->whereIn('categoria_id', $categoriasPessoa);
             }
-        );        
+        );
     }
 
     /**
@@ -196,6 +197,30 @@ class Cupon extends Model
     public function scopeNaoSegmentados($query)
     {
         return $query->doesntHave('categorias');
+    }
+
+    /**
+     * Scope para aplicar na query filtrando por cupons que foram utilizados pela $pessoa
+     */
+    public function scopeUtilizadoVenda($query, $pessoa)
+    {
+        $pessoaId = $pessoa->id;
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('cupom_utilizado_venda', true);
+        });
+    }
+
+    /**
+     * Scope para aplicar na query filtrando por cupons que não foram utilizados pela $pessoa
+     */
+    public function scopeNaoUtilizadoVenda($query, $pessoa)
+    {
+        $pessoaId = $pessoa->id;
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('cupom_utilizado_venda', false);
+        });
     }
 
 }

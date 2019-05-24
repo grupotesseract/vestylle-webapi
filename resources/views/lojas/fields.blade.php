@@ -63,6 +63,8 @@
 <div class="clearfix"></div>
 
 <div class="form-group col-sm-12">
+    <br>
+    @include('fotos.aviso_upload')
     <upload-multiple-images v-model="files" v-on:upload="files = $event" :model="'App\\Models\\Loja'" :model_id="'{!! isset($oferta) ? intval($oferta->id) : null !!}'" :input_name="'fotos[]'" :post_url="'upload_image'"></upload-multiple-images>
 </div>
 
