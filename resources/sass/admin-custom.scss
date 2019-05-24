@@ -20,3 +20,15 @@
     align-itens:center;
     display:flex;
 }
+
+.callout.callout-info {
+    &#aviso_upload {
+        background-color: #222d328c !important;
+    }
+}
+
+.callout.callout-info.lead {
+    p {
+        font-size:1.7rem;
+    }
+}

@@ -16,7 +16,7 @@
             <p>{!! $cupon->id !!}</p>
         </div>
 
-        <!-- Id Field -->
+        <!-- Aparece na listagem Field -->
         <div class="form-group">
             {!! Form::label('id', 'Aparece na Listagem:') !!}
             <p>{!! $cupon->aparece_listagem ? 'Sim' : 'Não' !!}</p>
@@ -28,7 +28,7 @@
             <p>{!! $cupon->data_validade->format('d/m/Y') !!}</p>
         </div>
 
-        <!-- Data Validade Field -->
+        <!-- Porcentagem OFF Field -->
         <div class="form-group">
             {!! Form::label('porcentagem_off', '% OFF:') !!}
             <p>{!! $cupon->porcentagem_off !!}</p>

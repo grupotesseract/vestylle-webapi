@@ -65,6 +65,10 @@
 @endif
 
 <div class="form-group col-sm-12">
+    <br>
+
+    @include('fotos.aviso_upload')
+
     <upload-multiple-images v-model="files" v-on:upload="files = $event" :model="'App\\Models\\Cupon'" :model_id="'{!! isset($cupon) ? intval($cupon->id) : null !!}'" :input_name="'fotos[]'" :post_url="'upload_image'"></upload-multiple-images>
 </div>
 
