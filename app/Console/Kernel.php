@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\AtualizaPessoasDataUltimaCompra::class
+        \App\Console\Commands\AtualizaPessoasDataUltimaCompra::class,
+        \App\Console\Commands\LimparCuponsVencidos::class
     ];
 
     /**
@@ -29,6 +30,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('vestylle:atualiza-ultimos-compradores')
             ->dailyAt('04:20');
+
+        $schedule->command('vestylle:limpar_cupons_vencidos')
+            ->dailyAt('16:20');
     }
 
     /**

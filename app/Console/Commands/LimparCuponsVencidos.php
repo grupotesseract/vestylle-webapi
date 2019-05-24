@@ -12,7 +12,7 @@ class LimparCuponsVencidos extends Command
      *
      * @var string
      */
-    protected $signature = 'cupons:remover_cupons_vencidos';
+    protected $signature = 'vestylle:limpar_cupons_vencidos';
 
     /**
      * The console command description.
