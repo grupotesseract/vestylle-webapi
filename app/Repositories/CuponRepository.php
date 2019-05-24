@@ -72,12 +72,12 @@ class CuponRepository extends BaseRepository
             $cuponsUtilizadosVenda = $this->model()::with('fotos')->apareceListagem()
                 ->UtilizadoVenda($pessoa)
                 ->get();
-
+            
             //Mergeando Cupons, assim nao ficam duplicados e existem de ambos grupos
             $cupons = $cuponsSegmentados->merge($cuponsNaoSegmentados);
-
             //Excluindo cupons ja utilizados apos o merge
-            $cupons = $cuponsNaoSegmentados->diff($cuponsUtilizadosVenda);
+            $cupons = $cupons->diff($cuponsUtilizadosVenda);
+            
 
         } else {
             $cupons = $cuponsNaoSegmentados;
