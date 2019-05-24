@@ -1,7 +1,7 @@
 @component('mail::message')
-# Mensagem recebida pelo Fale Conosco da {{ $lojaNome }}
+# Mensagem recebida pelo formulario de Fale Conosco
 
-Usuário: {{ $pessoa }}
+Usuário: {{ $pessoa ? $pessoa->nome : 'Não estava logado'}}
 
 Contato: {{ $contato }}
 
