@@ -4,31 +4,34 @@ namespace App\Http\Controllers;
 
 use Flash;
 use Response;
-use App\Models\Oferta;
 use App\Models\Cupon;
+use App\Models\Oferta;
 use App\Models\Pessoa;
-use App\Jobs\SincronizarComCloudinary;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\DataTables\CuponDataTable;
-use App\Repositories\FotoRepository;
 use App\DataTables\PessoaDataTable;
+use App\Repositories\FotoRepository;
 use App\Repositories\CuponRepository;
+use App\Jobs\SincronizarComCloudinary;
+use App\Repositories\PessoaRepository;
 use App\Http\Requests\CreateCuponRequest;
 use App\Http\Requests\UpdateCuponRequest;
 use App\DataTables\Scopes\PessoasPorCupon;
 use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 
 class CuponController extends AppBaseController
 {
     /** @var  CuponRepository */
     private $cuponRepository;
     private $fotoRepository;
+    private $pessoaRepository;
 
-    public function __construct(CuponRepository $cuponRepo, FotoRepository $fotoRepo)
+    public function __construct(CuponRepository $cuponRepo, FotoRepository $fotoRepo, PessoaRepository $pessoaRepo)
     {
         $this->cuponRepository = $cuponRepo;
         $this->fotoRepository = $fotoRepo;
+        $this->pessoaRepository = $pessoaRepo;
     }
 
     /**
@@ -129,7 +132,7 @@ class CuponController extends AppBaseController
             return redirect(route('cupons.index'));
         }
 
-        $ofertas = Oferta::get(['id', 'descricao_oferta']);
+        $ofertas = Oferta::get(['id', 'titulo']);
         return view('cupons.edit')->with(compact('cupon', 'ofertas'));
     }
 
@@ -237,4 +240,32 @@ class CuponController extends AppBaseController
 
         return Response::json($cupons, 200);
     }
+
+    /**
+     * Marca um cupon como utilizado pela pessoa X
+     *
+     * @return void
+     */
+    public function setUtilizadoVenda($id)
+    {
+        $cupon = $this->cuponRepository->findWithoutFail($id);
+
+        if (empty($cupon)) {
+            Flash::error('Cupom não encontrado');
+            return redirect(route('cupons.index'));
+        }
+
+        $pessoa = $this->pessoaRepository->findWithoutFail(\Request::get('pessoa_id'));
+
+        if (!$pessoa) {
+            Flash::error('Pessoa não encontrada');
+            return redirect()->back();
+        }
+
+        $pessoa->cupons()->updateExistingPivot($cupon->id, ['cupom_utilizado_venda' => true]);
+
+        Flash::success('Cupom marcado como utilizado');
+        return redirect()->back();
+    }
+
 }

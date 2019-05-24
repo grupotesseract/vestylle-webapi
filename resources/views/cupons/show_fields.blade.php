@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="form-group">
             {!! Form::label('titulo', 'Título') !!}
             <p>{!! $cupon->titulo !!}</p>
@@ -16,10 +16,22 @@
             <p>{!! $cupon->id !!}</p>
         </div>
 
+        <!-- Aparece na listagem Field -->
+        <div class="form-group">
+            {!! Form::label('id', 'Aparece na Listagem:') !!}
+            <p>{!! $cupon->aparece_listagem ? 'Sim' : 'Não' !!}</p>
+        </div>
+
         <!-- Data Validade Field -->
         <div class="form-group">
             {!! Form::label('data_validade', 'Data de Validade:') !!}
-            <p>{!! $cupon->data_validade !!}</p>
+            <p>{!! $cupon->data_validade->format('d/m/Y') !!}</p>
+        </div>
+
+        <!-- Porcentagem OFF Field -->
+        <div class="form-group">
+            {!! Form::label('porcentagem_off', '% OFF:') !!}
+            <p>{!! $cupon->porcentagem_off !!}</p>
         </div>
 
         <!-- Texto Cupom Field -->
@@ -37,21 +49,14 @@
         <!-- Created At Field -->
         <div class="form-group">
             {!! Form::label('created_at', 'Criado Em:') !!}
-            <p>{!! $cupon->created_at !!}</p>
+            <p>{!! $cupon->created_at->format('d/m/Y H:i:s') !!}</p>
         </div>
 
         <!-- Updated At Field -->
         <div class="form-group">
             {!! Form::label('updated_at', 'Atualizado Em:') !!}
-            <p>{!! $cupon->updated_at !!}</p>
+            <p>{!! $cupon->updated_at->format('d/m/Y H:i:s')  !!}</p>
         </div>
-    </div>
-    <div class="col-md-6">
-        @if ($cupon->fotos)
-            <div class="form-group">
-                <image-slider :images="{{ $cupon->fotos }}"></image-slider>
-            </div>
-        @endif
 
         @if ($cupon->categorias()->count())
             <div class="form-group">
@@ -63,5 +68,13 @@
                 </ul>
             </div>
         @endif
+    </div>
+    <div class="col-md-8">
+        @if ($cupon->fotos)
+            <div class="form-group">
+                <image-slider :images="{{ $cupon->fotos }}"></image-slider>
+            </div>
+        @endif
+
     </div>
 </div>

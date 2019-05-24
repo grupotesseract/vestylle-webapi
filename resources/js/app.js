@@ -35,3 +35,11 @@ const app = new Vue({
         files: Array
     }
 });
+
+
+
+$(".aparece_listagem").bind('change', (ev) => {
+    console.log(ev);
+
+});
+

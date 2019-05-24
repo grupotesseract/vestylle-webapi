@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <!-- Id Field -->
         <div class="form-group">
             {!! Form::label('id', 'Id:') !!}
@@ -28,27 +28,23 @@
             <p>{!! $oferta->texto_oferta !!}</p>
         </div>
 
+        <!-- Porcentagem OFF Field -->
+        <div class="form-group">
+            {!! Form::label('porcentagem_off', '% OFF:') !!}
+            <p>{!! $oferta->porcentagem_off !!}</p>
+        </div>
+
         <!-- Created At Field -->
         <div class="form-group">
-            {!! Form::label('created_at', 'Criada Em:') !!}
-            <p>{!! $oferta->created_at !!}</p>
+            {!! Form::label('created_at', 'Criada em:') !!}
+            <p>{!! $oferta->created_at->format('d/m/Y H:i:s') !!}</p>
         </div>
 
         <!-- Updated At Field -->
         <div class="form-group">
-            {!! Form::label('updated_at', 'Atualizada Em:') !!}
-            <p>{!! $oferta->updated_at !!}</p>
+            {!! Form::label('updated_at', 'Atualizada em:') !!}
+            <p>{!! $oferta->updated_at->format('d/m/Y H:i:s')  !!}</p>
         </div>
-
-    </div>
-
-    <div class="col-md-6">
-        @if ($oferta->fotos()->count())
-            <div class="form-group">
-                {!! Form::label('fotos', 'Fotos:') !!}
-                <image-slider :images="{{ $oferta->fotos }}"></image-slider>
-            </div>
-        @endif
 
         @if ($oferta->categorias()->count())
             <div class="form-group">
@@ -60,5 +56,16 @@
                 </ul>
             </div>
         @endif
+
+    </div>
+
+    <div class="col-md-8">
+        @if ($oferta->fotos()->count())
+            <div class="form-group">
+                {!! Form::label('fotos', 'Fotos:') !!}
+                <image-slider :images="{{ $oferta->fotos }}"></image-slider>
+            </div>
+        @endif
+
     </div>
 </div>
