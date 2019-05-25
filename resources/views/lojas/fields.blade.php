@@ -31,7 +31,7 @@
 
 @isset ($loja->fotos)
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12 conteudo-centralizado">
         <image-slider :images="{{ $loja->fotos }}"></image-slider>
     </div>
 </div>
@@ -48,6 +48,5 @@
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
-    <a href="{!! route('lojas.index') !!}" class="btn btn-default">Cancelar</a>
 </div>
 

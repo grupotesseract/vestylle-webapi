@@ -3,7 +3,11 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Loja
+            Detalhes da loja -
+
+            <div class="btn-group">
+                <a class="btn btn-xs btn-default" href="{{ route('lojas.edit', $loja->id) }}"> <i class="fa fa-pencil"></i> Editar</a>
+            </div>
         </h1>
     </section>
     <div class="content">
@@ -11,7 +15,6 @@
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
                     @include('lojas.show_fields')
-                    <a href="{!! route('lojas.index') !!}" class="btn btn-default">Voltar</a>
                 </div>
             </div>
         </div>
