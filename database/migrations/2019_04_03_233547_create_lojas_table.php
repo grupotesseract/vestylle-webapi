@@ -15,15 +15,11 @@ class CreateLojasTable extends Migration
     {
         Schema::create('lojas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome');
-            $table->string('cor_primaria')->nullable();
-            $table->string('cor_secundaria')->nullable();
-            $table->string('cor_terciaria')->nullable();
             $table->string('endereco')->nullable();
             $table->string('email')->nullable();
             $table->string('whatsapp')->nullable();
+            $table->string('whatsapp2')->nullable();
             $table->string('telefone')->nullable();
-            $table->string('horario_funcionamento')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
