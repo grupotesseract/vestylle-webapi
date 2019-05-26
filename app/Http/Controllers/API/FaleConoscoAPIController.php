@@ -26,27 +26,9 @@ class FaleConoscoAPIController extends AppBaseController
     /** @var  FaleConoscoRepository */
     private $faleConoscoRepository;
 
-    public function __construct(FaleConoscoRepository $faleConoscoRepo, Loja $loja, Pessoa $pessoa)
+    public function __construct(FaleConoscoRepository $faleConoscoRepo)
     {
         $this->faleConoscoRepository = $faleConoscoRepo;
-        $this->loja = $loja;
-        $this->pessoa = $pessoa;
-    }
-
-    /**
-     * Display a listing of the FaleConosco.
-     * GET|HEAD /faleConoscos
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function index(Request $request)
-    {
-        $this->faleConoscoRepository->pushCriteria(new RequestCriteria($request));
-        $this->faleConoscoRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $faleConoscos = $this->faleConoscoRepository->all();
-
-        return $this->sendResponse($faleConoscos->toArray(), 'Fale Conosco encontrado com sucesso');
     }
 
     /**
@@ -61,34 +43,16 @@ class FaleConoscoAPIController extends AppBaseController
     {
         $input = $request->all();
 
+        //Se estiver logado, pegar id pra inserir no registro.
+        $pessoaId = (\Auth('api')->user()) ? \Auth('api')->user()->id : null;
+        $input['pessoa_id'] = $pessoaId;
+
         $faleConoscos = $this->faleConoscoRepository->create($input);
 
-        $lojaNome = $this->loja::findOrFail(1)->nome;
-
-        $usuario = $this->pessoa::findOrFail($faleConoscos->pessoa_id)->nome;
-
-        Mail::to($this->loja::findOrFail(1)->email)->send(new FaleConoscoCreated($faleConoscos, $lojaNome, $usuario));
+        Mail::to(env('EMAIL_DESTINO_CONTATO'))
+            ->send(new FaleConoscoCreated($faleConoscos));
 
         return $this->sendResponse($faleConoscos->toArray(), 'Fale Conosco salvo com sucesso');
     }
 
-    /**
-     * Display the specified FaleConosco.
-     * GET|HEAD /faleConoscos/{id}
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function show($id)
-    {
-        /** @var FaleConosco $faleConosco */
-        $faleConosco = $this->faleConoscoRepository->findWithoutFail($id);
-
-        if (empty($faleConosco)) {
-            return $this->sendError('Fale Conosco not found');
-        }
-
-        return $this->sendResponse($faleConosco->toArray(), 'Fale Conosco encontrado com sucesso');
-    }
 }
