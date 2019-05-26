@@ -33,6 +33,7 @@ class Cupon extends Model
         'titulo',
         'subtitulo',
         'aparece_listagem',
+        'porcentagem_off',
         'qrcode'
     ];
 
@@ -67,10 +68,10 @@ class Cupon extends Model
      * Scope para aplicar na query filtrando pelos cupons que estao com 'aparece_listagem' true
      * Os cupons aparecem na listagem ou não (comuns || fisicos/promocionais)
      */
-     public function scopeApareceListagem($query)
-     {
+    public function scopeApareceListagem($query)
+    {
         return $query->where('aparece_listagem', true);
-     }
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -207,4 +208,29 @@ class Cupon extends Model
 
         return $query->where('data_validade', '<', $now);
      }
+
+     /**
+     * Scope para aplicar na query filtrando por cupons que foram utilizados pela $pessoa
+     */
+    public function scopeUtilizadoVenda($query, $pessoa)
+    {
+        $pessoaId = $pessoa->id;
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('cupom_utilizado_venda', true);
+        });
+    }
+
+    /**
+     * Scope para aplicar na query filtrando por cupons que não foram utilizados pela $pessoa
+     */
+    public function scopeNaoUtilizadoVenda($query, $pessoa)
+    {
+        $pessoaId = $pessoa->id;
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('cupom_utilizado_venda', false);
+        });
+    }
+
 }

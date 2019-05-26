@@ -30,6 +30,7 @@ class Oferta extends Model
         'foto_oferta',
         'titulo',
         'subtitulo',
+        'porcentagem_off',
         'codigo_promocional'
     ];
 
@@ -96,7 +97,7 @@ class Oferta extends Model
     /**
      * Relacionamento N x N entre Ofertas e Categorias (polimórfico)
      *
-     * @return void 
+     * @return void
      */
     public function categorias()
     {
@@ -143,10 +144,10 @@ class Oferta extends Model
         $categoriasPessoa = $pessoa->categorias->pluck('id')->toArray();
 
         return $query->whereHas(
-            'categorias', function ($query) use ($categoriasPessoa) { 
+            'categorias', function ($query) use ($categoriasPessoa) {
                 $query->whereIn('categoria_id', $categoriasPessoa);
             }
-        );        
+        );
     }
 
     /**

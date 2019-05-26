@@ -28,16 +28,22 @@
             <p>{!! $oferta->texto_oferta !!}</p>
         </div>
 
+        <!-- Porcentagem OFF Field -->
+        <div class="form-group">
+            {!! Form::label('porcentagem_off', '% OFF:') !!}
+            <p>{!! $oferta->porcentagem_off !!}</p>
+        </div>
+
         <!-- Created At Field -->
         <div class="form-group">
-            {!! Form::label('created_at', 'Criada Em:') !!}
-            <p>{!! $oferta->created_at !!}</p>
+            {!! Form::label('created_at', 'Criada em:') !!}
+            <p>{!! $oferta->created_at->format('d/m/Y H:i:s') !!}</p>
         </div>
 
         <!-- Updated At Field -->
         <div class="form-group">
-            {!! Form::label('updated_at', 'Atualizada Em:') !!}
-            <p>{!! $oferta->updated_at !!}</p>
+            {!! Form::label('updated_at', 'Atualizada em:') !!}
+            <p>{!! $oferta->updated_at->format('d/m/Y H:i:s')  !!}</p>
         </div>
 
         @if ($oferta->categorias()->count())
