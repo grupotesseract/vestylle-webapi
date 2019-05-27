@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\LojaDataTable;
 use App\Jobs\SincronizarComCloudinary;
 use App\Http\Requests;
-use App\Http\Requests\CreateLojaRequest;
 use App\Http\Requests\UpdateLojaRequest;
 use App\Repositories\LojaRepository;
 use App\Repositories\FotoRepository;
@@ -25,60 +23,6 @@ class LojaController extends AppBaseController
     {
         $this->lojaRepository = $lojaRepo;
         $this->fotoRepository = $fotoRepo;
-    }
-
-    /**
-     * Display a listing of the Loja.
-     *
-     * @param LojaDataTable $lojaDataTable
-     * @return Response
-     */
-    public function index(LojaDataTable $lojaDataTable)
-    {
-        return $lojaDataTable->render('lojas.index');
-    }
-
-    /**
-     * Show the form for creating a new Loja.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('lojas.create');
-    }
-
-    /**
-     * Store a newly created Loja in storage.
-     *
-     * @param CreateLojaRequest $request
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        $input = $request->all();
-
-        $validated = $request->validate(Loja::$rules);
-
-        $loja = $this->lojaRepository->create($input);
-
-        $fotos = $request->allFiles()['files'] ?? false;
-        $hasFotos = !empty($fotos);
-
-        if ($hasFotos) {
-            $fotos = $this->fotoRepository->uploadAndCreate($request);
-            $loja->fotos()->saveMany($fotos);
-
-            //Upload p/ Cloudinary e delete local
-            foreach ($fotos as $foto) {
-                $this->dispatch(new SincronizarComCloudinary($foto));
-            }
-        }
-
-        Flash::success('Loja criada com sucesso.');
-
-        return redirect(route('lojas.index'));
     }
 
     /**
@@ -164,34 +108,7 @@ class LojaController extends AppBaseController
 
         Flash::success('Loja atualizada com sucesso.');
 
-        return redirect(route('lojas.index'));
+        return redirect(route('lojas.show', $loja));
     }
 
-    /**
-     * Remove the specified Loja from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        $loja = $this->lojaRepository->findWithoutFail($id);
-
-        if (empty($loja)) {
-            Flash::error('Loja not found');
-
-            return redirect(route('lojas.index'));
-        }
-
-        if ($loja->fotos) {
-            $loja->fotos()->delete();
-        }
-
-        $this->lojaRepository->delete($id);
-
-        Flash::success('Loja deleted successfully.');
-
-        return redirect(route('lojas.index'));
-    }
 }

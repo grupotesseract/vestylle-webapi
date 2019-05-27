@@ -21,7 +21,7 @@ class FaleConosco extends Model
     use SoftDeletes;
 
     public $table = 'fale_conoscos';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -62,6 +62,6 @@ class FaleConosco extends Model
      **/
     public function pessoa()
     {
-        return $this->hasOne(\App\Models\Pessoa::class, 'pessoa_id', 'id');
+        return $this->belongsTo(\App\Models\Pessoa::class);
     }
 }

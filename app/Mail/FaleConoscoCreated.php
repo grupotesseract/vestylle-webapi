@@ -17,11 +17,9 @@ class FaleConoscoCreated extends Mailable
      *
      * @return void
      */
-    public function __construct(FaleConosco $faleConosco, $lojaNome, $usuario)
+    public function __construct(FaleConosco $faleConosco)
     {
         $this->faleConosco = $faleConosco;
-        $this->lojaNome = $lojaNome;
-        $this->usuario = $usuario;
     }
 
     /**
@@ -31,13 +29,13 @@ class FaleConoscoCreated extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.fale-conosco-created')
-                    ->with([
-                        'lojaNome' => $this->lojaNome,
-                        'pessoa' => $this->usuario,
-                        'contato' => $this->faleConosco->contato,
-                        'assunto' => $this->faleConosco->assunto,
-                        'mensagem' => $this->faleConosco->mensagem,
-                    ]);
+        return $this->from(env('EMAIL_ORIGEM_CONTATO'))
+            ->markdown('emails.fale-conosco-created')
+            ->with([
+                'pessoa' => $this->faleConosco->pessoa,
+                'contato' => $this->faleConosco->contato,
+                'assunto' => $this->faleConosco->assunto,
+                'mensagem' => $this->faleConosco->mensagem,
+            ]);
     }
 }
