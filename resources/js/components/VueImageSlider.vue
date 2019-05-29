@@ -18,7 +18,7 @@
 
 <script>
     export default {
-        props: ['images', 'model_url', 'model_id'],
+        props: ['images'],
         data() {
             return {
                 currentNumber: 0,
