@@ -14,7 +14,17 @@ class PessoasTableSeeder extends Seeder
     {
         \Eloquent::unguard();
 
-        $vestylleDBHelper = new VestylleDBHelper();
+        try {
+            $vestylleDBHelper = new VestylleDBHelper();
+        } catch (Exception $e) {
+            \Log::debug($e);
+
+            $this->command->error("Falha ao conectar com o BD da vestylle. O erro foi gravado no log do Laravel");
+            $this->command->info("\nO seeder PessoasTableSeeder precisará ser executado novamente, copie o comando abaixo pra facilitar");
+            $this->command->info("\nartisan db:seed --class=PessoasTableSeeder\n");
+            return;
+        }
+
         $repositorio = new \App\Repositories\PessoaRepository(app());
 
         $count = 0;
@@ -39,7 +49,7 @@ class PessoasTableSeeder extends Seeder
                     $repositorio->updateVencimentoPontosPessoa($pessoaCriada);
                     $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
                     $repositorio->updateNascimentoPessoa($pessoaCriada);
-                    $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);                    
+                    $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
                 }
             }
             else {

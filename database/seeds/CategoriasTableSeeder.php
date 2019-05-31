@@ -11,7 +11,15 @@ class CategoriasTableSeeder extends Seeder
      */
     public function run()
     {
-        $pessoaRepository = new \App\Repositories\PessoaRepository(app());
-        $pessoaRepository->updateCategorias();
+        try {
+            $pessoaRepository = new \App\Repositories\PessoaRepository(app());
+            $pessoaRepository->updateCategorias();
+        } catch (Exception $e) {
+            \Log::debug($e);
+
+            $this->command->error("Falha ao conectar com o BD da vestylle. O erro foi gravado no log do Laravel");
+            $this->command->info("\nO seeder CategoriasTableSeeder precisará ser executado novamente, copie o comando abaixo pra facilitar");
+            $this->command->info("\nartisan db:seed --class=CategoriasTableSeeder\n");
+        }
     }
 }
