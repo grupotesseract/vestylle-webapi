@@ -206,14 +206,6 @@ class CuponController extends AppBaseController
             return redirect(route('cupons.index'));
         }
 
-        if ($cupon->fotos) {
-            $cupon->fotos()->delete();
-        }
-
-        if ($cupon->pessoas) {
-            \DB::statement("DELETE FROM cupons_pessoas WHERE cupom_id = $cupon->id");
-        }
-
         $this->cuponRepository->delete($id);
 
         Flash::success('Cupom excluído com sucesso.');
