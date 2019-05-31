@@ -23,7 +23,7 @@
 </div>
 
 <!-- Oferta Field -->
-<div class="form-group col-sm-3">
+<div class="form-group col-sm-5">
     {!! Form::label('oferta_id', 'Oferta:') !!}
     {!! Form::select('oferta_id', $ofertas->pluck('titulo', 'id'), $cupon->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha uma Oferta']) !!}
 </div>
@@ -35,7 +35,7 @@
 </div>
 
 <!-- Texto Cupom Field -->
-<div class="form-group col-sm-8">
+<div class="form-group col-sm-6">
     {!! Form::label('texto_cupom', 'Texto descritivo') !!}
     {!! Form::text('texto_cupom', $cupon->texto_cupom ?? null, ['class' => 'form-control']) !!}
 </div>
