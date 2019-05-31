@@ -74,6 +74,7 @@ class CuponAPIController extends AppBaseController
     public function show($id)
     {        
         $pessoa_id = Auth::id();
+        $pessoa_id = 9;
         $cupon = $this->cuponRepository->with(
             [
                 'pessoas' => function ($query) use ($pessoa_id) { 
