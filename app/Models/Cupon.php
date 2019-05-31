@@ -88,7 +88,7 @@ class Cupon extends Model
      */
     public function pessoas()
     {
-        return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id');
+        return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')->withPivot('cupom_utilizado_venda');;
     }
 
     /**

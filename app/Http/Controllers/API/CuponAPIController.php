@@ -72,20 +72,19 @@ class CuponAPIController extends AppBaseController
      * @return Response
      */
     public function show($id)
-    {
-        $cupon = $this->cuponRepository->with('fotos')->findWithoutFail($id);
+    {        
         $pessoa_id = Auth::id();
+        $cupon = $this->cuponRepository->with(
+            [
+                'pessoas' => function ($query) use ($pessoa_id) { 
+                    $query->where('pessoa_id', $pessoa_id);
+                }
+            ]
+        )->findWithoutFail($id);
 
         if (empty($cupon)) {
             return $this->sendError('Cupom não encontrado');
-        }
-
-        if ($pessoa_id) {
-            $cupon->codigo_unico = \App\Models\CuponPessoa::where([
-                'cupom_id' => $id,
-                'pessoa_id' => $pessoa_id
-            ])->first()->codigo_unico ?? null;
-        }
+        }               
 
         return $this->sendResponse($cupon->toArray(), 'Cupom encontrado com sucesso');
     }
