@@ -30,8 +30,7 @@ class PessoasTableSeeder extends Seeder
         $count = 0;
         $dias = 10;
 
-        while ($count <= 5)
-        {
+        while ($count <= 5) {
             $pessoas = $vestylleDBHelper->getUltimosRegistros(($vestylleDBHelper::LIMITE_DIAS), $dias);
             $count = count($pessoas);
             $dias++;
@@ -51,13 +50,13 @@ class PessoasTableSeeder extends Seeder
                     $repositorio->updateNascimentoPessoa($pessoaCriada);
                     $repositorio->updateDataUltimaCompraPessoa($pessoaCriada);
                 }
+
+                continue;
             }
-            else {
-                $this->command->info("Pulando pessoa ". $pessoa->cnpj_cpf);
-            }
+
+            $this->command->info("Pulando pessoa ". $pessoa->cnpj_cpf);
         }
 
         $this->command->info("Pessoas criadas, precisou voltar ~$dias dias. ");
-
     }
 }
