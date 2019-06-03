@@ -52,7 +52,7 @@ class CuponController extends AppBaseController
      */
     public function create()
     {
-        $ofertas = Oferta::get(['id', 'descricao_oferta']);
+        $ofertas = Oferta::get(['id', 'titulo']);
         return view('cupons.create')->with(compact('ofertas'));
     }
 
