@@ -63,6 +63,32 @@ class Oferta extends Model
         'urlFoto'
     ];
 
+    /**
+     * Método para dar override em eventos como a deleção do cupom
+     * sem ter que replicar a lógica pela API quando esses eventos acontecerem
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($oferta) {
+            $oferta->deletarFotosRelacionadas();
+        });
+    }
+
+    /**
+     * Remove fotos da oferta do banco
+     *
+     * @return void
+     */
+    public function deletarFotosRelacionadas()
+    {
+        if ($this->fotos) {
+            $this->fotos()->delete();
+        }
+    }
 
     /**
      * Relacionamento 1-N entre ofertas-cupons

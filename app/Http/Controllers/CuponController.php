@@ -52,7 +52,7 @@ class CuponController extends AppBaseController
      */
     public function create()
     {
-        $ofertas = Oferta::get(['id', 'descricao_oferta']);
+        $ofertas = Oferta::get(['id', 'titulo']);
         return view('cupons.create')->with(compact('ofertas'));
     }
 
@@ -204,14 +204,6 @@ class CuponController extends AppBaseController
             Flash::error('Cupom não encontrado');
 
             return redirect(route('cupons.index'));
-        }
-
-        if ($cupon->fotos) {
-            $cupon->fotos()->delete();
-        }
-
-        if ($cupon->pessoas) {
-            \DB::statement("DELETE FROM cupons_pessoas WHERE cupom_id = $cupon->id");
         }
 
         $this->cuponRepository->delete($id);

@@ -197,10 +197,6 @@ class OfertaController extends AppBaseController
             return redirect(route('ofertas.index'));
         }
 
-        if ($oferta->fotos) {
-            $oferta->fotos()->delete();
-        }
-
         $this->ofertaRepository->delete($id);
 
         Flash::success('Oferta excluída com sucesso.');

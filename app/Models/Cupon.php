@@ -65,6 +65,47 @@ class Cupon extends Model
     ];
 
     /**
+     * Método para dar override em eventos como a deleção do cupom
+     * sem ter que replicar a lógica pela API quando esses eventos acontecerem
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($cupon) {
+            $cupon->deletarFotosRelacionadas();
+            $cupon->deletarRelacaoComPessoas();
+        });
+    }
+
+    /**
+     * Remove fotos do cupom do banco
+     *
+     * @return void
+     */
+    public function deletarFotosRelacionadas()
+    {
+        if ($this->fotos) {
+            $this->fotos()->delete();
+        }
+    }
+
+    /**
+     * Remove registros de cupons_pessoas apontando pro cupom
+     *
+     * @return void
+     */
+    public function deletarRelacaoComPessoas()
+    {
+        if ($this->pessoas) {
+            \DB::statement("DELETE FROM cupons_pessoas WHERE cupom_id = $this->id");
+        }
+    }
+
+
+    /**
      * Scope para aplicar na query filtrando pelos cupons que estao com 'aparece_listagem' true
      * Os cupons aparecem na listagem ou não (comuns || fisicos/promocionais)
      */
@@ -88,7 +129,7 @@ class Cupon extends Model
      */
     public function pessoas()
     {
-        return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id');
+        return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')->withPivot('cupom_utilizado_venda','codigo_unico');;
     }
 
     /**
