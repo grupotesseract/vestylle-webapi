@@ -131,14 +131,6 @@ class CuponAPIController extends AppBaseController
             return $this->sendError('Cupom não encontrado');
         }
 
-        if ($cupon->fotos) {
-            $cupon->fotos()->delete();
-        }
-
-        if ($cupon->pessoas) {
-            \DB::statement("DELETE FROM cupons_pessoas WHERE cupom_id = $cupon->id");
-        }
-
         $cupon->delete();
 
         return $this->sendResponse($id, 'Cupom excluído com sucesso');
@@ -196,7 +188,7 @@ class CuponAPIController extends AppBaseController
      * @return Response
      */
     public function showEncryptado($idEncryptado)
-    {        
+    {
         $cupon = $this->cuponRepository->with('fotos')->findEncryptadoWithoutFail($idEncryptado);
         $pessoa_id = Auth::id();
 

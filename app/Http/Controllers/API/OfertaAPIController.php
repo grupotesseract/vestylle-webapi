@@ -39,7 +39,7 @@ class OfertaAPIController extends AppBaseController
     {
         $this->ofertaRepository->pushCriteria(new RequestCriteria($request));
         $this->ofertaRepository->pushCriteria(new LimitOffsetCriteria($request));
-        
+
         $pessoa = Auth('api')->user();
 
         $ofertas = $this->ofertaRepository->apareceListagem($pessoa);
@@ -124,10 +124,6 @@ class OfertaAPIController extends AppBaseController
 
         if (empty($oferta)) {
             return $this->sendError('Oferta not found');
-        }
-
-        if ($oferta->fotos) {
-            $oferta->fotos()->delete();
         }
 
         $oferta->delete();
