@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Seeder;
 use App\Helpers\VestylleDBHelper;
 
@@ -17,7 +18,7 @@ class PessoasTableSeeder extends Seeder
         try {
             $vestylleDBHelper = new VestylleDBHelper();
         } catch (Exception $e) {
-            \Log::debug($e);
+            Log::debug($e);
 
             $this->command->error("Falha ao conectar com o BD da vestylle. O erro foi gravado no log do Laravel");
             $this->command->info("\nO seeder PessoasTableSeeder precisará ser executado novamente, copie o comando abaixo pra facilitar");

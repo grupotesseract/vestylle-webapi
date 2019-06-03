@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
@@ -22,6 +23,6 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \View::composer('categorias.partials.select', '\App\ViewComposers\CategoriaComposer');
+        View::composer('categorias.partials.select', '\App\ViewComposers\CategoriaComposer');
     }
 }
