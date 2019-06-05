@@ -36,8 +36,9 @@ Route::group(['middleware' => ['auth:api']], function () {
 */
 
 //Rotas para teste da subscription das push's
-Route::get('/subscriptions', 'SubscriptionController@index');
-Route::post('/subscription', 'SubscriptionController@store');
+//Route::get('/subscriptions', 'SubscriptionController@index');
+Route::get('/push', 'PushController@push')->name('push');
+Route::post('/push', 'SubscriptionController@store');
 
 Route::post('pessoas', 'PessoaAPIController@store');
 Route::post('/login', 'PessoaAPIController@login');

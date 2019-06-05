@@ -15,16 +15,11 @@ class CreatePushSubscriptionsTable extends Migration
     {
         Schema::create('push_subscriptions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->index();
+            $table->integer('guest_id')->unsigned()->index();
             $table->string('endpoint', 500)->unique();
             $table->string('public_key')->nullable();
             $table->string('auth_token')->nullable();
-            $table->timestamps();
-
-            $table->foreign('user_id')
-                    ->references('id')
-                    ->on('users')
-                    ->onDelete('cascade');
+            $table->timestamps();            
         });
     }
 

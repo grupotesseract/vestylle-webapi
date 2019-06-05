@@ -3,51 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use Illuminate\Notifications\Notification;
-use NotificationChannels\WebPush\WebPushMessage;
-use NotificationChannels\WebPush\WebPushChannel;
+use App\Http\Controllers\AppBaseController;
+use App\Notifications\PushNotification;
 
-class NotificacaoTeste extends Notification
-{
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return [WebPushChannel::class];
-    }
-    public function toWebPush($notifiable, $notification)
-    {
-        return (new WebPushMessage)
-            ->title('Approved!')
-            ->icon('/approved-icon.png')
-            ->body('Your account was approved!')
-            ->action('View account', 'view_account');
-            // ->data(['id' => $notification->id])
-            // ->badge()
-            // ->dir()
-            // ->image()
-            // ->lang()
-            // ->renotify()
-            // ->requireInteraction()
-            // ->tag()
-            // ->vibrate()
-    }
-}
+use Auth;
+use Notification;
+use App\Models\Guest;
 
-class SubscriptionController extends \App\Http\Controllers\AppBaseController
+class SubscriptionController extends AppBaseController
 {
     /**
      * Create a new controller instance.
@@ -60,21 +23,43 @@ class SubscriptionController extends \App\Http\Controllers\AppBaseController
     }
 
     /**
-     * Código de teste para envio de webpush
-     *
-     * @return \Illuminate\Http\Response
+     * Store the PushSubscription.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function store(Request $request)
     {
-        $dodo = \App\Models\User::latest()->first();
-        $dodo->notify(new NotificacaoTeste);
-        return $this->sendResponse(['teste'=>'sdfsdf'], "sucesso");
+        $this->validate(
+            $request, 
+            [
+                'endpoint'    => 'required',
+                'keys.auth'   => 'required',
+                'keys.p256dh' => 'required'
+            ]
+        );
+        $endpoint = $request->endpoint;
+        $token = $request->keys['auth'];
+        $key = $request->keys['p256dh'];
+        
+        $user = Guest::firstOrCreate([
+            'endpoint' => $endpoint
+        ]);
+
+        $user->updatePushSubscription($endpoint, $key, $token);        
+        
+        return response()->json(['success' => true], 200);
     }
 
-    // Código de exemplo de como é feito o update dos dados do usuário
-    public function updateSubscription()
+    /**
+     * Send Push Notifications to all users.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function push()
     {
-        $user = \App\Models\User::latest()->first();
-        $user->updatePushSubscription("https://fcm.googleapis.com/fcm/send/dV1KYMArZVs:APA91bH2PzJO7TGsVe-KXBBYuGQlnyJUP6kEd7YIh-pRt14VPN1rAvFcLXd3JbCnDumOYp9a5RcXDdfGR5U2-gdy4dhEROut10ou-EcV26Id0ySQXINaBhY4bWEOrfiqiiVxylQX-KUL", "BFH2CaMpqkiO53g6fbvVqhVLAZA6XkRjgj_NxhRqxztoBs5v-DEPyjgWZlzucfodJyIgK4roASYKvX1sEeca3P4", "z1dVgfIekj2s4kUV5FWYsw");
+        Notification::send(Guest::all(), new PushNotification);
+        return redirect()->back();
     }
+    
 }
