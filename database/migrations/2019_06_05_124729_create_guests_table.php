@@ -13,9 +13,11 @@ class CreateGuestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('guests', function (Blueprint $table) {
+        Schema::create('pessoas_push', function (Blueprint $table) {
             $table->increments('id');
             $table->string('endpoint', 255)->unique();
+            $table->integer('pessoa_id')->unsigned()->index()->nullable();
+            $table->foreign('pessoa_id')->references('id')->on('pessoas')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateGuestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guests');
+        Schema::dropIfExists('pessoas_push');
     }
 }

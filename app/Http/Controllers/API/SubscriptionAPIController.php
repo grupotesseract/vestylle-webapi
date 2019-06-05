@@ -8,9 +8,9 @@ use App\Notifications\PushNotification;
 
 use Auth;
 use Notification;
-use App\Models\Guest;
+use App\Models\PessoaPush;
 
-class SubscriptionController extends AppBaseController
+class SubscriptionAPIController extends AppBaseController
 {
     /**
      * Create a new controller instance.
@@ -42,9 +42,11 @@ class SubscriptionController extends AppBaseController
         $token = $request->keys['auth'];
         $key = $request->keys['p256dh'];
         
-        $user = Guest::firstOrCreate([
+        $user = PessoaPush::firstOrCreate(
+            [
             'endpoint' => $endpoint
-        ]);
+            ]
+        );
 
         $user->updatePushSubscription($endpoint, $key, $token);        
         
@@ -58,7 +60,7 @@ class SubscriptionController extends AppBaseController
      */
     public function push()
     {
-        Notification::send(Guest::all(), new PushNotification);
+        Notification::send(PessoaPush::all(), new PushNotification);
         return redirect()->back();
     }
     

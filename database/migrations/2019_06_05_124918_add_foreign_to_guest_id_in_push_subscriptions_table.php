@@ -14,7 +14,7 @@ class AddForeignToGuestIdInPushSubscriptionsTable extends Migration
     public function up()
     {
         Schema::table('push_subscriptions', function (Blueprint $table) {
-            $table->foreign('guest_id')->references('id')->on('guests')->onDelete('cascade');
+            $table->foreign('pessoa_push_id')->references('id')->on('pessoas_push')->onDelete('cascade');
         });
     }
 
@@ -26,7 +26,7 @@ class AddForeignToGuestIdInPushSubscriptionsTable extends Migration
     public function down()
     {
         Schema::table('push_subscriptions', function (Blueprint $table) {
-            //
+            $table->dropColumn('pessoa_push_id');
         });
     }
 }

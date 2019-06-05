@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 
 
-class Guest extends Model
+class PessoaPush extends Model
 {
     use Notifiable,
         HasPushSubscriptions;
@@ -15,6 +15,8 @@ class Guest extends Model
     protected $fillable = [
         'endpoint',
     ];
+
+    protected $table = 'pessoas_push';
     /**
      * Determine if the given subscription belongs to this user.
      *
@@ -23,6 +25,6 @@ class Guest extends Model
      */
     public function pushSubscriptionBelongsToUser($subscription)
     {
-        return (int) $subscription->guest_id === (int) $this->id;
+        return (int) $subscription->pessoa_push_id === (int) $this->id;
     }
 }
