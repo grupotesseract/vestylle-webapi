@@ -19,3 +19,6 @@
 <li class="{{ Request::is('tipoInformacaos*') ? 'active' : '' }}">
     <a href="{!! route('tipoInformacaos.index') !!}"><i class="fa fa-asterisk"></i><span>Tipos de Informações</span></a>
 </li>
+<li class="{{ Request::is('tipoInformacaos*') ? 'active' : '' }}">
+    <a href="{{route('push')}}"><i class="fa fa-asterisk"></i><span>Enviar Notificação</span></a>
+</li>

@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/push', 'API\SubscriptionController@push')->name('push');
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
