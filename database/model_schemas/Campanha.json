@@ -144,6 +144,28 @@
         "inIndex": false
     },
     {
+        "name": "saldo_pontos",
+        "dbType": "smallInteger:nullable",
+        "htmlType": "date",
+        "validations": "",
+        "searchable": false,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": false
+    },
+    {
+        "name": "condicao_saldo_pontos",
+        "dbType": "string:nullable",
+        "htmlType": "text",
+        "validations": "",
+        "searchable": false,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": false
+    },
+    {
         "name": "created_at",
         "dbType": "timestamp",
         "htmlType": "",

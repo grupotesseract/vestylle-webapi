@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Campanha
  * @package App\Models
- * @version June 6, 2019, 10:11 pm UTC
+ * @version June 6, 2019, 10:39 pm UTC
  *
  * @property string titulo
  * @property string texto
@@ -23,16 +22,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string condicao_ano_nascimento
  * @property integer mes_aniversario
  * @property string condicao_mes_aniversario
+ * @property integer saldo_pontos
+ * @property string condicao_saldo_pontos
  */
 class Campanha extends Model
 {
-    use SoftDeletes;
 
     public $table = 'campanhas';
-    
-
-    protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'titulo',
@@ -47,7 +43,9 @@ class Campanha extends Model
         'ano_nascimento',
         'condicao_ano_nascimento',
         'mes_aniversario',
-        'condicao_mes_aniversario'
+        'condicao_mes_aniversario',
+        'saldo_pontos',
+        'condicao_saldo_pontos'
     ];
 
     /**
@@ -65,7 +63,9 @@ class Campanha extends Model
         'ano_nascimento' => 'integer',
         'condicao_ano_nascimento' => 'string',
         'mes_aniversario' => 'integer',
-        'condicao_mes_aniversario' => 'string'
+        'condicao_mes_aniversario' => 'string',
+        'saldo_pontos' => 'integer',
+        'condicao_saldo_pontos' => 'string'
     ];
 
     /**
@@ -78,5 +78,5 @@ class Campanha extends Model
         'texto' => 'required'
     ];
 
-    
+
 }

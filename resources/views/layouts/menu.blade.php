@@ -27,3 +27,7 @@
     <a href="{!! route('campanhas.index') !!}"><i class="fa fa-edit"></i><span>Campanhas</span></a>
 </li>
 
+<li class="{{ Request::is('campanhas*') ? 'active' : '' }}">
+    <a href="{!! route('campanhas.index') !!}"><i class="fa fa-edit"></i><span>Campanhas</span></a>
+</li>
+

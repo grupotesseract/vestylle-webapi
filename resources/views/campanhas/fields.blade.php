@@ -112,6 +112,27 @@
     {!! Form::text('condicao_mes_aniversario', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Saldo Pontos Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('saldo_pontos', 'Saldo Pontos:') !!}
+    {!! Form::date('saldo_pontos', null, ['class' => 'form-control','id'=>'saldo_pontos']) !!}
+</div>
+
+@section('scripts')
+    <script type="text/javascript">
+        $('#saldo_pontos').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            useCurrent: false
+        })
+    </script>
+@endsection
+
+<!-- Condicao Saldo Pontos Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('condicao_saldo_pontos', 'Condicao Saldo Pontos:') !!}
+    {!! Form::text('condicao_saldo_pontos', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}

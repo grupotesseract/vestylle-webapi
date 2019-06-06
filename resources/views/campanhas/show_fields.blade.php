@@ -82,6 +82,18 @@
     <p>{!! $campanha->condicao_mes_aniversario !!}</p>
 </div>
 
+<!-- Saldo Pontos Field -->
+<div class="form-group">
+    {!! Form::label('saldo_pontos', 'Saldo Pontos:') !!}
+    <p>{!! $campanha->saldo_pontos !!}</p>
+</div>
+
+<!-- Condicao Saldo Pontos Field -->
+<div class="form-group">
+    {!! Form::label('condicao_saldo_pontos', 'Condicao Saldo Pontos:') !!}
+    <p>{!! $campanha->condicao_saldo_pontos !!}</p>
+</div>
+
 <!-- Created At Field -->
 <div class="form-group">
     {!! Form::label('created_at', 'Created At:') !!}
