@@ -19,3 +19,7 @@
 <li class="{{ Request::is('tipoInformacaos*') ? 'active' : '' }}">
     <a href="{!! route('tipoInformacaos.index') !!}"><i class="fa fa-asterisk"></i><span>Tipos de Informações</span></a>
 </li>
+<li class="{{ Request::is('campanhas*') ? 'active' : '' }}">
+    <a href="{!! route('campanhas.index') !!}"><i class="fa fa-edit"></i><span>Campanhas</span></a>
+</li>
+

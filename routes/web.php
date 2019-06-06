@@ -58,3 +58,6 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 
 Route::resource('tipoInformacaos', 'TipoInformacaoController');
+
+
+Route::resource('campanhas', 'CampanhaController');
