@@ -40,10 +40,10 @@ class CuponRepository extends BaseRepository
      * @param mixed $id
      * @param string $columns
      */
-    public function findEncryptadoWithoutFail($idEncryptado, $columns = ['*'])
+    public function findEncryptadoWithoutFail($idEncryptado, $pessoa_id = null)
     {
         try {
-            return $this->model()::findEncryptado($idEncryptado, $columns);
+            return $this->model()::findEncryptado($idEncryptado, $pessoa_id);
         } catch (Exception $e) {
             return;
         }
