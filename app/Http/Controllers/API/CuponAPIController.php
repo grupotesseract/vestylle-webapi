@@ -73,7 +73,9 @@ class CuponAPIController extends AppBaseController
      */
     public function show($id)
     {        
-        $pessoa_id = Auth::id();
+        $pessoa = Auth('api')->user();
+        $pessoa_id = $pessoa->id;
+        
         $cupon = $this->cuponRepository->with(
             [
                 'pessoas' => function ($query) use ($pessoa_id) { 
@@ -188,19 +190,20 @@ class CuponAPIController extends AppBaseController
      */
     public function showEncryptado($idEncryptado)
     {
-        $cupon = $this->cuponRepository->with('fotos')->findEncryptadoWithoutFail($idEncryptado);
-        $pessoa_id = Auth::id();
+        $pessoa = Auth('api')->user();
+        $pessoa_id = $pessoa->id;
+        
+        $cupon = $this->cuponRepository->with(
+            [
+                'pessoas' => function ($query) use ($pessoa_id) { 
+                    $query->where('pessoa_id', $pessoa_id);
+                }
+            ]
+        )->findWithoutFail($id);
 
         if (empty($cupon)) {
             return $this->sendError('Cupom não encontrado');
-        }
-
-        if ($pessoa_id) {
-            $cupon->codigo_unico = \App\Models\CuponPessoa::where([
-                'cupom_id' => $id,
-                'pessoa_id' => $pessoa_id
-            ])->first()->codigo_unico ?? null;
-        }
+        }        
 
         return $this->sendResponse($cupon->toArray(), 'Cupom encontrado com sucesso');
     }
