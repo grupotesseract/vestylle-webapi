@@ -58,16 +58,28 @@
     <p>{!! $campanha->data_vencimento_pontos_maior !!}</p>
 </div>
 
-<!-- Data Nascimento Menor Field -->
+<!-- Ano Nascimento Field -->
 <div class="form-group">
-    {!! Form::label('data_nascimento_menor', 'Data Nascimento Menor:') !!}
-    <p>{!! $campanha->data_nascimento_menor !!}</p>
+    {!! Form::label('ano_nascimento', 'Ano Nascimento:') !!}
+    <p>{!! $campanha->ano_nascimento !!}</p>
 </div>
 
-<!-- Data Nascimento Maior Field -->
+<!-- Condicao Ano Nascimento Field -->
 <div class="form-group">
-    {!! Form::label('data_nascimento_maior', 'Data Nascimento Maior:') !!}
-    <p>{!! $campanha->data_nascimento_maior !!}</p>
+    {!! Form::label('condicao_ano_nascimento', 'Condicao Ano Nascimento:') !!}
+    <p>{!! $campanha->condicao_ano_nascimento !!}</p>
+</div>
+
+<!-- Mes Aniversario Field -->
+<div class="form-group">
+    {!! Form::label('mes_aniversario', 'Mes Aniversario:') !!}
+    <p>{!! $campanha->mes_aniversario !!}</p>
+</div>
+
+<!-- Condicao Mes Aniversario Field -->
+<div class="form-group">
+    {!! Form::label('condicao_mes_aniversario', 'Condicao Mes Aniversario:') !!}
+    <p>{!! $campanha->condicao_mes_aniversario !!}</p>
 </div>
 
 <!-- Created At Field -->

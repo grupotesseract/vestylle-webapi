@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Class Campanha
  * @package App\Models
- * @version June 6, 2019, 9:43 pm UTC
+ * @version June 6, 2019, 10:11 pm UTC
  *
  * @property string titulo
  * @property string texto
@@ -19,8 +19,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string data_ultima_compra_maior
  * @property string data_vencimento_pontos_menor
  * @property string data_vencimento_pontos_maior
- * @property string data_nascimento_menor
- * @property string data_nascimento_maior
+ * @property integer ano_nascimento
+ * @property string condicao_ano_nascimento
+ * @property integer mes_aniversario
+ * @property string condicao_mes_aniversario
  */
 class Campanha extends Model
 {
@@ -42,8 +44,10 @@ class Campanha extends Model
         'data_ultima_compra_maior',
         'data_vencimento_pontos_menor',
         'data_vencimento_pontos_maior',
-        'data_nascimento_menor',
-        'data_nascimento_maior'
+        'ano_nascimento',
+        'condicao_ano_nascimento',
+        'mes_aniversario',
+        'condicao_mes_aniversario'
     ];
 
     /**
@@ -57,7 +61,11 @@ class Campanha extends Model
         'texto' => 'string',
         'cupon_id' => 'integer',
         'oferta_id' => 'integer',
-        'genero' => 'integer'
+        'genero' => 'integer',
+        'ano_nascimento' => 'integer',
+        'condicao_ano_nascimento' => 'string',
+        'mes_aniversario' => 'integer',
+        'condicao_mes_aniversario' => 'string'
     ];
 
     /**

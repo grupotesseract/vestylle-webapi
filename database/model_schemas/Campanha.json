@@ -100,8 +100,8 @@
         "inIndex": false
     },
     {
-        "name": "data_nascimento_menor",
-        "dbType": "timestamp:nullable",
+        "name": "ano_nascimento",
+        "dbType": "smallInteger:nullable",
         "htmlType": "date",
         "validations": "",
         "searchable": false,
@@ -111,9 +111,31 @@
         "inIndex": false
     },
     {
-        "name": "data_nascimento_maior",
-        "dbType": "timestamp:nullable",
+        "name": "condicao_ano_nascimento",
+        "dbType": "string:nullable",
+        "htmlType": "text",
+        "validations": "",
+        "searchable": false,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": false
+    },
+    {
+        "name": "mes_aniversario",
+        "dbType": "smallInteger:nullable",
         "htmlType": "date",
+        "validations": "",
+        "searchable": false,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": false
+    },
+    {
+        "name": "condicao_mes_aniversario",
+        "dbType": "string:nullable",
+        "htmlType": "text",
         "validations": "",
         "searchable": false,
         "fillable": true,

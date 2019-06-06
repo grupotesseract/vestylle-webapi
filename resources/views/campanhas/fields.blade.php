@@ -70,35 +70,47 @@
     </script>
 @endsection
 
-<!-- Data Nascimento Menor Field -->
+<!-- Ano Nascimento Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('data_nascimento_menor', 'Data Nascimento Menor:') !!}
-    {!! Form::date('data_nascimento_menor', null, ['class' => 'form-control','id'=>'data_nascimento_menor']) !!}
+    {!! Form::label('ano_nascimento', 'Ano Nascimento:') !!}
+    {!! Form::date('ano_nascimento', null, ['class' => 'form-control','id'=>'ano_nascimento']) !!}
 </div>
 
 @section('scripts')
     <script type="text/javascript">
-        $('#data_nascimento_menor').datetimepicker({
+        $('#ano_nascimento').datetimepicker({
             format: 'YYYY-MM-DD HH:mm:ss',
             useCurrent: false
         })
     </script>
 @endsection
 
-<!-- Data Nascimento Maior Field -->
+<!-- Condicao Ano Nascimento Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('data_nascimento_maior', 'Data Nascimento Maior:') !!}
-    {!! Form::date('data_nascimento_maior', null, ['class' => 'form-control','id'=>'data_nascimento_maior']) !!}
+    {!! Form::label('condicao_ano_nascimento', 'Condicao Ano Nascimento:') !!}
+    {!! Form::text('condicao_ano_nascimento', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Mes Aniversario Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('mes_aniversario', 'Mes Aniversario:') !!}
+    {!! Form::date('mes_aniversario', null, ['class' => 'form-control','id'=>'mes_aniversario']) !!}
 </div>
 
 @section('scripts')
     <script type="text/javascript">
-        $('#data_nascimento_maior').datetimepicker({
+        $('#mes_aniversario').datetimepicker({
             format: 'YYYY-MM-DD HH:mm:ss',
             useCurrent: false
         })
     </script>
 @endsection
+
+<!-- Condicao Mes Aniversario Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('condicao_mes_aniversario', 'Condicao Mes Aniversario:') !!}
+    {!! Form::text('condicao_mes_aniversario', null, ['class' => 'form-control']) !!}
+</div>
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">

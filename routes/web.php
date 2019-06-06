@@ -61,3 +61,5 @@ Route::resource('tipoInformacaos', 'TipoInformacaoController');
 
 
 Route::resource('campanhas', 'CampanhaController');
+
+Route::resource('campanhas', 'CampanhaController');
