@@ -60,6 +60,8 @@ class SubscriptionAPIController extends AppBaseController
      */
     public function push()
     {
+        //AQUI FAREMOS A SELEÇÃO DE QUAIS PESSOAS RECEBERÃO
+        //A NOTIFICAÇÃO, DE ACORDO COM O SEU SEGMENTO
         Notification::send(PessoaPush::all(), new PushNotification);
         return redirect()->back();
     }
