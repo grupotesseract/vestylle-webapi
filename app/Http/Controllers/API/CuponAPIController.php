@@ -191,15 +191,9 @@ class CuponAPIController extends AppBaseController
     public function showEncryptado($idEncryptado)
     {
         $pessoa = Auth('api')->user();
-        $pessoa_id = $pessoa->id;
-        
-        $cupon = $this->cuponRepository->with(
-            [
-                'pessoas' => function ($query) use ($pessoa_id) { 
-                    $query->where('pessoa_id', $pessoa_id);
-                }
-            ]
-        )->findWithoutFail($id);
+        $pessoa_id = $pessoa->id;       
+
+        $cupon = $this->cuponRepository->findEncryptadoWithoutFail($idEncryptado, $pessoa_id); 
 
         if (empty($cupon)) {
             return $this->sendError('Cupom não encontrado');

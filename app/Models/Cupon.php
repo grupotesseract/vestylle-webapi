@@ -207,9 +207,17 @@ class Cupon extends Model
      *
      * @return void
      */
-    public static function findEncryptado($idEncryptado)
+    public static function findEncryptado($idEncryptado, $pessoa_id = null)
     {
-        return self::where('qrcode', $idEncryptado)->get()->first();
+        $cupon = self::with(
+            [
+                'pessoas' => function ($query) use ($pessoa_id) { 
+                    $query->where('pessoa_id', $pessoa_id);
+                }
+            ]
+        )->where('qrcode', $idEncryptado)->get()->first();
+        
+        return $cupon;
     }
 
     /**
