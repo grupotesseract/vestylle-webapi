@@ -329,4 +329,28 @@ class PessoaAPIController extends AppBaseController
         return $this->sendResponse($cuponsUtilizados, "Cupons do usuário #$pessoa->id carregados com sucesso");
     }
 
+    /**
+     * Get the response for a successful password reset link.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetLinkResponse(Request $request, $response)
+    {
+        return $this->sendResponse($response, 'Email de redefinição de senha enviado com sucesso');
+    }
+
+    /**
+     * Get the response for a failed password reset link.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetLinkFailedResponse(Request $request, $response)
+    {        
+        return $this->sendError('Erro ao solicitar redefinição de senha. '. trans($response));        
+    }
+
 }
