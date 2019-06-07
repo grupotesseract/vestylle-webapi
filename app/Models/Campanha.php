@@ -13,7 +13,7 @@ use Eloquent as Model;
  * @property string texto
  * @property integer cupon_id
  * @property integer oferta_id
- * @property integer genero
+ * @property string genero
  * @property string data_ultima_compra_menor
  * @property string data_ultima_compra_maior
  * @property string data_vencimento_pontos_menor
@@ -59,7 +59,7 @@ class Campanha extends Model
         'texto' => 'string',
         'cupon_id' => 'integer',
         'oferta_id' => 'integer',
-        'genero' => 'integer',
+        'genero' => 'string',
         'ano_nascimento' => 'integer',
         'condicao_ano_nascimento' => 'string',
         'mes_aniversario' => 'integer',
@@ -90,11 +90,23 @@ class Campanha extends Model
     }
 
     /**
-     * Acessor para
+     * Acessor para determinar se essa Campanha usa segmentacao por categorias
+     *
+     * @return boolean
      */
-     public function getTemSegmentacaoCategoriaAttribute()
-     {
-         return $this->categorias()->count() ? true : false;
-     }
+    public function getTemSegmentacaoCategoriaAttribute()
+    {
+        return $this->categorias()->count() ? true : false;
+    }
+
+    /**
+     * Acessor para determinar se essa Campanha usa segmentacao por genero
+     *
+     * @return boolean
+     */
+    public function getTemSegmentacaoGeneroAttribute()
+    {
+        return $this->genero ? true : false;
+    }
 
 }

@@ -5,7 +5,7 @@
 <div class="form-group col-sm-12">
     {!! Form::label('categorias', isset($label) ? $label : 'Generos') !!} <br>
     {!! Form::select(
-        'generos[]',
+        'genero',
         array_merge([null => ''], $generos),
         isset($Model) ? $Model->genero : null,
         ['class' => 'form-control select2']

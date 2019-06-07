@@ -437,9 +437,11 @@ class PessoaRepository extends BaseRepository
     public function getPessoaGenerosSelect()
     {
 
-        $generos = $this->model()::whereNotNull('genero')->pluck('genero')->unique()->all();
-        return $generos;
+        $generos = $this->model()::whereNotNull('genero')
+            ->pluck('genero', 'genero')
+            ->unique()->all();
 
+        return $generos;
     }
 
 
