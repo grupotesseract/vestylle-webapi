@@ -3,7 +3,7 @@
 
 <!-- Select de Categorias  -->
 <div class="form-group col-sm-12">
-    {!! Form::label('categorias', 'Categorias') !!} <br>
+    {!! Form::label('categorias', isset($label) ? $label : 'Categorias') !!} <br>
     {!! Form::select(
         'categorias[]',
         $categorias,

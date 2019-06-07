@@ -5,15 +5,20 @@
         {!! Form::label('segmentar_genero', 'Por genero') !!}
     </div>
     <div class="col-sm-9 text-left">
-        {!! Form::checkbox('segmentar_genero', 0, 0, ['class'=>'checkbox-segmentacao']) !!} Sim
+        {!! Form::checkbox('segmentar_genero', 1, $campanha->temSegmentacaoGenero ?? false, ['class'=>'checkbox-segmentacao']) !!} Sim
     </div>
 
-    <div class="col-sm-12 item-segmentacao hide">
+    <div class="col-sm-12 item-segmentacao @if(isset($campanha) && $campanha->temSegmentacaoGenero) @else hide @endif">
         {{-- Incluindo o select de categorias, Passando 'Model' se estiver editando --}}
         @if (\Request::is('*edit*'))
-            @include('pessoas.partials.select-genero', ['Model' => $campanha])
+            @include('pessoas.partials.select-genero', [
+                'Model' => $campanha,
+                'label' => 'Somente pessoas de genero'
+            ])
         @else
-            @include('pessoas.partials.select-genero')
+            @include('pessoas.partials.select-genero', [
+                'label' => 'Somente pessoas de genero'
+            ])
         @endif
     </div>
 </div>

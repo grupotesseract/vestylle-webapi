@@ -17,7 +17,7 @@ class CreateCampanhasTable extends Migration
             $table->increments('id');
             $table->string('titulo');
             $table->string('texto');
-            $table->smallInteger('genero')->nullable();
+            $table->string('genero')->nullable();
 
             $table->timestamp('data_ultima_compra_menor')->nullable();
             $table->timestamp('data_ultima_compra_maior')->nullable();

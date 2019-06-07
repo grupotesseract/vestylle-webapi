@@ -3,6 +3,7 @@
 
 <!-- Select de Categorias  -->
 <div class="form-group col-sm-12">
+    {!! Form::label('categorias', isset($label) ? $label : 'Generos') !!} <br>
     {!! Form::select(
         'generos[]',
         array_merge([null => ''], $generos),
