@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use Laratrust\Traits\LaratrustUserTrait;
+use App\Notifications\ResetPassword;
 
 
 /**
@@ -152,5 +153,16 @@ class Pessoa extends Authenticatable
         return $this->attributes['data_nascimento'] = $dataFormatada
             ? \Carbon\Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d')
             : $value;
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
     }
 }

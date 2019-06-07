@@ -34,7 +34,7 @@ class PessoaAPIController extends AppBaseController
     {
         $this->pessoaRepository = $pessoaRepo;
         $this->ofertaRepository = $ofertaRepo;
-    }
+    }    
 
     /**
      * Display a listing of the Pessoa.
