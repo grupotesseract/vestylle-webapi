@@ -127,7 +127,7 @@ class Pessoa extends Authenticatable
     public function listaDesejos()
     {
         return $this->belongsToMany('App\Models\Oferta', 'lista_desejos', 'pessoa_id', 'oferta_id');
-    }    
+    }
 
     /**
      * Relacionamento N x N entre Pessoas e Categorias (polimórfico)
@@ -153,4 +153,7 @@ class Pessoa extends Authenticatable
             ? \Carbon\Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d')
             : $value;
     }
+
+
+
 }

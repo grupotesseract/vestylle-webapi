@@ -60,7 +60,12 @@
         </div>
 
         <div class="col-sm-12 item-segmentacao hide">
-            <p>conteudo escondido</p>
+            {{-- Incluindo o select de categorias, Passando 'Model' se estiver editando --}}
+            @if (\Request::is('*edit*'))
+                @include('pessoas.partials.select-genero', ['Model' => $campanha])
+            @else
+                @include('pessoas.partials.select-genero')
+            @endif
         </div>
     </div>
 

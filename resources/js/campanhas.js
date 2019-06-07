@@ -3,6 +3,7 @@ const controlesCampanha = function () {
         if (this.checked) {
             $(this).parents('.container-item-segmentacao').find('.item-segmentacao').removeClass('hide')
             $('.select-categorias').select2();
+            $('.select-single').select2();
         }
 
         else {
@@ -17,4 +18,5 @@ const controlesCampanha = function () {
 
 $(function () {
     controlesCampanha();
+
 });
