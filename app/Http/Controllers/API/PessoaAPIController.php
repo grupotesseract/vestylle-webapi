@@ -14,6 +14,8 @@ use App\Http\Requests\API\CreatePessoaAPIRequest;
 use App\Http\Requests\API\UpdatePessoaAPIRequest;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+
 
 /**
  * Class PessoaController
@@ -22,6 +24,8 @@ use Illuminate\Support\Facades\Auth;
 
 class PessoaAPIController extends AppBaseController
 {
+    use SendsPasswordResetEmails;
+    
     /** @var  PessoaRepository */
     private $pessoaRepository;
     private $ofertaRepository;
