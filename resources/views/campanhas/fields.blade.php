@@ -10,6 +10,18 @@
     {!! Form::text('texto', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Oferta Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('oferta_id', 'Oferta:') !!}
+    {!! Form::select('oferta_id', $ofertas->pluck('titulo', 'id'), $campanha->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha uma Oferta']) !!}
+</div>
+
+<!-- Oferta Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('cupon_id', 'Cupom:') !!}
+    {!! Form::select('cupon_id', $cupons->pluck('titulo', 'id'), $campanha->cupon_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha um Cupom']) !!}
+</div>
+
 
 <div class="col-sm-12">
     <h3>Segmentação</h3>
@@ -22,11 +34,17 @@
             {!! Form::label('segmentar_categorias', 'Por categorias') !!}
         </div>
         <div class="col-sm-9 text-left">
-            {!! Form::checkbox('segmentar_categorias', 0, 0, ['class'=>'checkbox-segmentacao']) !!} Sim
+            {!! Form::checkbox('segmentar_categorias', 1, $campanha->temSegmentacaoCategoria ?? 1, ['class'=>'checkbox-segmentacao']) !!} Sim
         </div>
 
-        <div class="item-segmentacao hide">
-            @include('categorias.partials.select')
+        <div class="item-segmentacao @if(!$campanha->temSegmentacaoCategoria) hide @endif">
+
+                {{-- Incluindo o select de categorias, Passando 'Model' se estiver editando --}}
+                @if (\Request::is('*edit*'))
+                    @include('categorias.partials.select', ['Model' => $campanha])
+                @else
+                    @include('categorias.partials.select')
+                @endif
         </div>
     </div>
 
@@ -188,3 +206,9 @@
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
     <a href="{!! route('campanhas.index') !!}" class="btn btn-default">Cancel</a>
 </div>
+
+@section('scripts')
+
+    <script src="/js/campanhas.js"></script>
+
+@endsection

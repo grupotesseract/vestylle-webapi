@@ -1,4 +1,8 @@
 $(function () {
+    bindSelectCategorias();
+});
+
+const bindSelectCategorias = () => {
     $('.select-categorias').select2({
         createTag: function (params) {
             // Don't offset to create a tag if there is no @ symbol
@@ -13,4 +17,4 @@ $(function () {
             }
         }
     });
-});
+};

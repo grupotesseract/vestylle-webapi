@@ -79,4 +79,22 @@ class Campanha extends Model
     ];
 
 
+    /**
+     * Relacionamento N x N entre Campanha e Categorias (polimórfico)
+     *
+     * @return void
+     */
+    public function categorias()
+    {
+        return $this->morphToMany('App\Models\Categoria', 'owner', 'segmentacoes');
+    }
+
+    /**
+     * Acessor para
+     */
+     public function getTemSegmentacaoCategoriaAttribute()
+     {
+         return $this->categorias()->count() ? true : false;
+     }
+
 }

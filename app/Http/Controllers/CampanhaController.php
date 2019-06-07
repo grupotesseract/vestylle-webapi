@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\CampanhaDataTable;
+use Flash;
+use Response;
+use App\Models\Cupon;
 use App\Http\Requests;
+use App\Models\Oferta;
+use App\DataTables\CampanhaDataTable;
+use App\Repositories\CampanhaRepository;
+use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\CreateCampanhaRequest;
 use App\Http\Requests\UpdateCampanhaRequest;
-use App\Repositories\CampanhaRepository;
-use Flash;
-use App\Http\Controllers\AppBaseController;
-use Response;
 
 class CampanhaController extends AppBaseController
 {
@@ -39,7 +41,9 @@ class CampanhaController extends AppBaseController
      */
     public function create()
     {
-        return view('campanhas.create');
+        $ofertas = Oferta::get(['id', 'titulo']);
+        $cupons = Cupon::get(['id', 'titulo']);
+        return view('campanhas.create')->with(compact('ofertas', 'cupons'));
     }
 
     /**
@@ -97,8 +101,9 @@ class CampanhaController extends AppBaseController
             return redirect(route('campanhas.index'));
         }
 
-        return view('campanhas.edit')->with('campanha', $campanha);
-    }
+        $ofertas = Oferta::get(['id', 'titulo']);
+        $cupons = Cupon::get(['id', 'titulo']);
+        return view('campanhas.edit')->with(compact('campanha', 'ofertas', 'cupons'));    }
 
     /**
      * Update the specified Campanha in storage.
