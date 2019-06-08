@@ -18,8 +18,8 @@ use Eloquent as Model;
  * @property string data_ultima_compra_maior
  * @property string data_vencimento_pontos_menor
  * @property string data_vencimento_pontos_maior
- * @property integer ano_nascimento
- * @property string condicao_ano_nascimento
+ * @property integer idade
+ * @property string condicao_idade
  * @property integer mes_aniversario
  * @property string condicao_mes_aniversario
  * @property integer saldo_pontos
@@ -40,8 +40,8 @@ class Campanha extends Model
         'data_ultima_compra_maior',
         'data_vencimento_pontos_menor',
         'data_vencimento_pontos_maior',
-        'ano_nascimento',
-        'condicao_ano_nascimento',
+        'idade',
+        'condicao_idade',
         'mes_aniversario',
         'condicao_mes_aniversario',
         'saldo_pontos',
@@ -60,8 +60,8 @@ class Campanha extends Model
         'cupon_id' => 'integer',
         'oferta_id' => 'integer',
         'genero' => 'string',
-        'ano_nascimento' => 'integer',
-        'condicao_ano_nascimento' => 'string',
+        'idade' => 'integer',
+        'condicao_idade' => 'string',
         'mes_aniversario' => 'integer',
         'condicao_mes_aniversario' => 'string',
         'saldo_pontos' => 'integer',
@@ -77,6 +77,40 @@ class Campanha extends Model
         'titulo' => 'required',
         'texto' => 'required'
     ];
+
+    /**
+     * Mutator para a data_vencimento_pontos_menor
+     */
+    public function setDataVencimentoPontosMenorAttribute($value)
+    {
+        $isCarbon = is_object($value);
+
+        if ($isCarbon) {
+            return $this->attributes['data_vencimento_pontos_menor'] = $value->format('Y-m-d');
+        }
+
+        $dataFormatada = preg_match('/\//', $value);
+        return $this->attributes['data_vencimento_pontos_menor'] = $dataFormatada
+            ? \Carbon\Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d')
+            : $value;
+    }
+
+    /**
+     * Mutator para a data_vencimento_pontos_maior
+     */
+    public function setDataVencimentoPontosmaiorAttribute($value)
+    {
+        $isCarbon = is_object($value);
+
+        if ($isCarbon) {
+            return $this->attributes['data_vencimento_pontos_maior'] = $value->format('Y-m-d');
+        }
+
+        $dataFormatada = preg_match('/\//', $value);
+        return $this->attributes['data_vencimento_pontos_maior'] = $dataFormatada
+            ? \Carbon\Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d')
+            : $value;
+    }
 
 
     /**
@@ -116,7 +150,7 @@ class Campanha extends Model
      */
     public function getTemSegmentacaoIdadeAttribute()
     {
-        return $this->ano_nascimento ? true : false;
+        return $this->idade ? true : false;
     }
 
     /**
@@ -129,4 +163,25 @@ class Campanha extends Model
         return $this->mes_aniversario ? true : false;
     }
 
+    /**
+     * Acessor para determinar se essa Campanha usa segmentacao por saldo de pontos
+     *
+     * @return boolean
+     */
+    public function getTemSegmentacaoPontosAttribute()
+    {
+        return $this->saldo_pontos ? true : false;
+    }
+
+    /**
+     * Acessor para determinar se essa Campanha usa segmentacao por data de vencimento dos pontos
+     *
+     * @return boolean
+     */
+    public function getTemSegmentacaoVencimentoPontosAttribute()
+    {
+        return ($this->data_vencimento_pontos_menor && $this->data_vencimento_pontos_menor)
+            ? true
+            : false;
+    }
 }

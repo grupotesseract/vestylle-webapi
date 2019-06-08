@@ -15,8 +15,10 @@ const controlesCampanha = function () {
 
 
 
-
 $(function () {
     controlesCampanha();
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    });
 
 });

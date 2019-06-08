@@ -1,10 +1,3 @@
-@php
-
-    $anoMin = \Carbon\Carbon::now()->year - 100;
-    $anoMax = \Carbon\Carbon::now()->year;
-
-@endphp
-
 {{-- Div Segmentação por Idade --}}
 <div class="col-sm-12 container-item-segmentacao">
 
@@ -16,18 +9,18 @@
     </div>
 
     <div class="col-sm-12 item-segmentacao @if(isset($campanha) && $campanha->temSegmentacaoIdade) @else hide @endif">
-        <!-- Condicao Ano Nascimento Field -->
+        <!-- Condicao Idade Field -->
         <div class="form-group col-sm-5">
-            {!! Form::label('condicao_ano_nascimento', 'Somente pessoas com idade') !!}
+            {!! Form::label('condicao_idade', 'Somente pessoas com idade') !!}
             @include('campanhas.partials.select-condicoes', [
-                'id' => 'condicao_ano_nascimento',
-                'default' => isset($campanha) ? $campanha->condicao_ano_nascimento : null
+                'id' => 'condicao_idade',
+                'default' => isset($campanha) ? $campanha->condicao_idade : null
             ])
         </div>
-        <!-- Ano Nascimento Field -->
+        <!-- Idade Field -->
         <div class="form-group col-sm-2">
-            {!! Form::label('ano_nascimento', 'Idade (anos)') !!}
-            {!! Form::number('ano_nascimento', isset($campanha) ? $campanha->ano_nascimento : null, ['class' => 'form-control','id'=>'ano_nascimento', 'min' => $anoMin, 'max' => $anoMax, 'step' => 1])  !!}
+            {!! Form::label('idade', 'Idade (anos)') !!}
+            {!! Form::number('idade', isset($campanha) ? $campanha->idade : null, ['class' => 'form-control','id'=>'ano_nascimento', 'min' => 0, 'max' => 99, 'step' => 1])  !!}
         </div>
     </div>
 </div>

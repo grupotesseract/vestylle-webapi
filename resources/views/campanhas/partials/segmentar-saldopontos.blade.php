@@ -5,10 +5,10 @@
         {!! Form::label('segmentar_saldo_pontos', 'Por saldo_pontos') !!}
     </div>
     <div class="col-sm-9 text-left">
-        {!! Form::checkbox('segmentar_saldo_pontos', 0, 0, ['class'=>'checkbox-segmentacao']) !!} Sim
+        {!! Form::checkbox('segmentar_saldo_pontos', 1, $campanha->temSegmentacaoPontos ?? false, ['class'=>'checkbox-segmentacao']) !!} Sim
     </div>
 
-    <div class="col-sm-12 item-segmentacao hide">
+    <div class="col-sm-12 item-segmentacao @if(isset($campanha) && $campanha->temSegmentacaoPontos) @else hide @endif">
         <!-- Condicao Saldo Pontos Field -->
         <div class="form-group col-sm-5">
             {!! Form::label('condicao_saldo_pontos', 'Somente pessoas com saldo de pontos') !!}
