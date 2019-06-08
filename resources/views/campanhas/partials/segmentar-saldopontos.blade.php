@@ -9,16 +9,18 @@
     </div>
 
     <div class="col-sm-12 item-segmentacao hide">
-        <!-- Saldo Pontos Field -->
-        <div class="form-group col-sm-6">
-            {!! Form::label('saldo_pontos', 'Saldo Pontos:') !!}
-            {!! Form::date('saldo_pontos', null, ['class' => 'form-control','id'=>'saldo_pontos']) !!}
-        </div>
-
         <!-- Condicao Saldo Pontos Field -->
-        <div class="form-group col-sm-6">
-            {!! Form::label('condicao_saldo_pontos', 'Condicao Saldo Pontos:') !!}
-            {!! Form::text('condicao_saldo_pontos', null, ['class' => 'form-control']) !!}
+        <div class="form-group col-sm-5">
+            {!! Form::label('condicao_saldo_pontos', 'Somente pessoas com saldo de pontos') !!}
+            @include('campanhas.partials.select-condicoes', [
+                'id' => 'condicao_saldo_pontos',
+                'default' => isset($campanha) ? $campanha->condicao_saldo_pontos : null
+                ])
+        </div>
+        <!-- Saldo Pontos Field -->
+        <div class="form-group col-sm-2">
+            {!! Form::label('saldo_pontos', 'Saldo de pontos') !!}
+            {!! Form::number('saldo_pontos', isset($campanha) ? $campanha->saldo_pontos : null, ['class' => 'form-control', 'min' => 0, 'step' => 1])  !!}
         </div>
     </div>
 </div>

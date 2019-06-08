@@ -36,8 +36,8 @@
                 ])
         </div>
         <!-- Mes Aniversario Field -->
-        <div class="form-group col-sm-2">
-            {!! Form::label('mes_aniversario', 'Mes Aniversario:') !!}
+        <div class="form-group col-sm-3">
+            {!! Form::label('mes_aniversario', 'Mes de aniversario') !!}
             {!! Form::select('mes_aniversario', $meses, isset($campanha) ? $campanha->mes_aniversario : null, ['class' => 'form-control select-single','id'=>'mes_aniversario']) !!}
         </div>
 

@@ -28,7 +28,7 @@ class CreateCampanhasTable extends Migration
             $table->string('condicao_ano_nascimento')->nullable();
             $table->smallInteger('mes_aniversario')->nullable();
             $table->string('condicao_mes_aniversario')->nullable();
-            $table->smallInteger('saldo_pontos')->nullable();
+            $table->integer('saldo_pontos')->nullable();
             $table->string('condicao_saldo_pontos')->nullable();
 
             $table->timestamps();
