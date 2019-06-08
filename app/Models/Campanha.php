@@ -109,4 +109,24 @@ class Campanha extends Model
         return $this->genero ? true : false;
     }
 
+    /**
+     * Acessor para determinar se essa Campanha usa segmentacao por idade
+     *
+     * @return boolean
+     */
+    public function getTemSegmentacaoIdadeAttribute()
+    {
+        return $this->ano_nascimento ? true : false;
+    }
+
+    /**
+     * Acessor para determinar se essa Campanha usa segmentacao por mes de aniversario
+     *
+     * @return boolean
+     */
+    public function getTemSegmentacaoAniversarioAttribute()
+    {
+        return $this->mes_aniversario ? true : false;
+    }
+
 }

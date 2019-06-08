@@ -8,7 +8,7 @@
         'genero',
         array_merge([null => ''], $generos),
         isset($Model) ? $Model->genero : null,
-        ['class' => 'form-control select2']
+        ['class' => 'form-control select-single']
     ) !!}
 </div>
 
