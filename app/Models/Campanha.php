@@ -389,6 +389,8 @@ class Campanha extends Model
 
     /**
      * Acessor para URL final da campanha
+     *
+     * @return string - URL final da campanha
      */
      public function getUrlAttribute()
      {
@@ -401,5 +403,50 @@ class Campanha extends Model
          }
          return env('URL_FRONT');
      }
+
+    /**
+     * Acessor para
+     */
+     public function getPessoasQueryAttribute()
+     {
+         $pessoas = Pessoa::query();
+         $categorias = $this->categorias->pluck('id');
+
+         //Caso Segmentacao por categoria
+         if ($this->temSegmentacaoCategoria) {
+             $pessoas = $pessoas->whereHas('categorias', function($qCategorias) use ($categorias) {
+                 $qCategorias->whereIn("categoria_id", $categorias);
+             });
+         }
+         //Caso segmentacao por mes de aniversario
+         if ($this->temSegmentacaoAniversario) {
+             //Filtrar pessoas que tenham mês 'condicao'
+         }
+         //Caso segmentacao por idade
+         if ($this->temSegmentacaoIdade) {
+             //Filtrar pessoas que tenham idade 'condicao'
+         }
+         //Caso segmentacao por genero
+         if ($this->temSegmentacaoGenero) {
+             //Filtrar pessoas que tenham idade 'condicao'
+         }
+         //Caso segmentacao por saldo de pontos
+         if ($this->temSegmentacaoPontos) {
+             //Filtrar pessoas que tenham saldo_pontos 'condicao'
+         }
+         //Caso segmentacao por vencimento saldo de pontos
+         if ($this->temSegmentacaoVencimentoPontos) {
+             //Filtrar pessoas que tenham vencimento saldo_pontos 'condicao'
+         }
+         //Caso segmentacao por vencimento data de ultima compra
+         if ($this->temSegmentacaoUltimaCompra) {
+             //Filtrar pessoas que tenham vencimento saldo_pontos 'condicao'
+         }
+
+        return $pessoas;
+     }
+
+
+
 
 }
