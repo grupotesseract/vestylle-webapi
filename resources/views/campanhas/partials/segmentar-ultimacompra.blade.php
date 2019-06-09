@@ -5,20 +5,22 @@
         {!! Form::label('segmentar_data_ultima_compra', 'Por data_ultima_compra') !!}
     </div>
     <div class="col-sm-9 text-left">
-        {!! Form::checkbox('segmentar_data_ultima_compra', 0, 0, ['class'=>'checkbox-segmentacao']) !!} Sim
+        {!! Form::checkbox('segmentar_data_ultima_compra', 1, $campanha->temSegmentacaoUltimaCompra ?? false, ['class'=>'checkbox-segmentacao']) !!} Sim
     </div>
 
-    <div class="col-sm-12 item-segmentacao hide">
+    <div class="col-sm-12 item-segmentacao @if(isset($campanha) && $campanha->temSegmentacaoUltimaCompra) @else hide @endif">
         <!-- Data Ultima Compra Menor Field -->
         <div class="form-group col-sm-6">
-            {!! Form::label('data_ultima_compra_menor', 'Data Ultima Compra Menor:') !!}
-            {!! Form::date('data_ultima_compra_menor', null, ['class' => 'form-control','id'=>'data_ultima_compra_menor']) !!}
+            {!! Form::label('data_ultima_compra_menor', 'Somente pessoas com data da ultima compra a partir de') !!}
+            {!! Form::text('data_ultima_compra_menor', isset($campanha) ? $campanha->data_ultima_compra_menor : null
+, ['class' => 'datepicker form-control','id'=>'data_ultima_compra_menor']) !!}
         </div>
 
         <!-- Data Ultima Compra Maior Field -->
-        <div class="form-group col-sm-6">
-            {!! Form::label('data_ultima_compra_maior', 'Data Ultima Compra Maior:') !!}
-            {!! Form::date('data_ultima_compra_maior', null, ['class' => 'form-control','id'=>'data_ultima_compra_maior']) !!}
+        <div class="form-group col-sm-2">
+            {!! Form::label('data_ultima_compra_maior', 'Até') !!}
+            {!! Form::text('data_ultima_compra_maior', isset($campanha) ? $campanha->data_ultima_compra_maior : null
+, ['class' => 'datepicker form-control','id'=>'data_ultima_compra_maior']) !!}
         </div>
 
     </div>

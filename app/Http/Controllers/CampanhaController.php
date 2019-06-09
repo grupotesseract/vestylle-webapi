@@ -59,6 +59,8 @@ class CampanhaController extends AppBaseController
 
         $campanha = $this->campanhaRepository->create($input);
 
+        $this->campanhaRepository->trataRequestCampanhas($request, $campanha);
+
         Flash::success('Campanha saved successfully.');
 
         return redirect(route('campanhas.index'));
@@ -119,11 +121,13 @@ class CampanhaController extends AppBaseController
 
         if (empty($campanha)) {
             Flash::error('Campanha not found');
-
             return redirect(route('campanhas.index'));
         }
 
-        $campanha = $this->campanhaRepository->update($request->all(), $id);
+        $this->campanhaRepository->trataRequestCampanhas($request, $campanha);
+
+        $arrInfos = $request->all();
+        $campanha = $this->campanhaRepository->update($arrInfos, $id);
 
         Flash::success('Campanha updated successfully.');
 

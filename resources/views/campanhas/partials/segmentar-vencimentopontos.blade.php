@@ -17,7 +17,7 @@
         </div>
 
         <!-- Data Vencimento Pontos Maior Field -->
-        <div class="form-group col-sm-6">
+        <div class="form-group col-sm-2">
             {!! Form::label('data_vencimento_pontos_maior', 'Até') !!}
             {!! Form::text('data_vencimento_pontos_maior', isset($campanha) ? $campanha->data_vencimento_pontos_maior : null
 , ['class' => 'datepicker form-control','id'=>'data_vencimento_pontos_maior']) !!}
