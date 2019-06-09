@@ -78,6 +78,11 @@ class Campanha extends Model
         'texto' => 'required'
     ];
 
+    public $appends = [
+        'qntPessoas'
+    ];
+
+
     /**
      * undocumented function
      *
@@ -349,7 +354,9 @@ class Campanha extends Model
      */
     public function getTemSegmentacaoAniversarioAttribute()
     {
-        return $this->mes_aniversario ? true : false;
+        return ($this->condicao_mes_aniversario && $this->mes_aniversario)
+            ? true
+            : false;
     }
 
     /**
@@ -397,7 +404,6 @@ class Campanha extends Model
          if ($this->cupon) {
              return env('URL_FRONT_CUPON').$this->cupon_id;
          }
-
          if ($this->oferta) {
              return env('URL_FRONT_OFERTA').$this->oferta_id;
          }
@@ -470,8 +476,14 @@ class Campanha extends Model
      }
 
 
-
-
-
+     /**
+      * Acessor para a quantidade de pessoas que cumprem os criterios de segmentacao
+      *
+      * @return integer
+      */
+      public function getQntPessoasAttribute()
+      {
+         return $this->pessoasQuery->count();
+      }
 
 }

@@ -1,5 +1,6 @@
 
 {!! Form::select($id, [
+    null => '',
     '>' => 'Maior que',
     '>=' => 'Maior ou igual a',
     '=' => 'Igual á',

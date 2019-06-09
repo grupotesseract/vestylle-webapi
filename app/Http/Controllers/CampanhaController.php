@@ -61,7 +61,7 @@ class CampanhaController extends AppBaseController
 
         $this->campanhaRepository->trataRequestCampanhas($request, $campanha);
 
-        Flash::success('Campanha saved successfully.');
+        Flash::success('Campanha criada com sucesso.');
 
         return redirect(route('campanhas.index'));
     }
@@ -78,7 +78,7 @@ class CampanhaController extends AppBaseController
         $campanha = $this->campanhaRepository->findWithoutFail($id);
 
         if (empty($campanha)) {
-            Flash::error('Campanha not found');
+            Flash::error('Campanha não encontrada');
 
             return redirect(route('campanhas.index'));
         }
@@ -98,7 +98,7 @@ class CampanhaController extends AppBaseController
         $campanha = $this->campanhaRepository->findWithoutFail($id);
 
         if (empty($campanha)) {
-            Flash::error('Campanha not found');
+            Flash::error('Campanha não encontrada');
 
             return redirect(route('campanhas.index'));
         }
@@ -120,7 +120,7 @@ class CampanhaController extends AppBaseController
         $campanha = $this->campanhaRepository->findWithoutFail($id);
 
         if (empty($campanha)) {
-            Flash::error('Campanha not found');
+            Flash::error('Campanha não encontrada');
             return redirect(route('campanhas.index'));
         }
 
@@ -129,7 +129,7 @@ class CampanhaController extends AppBaseController
         $arrInfos = $request->all();
         $campanha = $this->campanhaRepository->update($arrInfos, $id);
 
-        Flash::success('Campanha updated successfully.');
+        Flash::success('Campanha atualizada com sucesso.');
 
         return redirect(route('campanhas.index'));
     }
@@ -146,14 +146,14 @@ class CampanhaController extends AppBaseController
         $campanha = $this->campanhaRepository->findWithoutFail($id);
 
         if (empty($campanha)) {
-            Flash::error('Campanha not found');
+            Flash::error('Campanha não encontrada');
 
             return redirect(route('campanhas.index'));
         }
 
         $this->campanhaRepository->delete($id);
 
-        Flash::success('Campanha deleted successfully.');
+        Flash::success('Campanha removida com sucesso.');
 
         return redirect(route('campanhas.index'));
     }

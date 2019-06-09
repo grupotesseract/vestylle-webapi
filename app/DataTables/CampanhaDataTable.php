@@ -71,7 +71,8 @@ class CampanhaDataTable extends DataTable
     {
         return [
             'titulo' => ['searchable' => false],
-            'texto' => ['searchable' => false]
+            'texto' => ['searchable' => false],
+            'qntPessoas' => ['data' => 'qntPessoas', 'filterable' => false, 'orderable' => false, 'searchable' => false]
         ];
     }
 

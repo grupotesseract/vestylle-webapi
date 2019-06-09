@@ -1,5 +1,6 @@
 @php
     $meses = [
+        null => '',
         '1' => 'Janeiro',
         '2' => 'Fevereiro',
         '3' => 'Março',
