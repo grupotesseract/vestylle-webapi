@@ -405,7 +405,9 @@ class Campanha extends Model
      }
 
     /**
-     * Acessor para
+     * Acessor para obter a query de pessoas que cumprem os criterios de segmentacao da campanha
+     *
+     * @return Doctrine\DBAL\Query\QueryBuilder
      */
      public function getPessoasQueryAttribute()
      {
@@ -420,31 +422,54 @@ class Campanha extends Model
          }
          //Caso segmentacao por mes de aniversario
          if ($this->temSegmentacaoAniversario) {
-             //Filtrar pessoas que tenham mês 'condicao'
+             $query = "EXTRACT(MONTH FROM data_nascimento) "
+                 . $this->condicao_mes_aniversario . " " . $this->mes_aniversario;
+
+             $pessoas = $pessoas->whereRaw($query);
          }
          //Caso segmentacao por idade
          if ($this->temSegmentacaoIdade) {
              //Filtrar pessoas que tenham idade 'condicao'
+             $pessoas = $pessoas->whereBetween('data_nascimento', [
+                 $this->attributes['data_nascimento_menor'],
+                 $this->attributes['data_nascimento_maior']
+             ]);
          }
          //Caso segmentacao por genero
          if ($this->temSegmentacaoGenero) {
-             //Filtrar pessoas que tenham idade 'condicao'
+             $pessoas = $pessoas->where(
+                 'genero',
+                 $this->genero
+             );
          }
          //Caso segmentacao por saldo de pontos
          if ($this->temSegmentacaoPontos) {
              //Filtrar pessoas que tenham saldo_pontos 'condicao'
+             $pessoas = $pessoas->where(
+                 'saldo_pontos',
+                 $this->condicao_saldo_pontos,
+                 $this->saldo_pontos
+             );
          }
-         //Caso segmentacao por vencimento saldo de pontos
+         //Caso segmentacao por data de vencimento dos pontos
          if ($this->temSegmentacaoVencimentoPontos) {
-             //Filtrar pessoas que tenham vencimento saldo_pontos 'condicao'
+             $pessoas = $pessoas->whereBetween('data_vencimento_pontos', [
+                 $this->attributes['data_vencimento_pontos_menor'],
+                 $this->attributes['data_vencimento_pontos_maior']
+             ]);
          }
          //Caso segmentacao por vencimento data de ultima compra
          if ($this->temSegmentacaoUltimaCompra) {
-             //Filtrar pessoas que tenham vencimento saldo_pontos 'condicao'
+             $pessoas = $pessoas->whereBetween('data_ultima_compra', [
+                 $this->attributes['data_ultima_compra_menor'],
+                 $this->attributes['data_ultima_compra_maior']
+             ]);
          }
 
         return $pessoas;
      }
+
+
 
 
 
