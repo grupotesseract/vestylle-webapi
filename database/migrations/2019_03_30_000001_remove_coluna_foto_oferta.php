@@ -30,7 +30,7 @@ class RemoveColunaFotoOferta extends Migration
         //Se nao tiver a coluna
         if (!Schema::hasColumn('ofertas', 'foto_oferta')) {
             Schema::table('ofertas', function(Blueprint $table) {
-                $table->string('foto_oferta');
+                $table->string('foto_oferta')->nullable();
             });
         }
     }
