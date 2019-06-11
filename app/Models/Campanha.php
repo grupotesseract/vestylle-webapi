@@ -402,10 +402,10 @@ class Campanha extends Model
      public function getUrlAttribute()
      {
          if ($this->cupon) {
-             return env('URL_FRONT_CUPON').$this->cupon_id;
+             return env('URL_FRONT_CUPON_PUSH').$this->cupon_id;
          }
          if ($this->oferta) {
-             return env('URL_FRONT_OFERTA').$this->oferta_id;
+             return env('URL_FRONT_OFERTA_PUSH').$this->oferta_id;
          }
          return env('URL_FRONT');
      }
