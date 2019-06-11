@@ -14,5 +14,6 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/categorias.js', 'public/js')
     .js('resources/js/campanhas.js', 'public/js')
+    .js('resources/js/enable-push.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css')
    .sass('resources/sass/admin-custom.scss', 'public/css');
