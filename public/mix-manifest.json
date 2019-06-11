@@ -3,5 +3,6 @@
     "/css/app.css": "/css/app.css",
     "/css/admin-custom.css": "/css/admin-custom.css",
     "/js/enable-push.js": "/js/enable-push.js",
-    "/js/categorias.js": "/js/categorias.js"
+    "/js/categorias.js": "/js/categorias.js",
+    "/js/campanhas.js": "/js/campanhas.js"
 }
