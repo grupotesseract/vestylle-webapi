@@ -22,5 +22,5 @@
 <li class="{{ Request::is('campanhas*') ? 'active' : '' }}">
     <a href="{!! route('campanhas.index') !!}"><i class="fa fa-mail-forward"></i><span>Campanhas</span></a>
 <li class="{{ Request::is('tipoInformacaos*') ? 'active' : '' }}">
-    <a href="{{route('push')}}"><i class="fa fa-asterisk"></i><span>Enviar Notificação</span></a>
+    <a href="{{route('push', ['idCampanha' => 1])}}"><i class="fa fa-asterisk"></i><span>Enviar Notificação</span></a>
 </li>

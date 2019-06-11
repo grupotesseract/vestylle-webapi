@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/push', 'API\SubscriptionAPIController@push')->name('push');
+Route::get('/push/{idCampanha}', 'API\SubscriptionAPIController@push')->name('push');
 
 
 

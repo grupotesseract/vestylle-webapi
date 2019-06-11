@@ -14,6 +14,7 @@ class PessoaPush extends Model
 
     protected $fillable = [
         'endpoint',
+        'pessoa_id'
     ];
 
     protected $table = 'pessoas_push';
