@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/push', 'API\SubscriptionAPIController@push')->name('push');
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -58,3 +63,10 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 
 Route::resource('tipoInformacaos', 'TipoInformacaoController');
+
+
+Route::resource('campanhas', 'CampanhaController');
+
+Route::resource('campanhas', 'CampanhaController');
+
+Route::resource('campanhas', 'CampanhaController');

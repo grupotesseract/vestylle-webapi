@@ -24,5 +24,6 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('categorias.partials.select', '\App\ViewComposers\CategoriaComposer');
+        View::composer('pessoas.partials.select-genero', '\App\ViewComposers\PessoaGeneroComposer');
     }
 }

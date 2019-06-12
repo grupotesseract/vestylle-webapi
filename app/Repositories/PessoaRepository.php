@@ -62,7 +62,7 @@ class PessoaRepository extends BaseRepository
      */
     public function trataInformacoesSocial($usuarioSocial)
     {
-        if (!is_null($usuarioSocial->email)) {                    
+        if (!is_null($usuarioSocial->email)) {
             $pessoa = $this->firstOrNew(['email' => $usuarioSocial->email]);
             $pessoa->nome = $usuarioSocial->nome;
             $pessoa->social_token = $usuarioSocial->social_token;
@@ -117,7 +117,7 @@ class PessoaRepository extends BaseRepository
 
         $Cidade = Cidade::where('nome_sanitized', $this->sanitizeString($pessoa->cidade))->first();
         $cidadeId = $Cidade ? $Cidade->id : null;
-        
+
         $result = Pessoa::create([
             'id_vestylle'  => $pessoa->idpessoa,
             "celular" => $pessoa->celular,
@@ -338,17 +338,17 @@ class PessoaRepository extends BaseRepository
         $this->startConnectorVestylle();
 
         //Pega todas as pessoas alteradas lá no periodo especificado
-        $retornoVestylle = $this->vestylleDB->getCategorias();                
+        $retornoVestylle = $this->vestylleDB->getCategorias();
         foreach ($retornoVestylle as $categoria) {
             $categoria->conteudo = strtoupper($categoria->conteudo);
             Categoria::updateOrCreate((array) $categoria);
-        }     
-        
+        }
+
         $pessoas = Pessoa::whereNotNull('id_vestylle')->get();
 
         foreach ($pessoas as $Pessoa) {
             $this->updateSegmentos($Pessoa);
-        }        
+        }
     }
 
     /**
@@ -361,15 +361,15 @@ class PessoaRepository extends BaseRepository
     {
         $this->startConnectorVestylle();
         $retornoVestylle = $this->vestylleDB->getSegmentosPessoa($pessoa);
-        
-        if ($retornoVestylle->count() > 0) {                              
-            foreach ($retornoVestylle as $categoria) {            
+
+        if ($retornoVestylle->count() > 0) {
+            foreach ($retornoVestylle as $categoria) {
                 $categoria->conteudo = strtoupper($categoria->conteudo);
-                $categoria = Categoria::where((array) $categoria)->get()->first();                
+                $categoria = Categoria::where((array) $categoria)->get()->first();
                 $categoriasIds[] = $categoria->id;
-            }            
-            $pessoa->categorias()->sync($categoriasIds);                
-        }        
+            }
+            $pessoa->categorias()->sync($categoriasIds);
+        }
     }
 
     /**
@@ -389,7 +389,7 @@ class PessoaRepository extends BaseRepository
         \Log::info(json_encode($retornoVestylleSaldos));
         $retornoVestylle = array_unique(array_merge($retornoVestylleCompras, $retornoVestylleSaldos));
         \Log::info('Retorno Vestylle :'.json_encode(array_values($retornoVestylle)));
-        
+
         if (count($retornoVestylle) > 0) {
             $numPessoasAtualizadas = 0;
 
@@ -397,12 +397,12 @@ class PessoaRepository extends BaseRepository
             $pessoasParaAtualizar = Pessoa::whereIn('id_vestylle', array_values($retornoVestylle))->get();
 
             //Para cada uma dessas atualizar, pontos, vencimento e ultima compra
-            foreach ($pessoasParaAtualizar as $Pessoa) {                
+            foreach ($pessoasParaAtualizar as $Pessoa) {
                 $this->updatePontosPessoa($Pessoa);
                 $this->updateVencimentoPontosPessoa($Pessoa);
                 $this->updateDataUltimaCompraPessoa($Pessoa);
                 $this->updateNascimentoPessoa($Pessoa);
-                $this->updateDataUltimaCompraPessoa($Pessoa);                
+                $this->updateDataUltimaCompraPessoa($Pessoa);
                 $numPessoasAtualizadas++;
             }
         }
@@ -427,6 +427,21 @@ class PessoaRepository extends BaseRepository
             return true;
         }
         return null;
+    }
+
+    /**
+     * Metodo para obter um array dos valores de genero.
+     *
+     * @return array
+     */
+    public function getPessoaGenerosSelect()
+    {
+
+        $generos = $this->model()::whereNotNull('genero')
+            ->pluck('genero', 'genero')
+            ->unique()->all();
+
+        return $generos;
     }
 
 

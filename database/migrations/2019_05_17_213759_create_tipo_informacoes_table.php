@@ -28,6 +28,6 @@ class CreateTipoInformacoesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('tipo_informacaos');
+        Schema::drop('tipo_informacoes');
     }
 }
