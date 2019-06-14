@@ -16,21 +16,21 @@
     ];
 @endphp
 
-{{-- Div Segmentação por mes de aniversario --}}
+{{-- Div Segmentação por mes de aniversário --}}
 <div class="col-sm-12 container-item-segmentacao">
 
     <div class="col-sm-3">
-        {!! Form::label('segmentar_mes_aniversario', 'Por mes_aniversario') !!}
+        {!! Form::label('segmentar_mes_aniversario', 'Por mês de aniversário') !!}
     </div>
     <div class="col-sm-9 text-left">
-        {!! Form::checkbox('segmentar_mes_aniversario', 1, $campanha->temSegmentacaoAniversario ?? false, ['class'=>'checkbox-segmentacao']) !!} Sim
+        {!! Form::checkbox('segmentar_mes_aniversario', 1, $campanha->temSegmentacaoMesAniversario ?? false, ['class'=>'checkbox-segmentacao']) !!} Sim
     </div>
 
-    <div class="col-sm-12 item-segmentacao @if(isset($campanha) && $campanha->temSegmentacaoAniversario) @else hide @endif">
+    <div class="col-sm-12 item-segmentacao @if(isset($campanha) && $campanha->temSegmentacaoMesAniversario) @else hide @endif">
 
         <!-- Condicao Mes Aniversario Field -->
         <div class="form-group col-sm-5">
-            {!! Form::label('condicao_mes_aniversario', 'Somente pessoas com mês de aniversario') !!}
+            {!! Form::label('condicao_mes_aniversario', 'Somente pessoas com mês de aniversário') !!}
             @include('campanhas.partials.select-condicoes', [
                 'id' => 'condicao_mes_aniversario',
                 'default' => isset($campanha) ? $campanha->condicao_mes_aniversario : null
@@ -38,7 +38,7 @@
         </div>
         <!-- Mes Aniversario Field -->
         <div class="form-group col-sm-3">
-            {!! Form::label('mes_aniversario', 'Mes de aniversario') !!}
+            {!! Form::label('mes_aniversario', 'Mes de aniversário') !!}
             {!! Form::select('mes_aniversario', $meses, isset($campanha) ? $campanha->mes_aniversario : null, ['class' => 'form-control select-single','id'=>'mes_aniversario']) !!}
         </div>
 

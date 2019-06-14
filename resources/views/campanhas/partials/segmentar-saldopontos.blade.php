@@ -2,7 +2,7 @@
 <div class="col-sm-12 container-item-segmentacao">
 
     <div class="col-sm-3">
-        {!! Form::label('segmentar_saldo_pontos', 'Por saldo_pontos') !!}
+        {!! Form::label('segmentar_saldo_pontos', 'Por saldo de pontos') !!}
     </div>
     <div class="col-sm-9 text-left">
         {!! Form::checkbox('segmentar_saldo_pontos', 1, $campanha->temSegmentacaoPontos ?? false, ['class'=>'checkbox-segmentacao']) !!} Sim
