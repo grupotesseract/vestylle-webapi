@@ -58,15 +58,9 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::get('categorias/{id}/ofertas', 'CategoriaController@showofertas')->name('categorias.ofertas');
     Route::get('categorias/{id}/cupons', 'CategoriaController@showcupons')->name('categorias.cupons');
 
+    Route::resource('tipoInformacaos', 'TipoInformacaoController');
+    Route::resource('campanhas', 'CampanhaController');
 });
 
 
 
-Route::resource('tipoInformacaos', 'TipoInformacaoController');
-
-
-Route::resource('campanhas', 'CampanhaController');
-
-Route::resource('campanhas', 'CampanhaController');
-
-Route::resource('campanhas', 'CampanhaController');

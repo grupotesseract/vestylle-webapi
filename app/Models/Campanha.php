@@ -18,10 +18,12 @@ use Eloquent as Model;
  * @property string data_ultima_compra_maior
  * @property string data_vencimento_pontos_menor
  * @property string data_vencimento_pontos_maior
- * @property integer idade
- * @property string condicao_idade
+ * @property string data_nascimento_pontos_menor
+ * @property string data_nascimento_pontos_maior
  * @property integer mes_aniversario
  * @property string condicao_mes_aniversario
+ * @property integer dia_aniversario
+ * @property string condicao_dia_aniversario
  * @property integer saldo_pontos
  * @property string condicao_saldo_pontos
  */
@@ -45,6 +47,8 @@ class Campanha extends Model
         'condicao_idade',
         'mes_aniversario',
         'condicao_mes_aniversario',
+        'dia_aniversario',
+        'condicao_dia_aniversario',
         'saldo_pontos',
         'condicao_saldo_pontos'
     ];
@@ -64,6 +68,8 @@ class Campanha extends Model
         'condicao_idade' => 'string',
         'mes_aniversario' => 'integer',
         'condicao_mes_aniversario' => 'string',
+        'dia_aniversario' => 'integer',
+        'condicao_dia_aniversario' => 'string',
         'saldo_pontos' => 'integer',
         'condicao_saldo_pontos' => 'string'
     ];
@@ -352,9 +358,21 @@ class Campanha extends Model
      *
      * @return boolean
      */
-    public function getTemSegmentacaoAniversarioAttribute()
+    public function getTemSegmentacaoMesAniversarioAttribute()
     {
         return ($this->condicao_mes_aniversario && $this->mes_aniversario)
+            ? true
+            : false;
+    }
+
+    /**
+     * Acessor para determinar se essa Campanha usa segmentacao por dia de aniversario
+     *
+     * @return boolean
+     */
+    public function getTemSegmentacaoDiaAniversarioAttribute()
+    {
+        return ($this->condicao_dia_aniversario && $this->dia_aniversario)
             ? true
             : false;
     }
@@ -427,9 +445,16 @@ class Campanha extends Model
              });
          }
          //Caso segmentacao por mes de aniversario
-         if ($this->temSegmentacaoAniversario) {
+         if ($this->temSegmentacaoMesAniversario) {
              $query = "EXTRACT(MONTH FROM data_nascimento) "
                  . $this->condicao_mes_aniversario . " " . $this->mes_aniversario;
+
+             $pessoas = $pessoas->whereRaw($query);
+         }
+         //Caso segmentacao por dia de aniversario
+         if ($this->temSegmentacaodiaAniversario) {
+             $query = "EXTRACT(DAY FROM data_nascimento) "
+                 . $this->condicao_dia_aniversario . " " . $this->dia_aniversario;
 
              $pessoas = $pessoas->whereRaw($query);
          }
