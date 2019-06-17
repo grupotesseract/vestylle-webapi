@@ -32,3 +32,18 @@
         font-size:1.7rem;
     }
 }
+
+.container-item-segmentacao {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    margin: 4px;
+
+    div {
+        margin-top:5px;
+    }
+
+    label   {
+        margin: 0;
+    }
+}

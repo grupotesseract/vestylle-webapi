@@ -5,7 +5,7 @@
     <title>Vestylle Web API</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/tesseract/image/upload/v1553217519/vestylle-webapi/favicon-16x16.png">
 
     <!-- Bootstrap 3.3.7 -->
@@ -85,7 +85,7 @@
     <script src="{{ asset('js/campanhas.js') }}" ></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="{{ asset('js/categorias.js') }}" ></script>    
+    <script src="{{ asset('js/categorias.js') }}" ></script>
     <script src="{{ asset('js/enable-push.js') }}" defer></script>
 
     @yield('scripts')
