@@ -59,6 +59,11 @@ class CampanhaRepository extends BaseRepository
             $request->request->add(['condicao_mes_aniversario' => null]);
         }
 
+        if (!$request->segmentar_dia_aniversario) {
+            $request->request->add(['dia_aniversario' => null]);
+            $request->request->add(['condicao_dia_aniversario' => null]);
+        }
+
         if (!$request->segmentar_saldo_pontos) {
             $request->request->add(['saldo_pontos' => null]);
             $request->request->add(['condicao_saldo_pontos' => null]);

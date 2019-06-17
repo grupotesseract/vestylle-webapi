@@ -2,7 +2,7 @@
 <div class="col-sm-12 container-item-segmentacao">
 
     <div class="col-sm-3">
-        {!! Form::label('segmentar_data_vencimento_pontos', 'Por data_vencimento_pontos') !!}
+        {!! Form::label('segmentar_data_vencimento_pontos', 'Por vencimento pontos') !!}
     </div>
     <div class="col-sm-9 text-left">
         {!! Form::checkbox('segmentar_data_vencimento_pontos', 1, $campanha->temSegmentacaoVencimentoPontos ?? false, ['class'=>'checkbox-segmentacao']) !!} Sim
