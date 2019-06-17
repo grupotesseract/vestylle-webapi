@@ -49,13 +49,13 @@
 <!-- Aparece na listagem Field -->
 <div class="form-group col-sm-12">
 
-    <div class="col-sm-5">
+    <div class="col-sm-6">
         <h4>Cupom disponivel em 'Meus Cupons'? <br>
             <span class="small">(se não, o cupom só podera ser ativado via código ou QRCode)</span>
         </h4>
     </div>
 
-    <div class="col-sm-7 text-left">
+    <div class="col-sm-6 text-left">
         <h4> {!! Form::checkbox('aparece_listagem', 1, isset($cupon) ? $cupon->aparece_listagem : true, ['class' => 'checkbox_aparece_listagem']) !!} Sim </h4>
     </div>
 </div>
@@ -66,17 +66,18 @@
         <hr>
     </div>
 
-    <div class="col-sm-5">
+    <div class="col-sm-6">
         <h4>Cupom em destaque? <br>
             <span class="small">(aparece na página inicial)</span>
         </h4>
     </div>
 
-    <div class="col-sm-7 text-left">
-        <h4> {!! Form::checkbox('em_destaque', 1, null ['chekbox_em_destaque']) !!} Sim </h4>
+    <div class="col-sm-6 text-left">
+        <h4> {!! Form::checkbox('em_destaque', 1, false, ['class' => 'checkbox_em_destaque']) !!} Sim </h4>
     </div>
 
-    <div class="conteudo-destaque hide col-sm-12">
+    <div class="container-foto-destaque hide col-sm-12">
+        <br>
 
         @include('fotos.aviso_upload', [
             'titulo' => 'Atenção!',
@@ -84,9 +85,15 @@
         ])
 
         <!-- Foto da Home Field -->
-        <div class="form-group col-sm-12">
-            {!! Form::label('foto_homepage', 'Selecione uma foto para o cupom na página inicial:') !!} <br>
-            {!! Form::file('foto_homepage' ) !!}
+        <div class="form-group col-sm-12 text-center">
+
+            {!! Form::label('foto_homepage', 'Foto atual') !!} <br>
+            <img src="{{ $cupon->urlFotoDestaque ?? 'http://via.placeholder.com/300x300.jpeg'}}" alt="">
+            <br>
+            <br>
+            {!! Form::label('foto_homepage', 'Selecione para trocar') !!}
+            <br>
+            {!! Form::file('foto_homepage', ['class' => 'btn btn-default mx-auto'] ) !!}
         </div>
 
 
