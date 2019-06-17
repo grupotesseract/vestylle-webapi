@@ -1,0 +1,285 @@
+<?php
+
+namespace App\Models;
+
+use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+/**
+ * Class Cupon
+ * @package App\Models
+ * @version March 17, 2019, 9:59 pm UTC
+ *
+ * @property \App\Models\Oferta oferta
+ * @property date data_validade
+ * @property string texto_cupom
+ * @property integer oferta_id
+ */
+class Cupon extends Model
+{
+    use SoftDeletes;
+
+    public $table = 'cupons';
+
+
+    protected $dates = ['deleted_at'];
+
+
+    public $fillable = [
+        'data_validade',
+        'texto_cupom',
+        'oferta_id',
+        'foto_caminho',
+        'titulo',
+        'subtitulo',
+        'aparece_listagem',
+        'porcentagem_off',
+        'qrcode'
+    ];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'data_validade' => 'date',
+        'texto_cupom' => 'string',
+        'oferta_id' => 'integer',
+        'foto_caminho' => 'string',
+        'titulo' => 'string',
+        'subtitulo' => 'string',
+        'aparece_listagem' => 'boolean'
+    ];
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'data_validade' => 'required',
+        'texto_cupom' => 'required',
+        'titulo' => 'required | max: 150',
+        'subtitulo' => 'required | max: 150',
+    ];
+
+    /**
+     * Método para dar override em eventos como a deleção do cupom
+     * sem ter que replicar a lógica pela API quando esses eventos acontecerem
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($cupon) {
+            $cupon->deletarFotosRelacionadas();
+            $cupon->deletarRelacaoComPessoas();
+        });
+    }
+
+    /**
+     * Remove fotos do cupom do banco
+     *
+     * @return void
+     */
+    public function deletarFotosRelacionadas()
+    {
+        if ($this->fotos) {
+            $this->fotos()->delete();
+        }
+    }
+
+    /**
+     * Remove registros de cupons_pessoas apontando pro cupom
+     *
+     * @return void
+     */
+    public function deletarRelacaoComPessoas()
+    {
+        if ($this->pessoas) {
+            \DB::statement("DELETE FROM cupons_pessoas WHERE cupom_id = $this->id");
+        }
+    }
+
+
+    /**
+     * Scope para aplicar na query filtrando pelos cupons que estao com 'aparece_listagem' true
+     * Os cupons aparecem na listagem ou não (comuns || fisicos/promocionais)
+     */
+    public function scopeApareceListagem($query)
+    {
+        return $query->where('aparece_listagem', true);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function oferta()
+    {
+        return $this->belongsTo(\App\Models\Oferta::class, 'oferta_id', 'id');
+    }
+
+    /**
+     * Relacionamento N x N entre cupons e pessoas
+     *
+     * @return relationship
+     */
+    public function pessoas()
+    {
+        return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')->withPivot('cupom_utilizado_venda','codigo_unico');;
+    }
+
+    /**
+     * Relação polimórfica 1 x N com fotos
+     *
+     * @return void
+     */
+    public function fotos()
+    {
+        return $this->morphMany(\App\Models\Foto::class, 'owner');
+    }
+
+    /**
+     * Relacionamento N x N entre Cupons e Categorias (polimórfico)
+     *
+     * @return void
+     */
+    public function categorias()
+    {
+        return $this->morphToMany('App\Models\Categoria', 'owner', 'segmentacoes');
+    }
+
+    /**
+     * Acessor que traz a a primeira foto do cupon, caso nao exista nenhuma
+     * trazer da oferta, caso eles estejam relacionados
+     *
+     * @return void
+     */
+    public function getFotoCaminhoAttribute()
+    {
+        if ($this->fotos()->count()) {
+            return $this->fotos()->first()->urlCloudinary;
+        }
+
+        if ($this->oferta) {
+            return $this->oferta->foto_oferta;
+        }
+    }
+
+    /**
+     * Alimenta a relação com a pessoa e com o código único gerado
+     * na rota de ativação
+     *
+     * @return void
+     */
+    public function ativar($pessoa_id, $codigo_unico)
+    {
+        \App\Models\CuponPessoa::create([
+            'cupom_id' => $this->id,
+            'pessoa_id' => $pessoa_id,
+            'codigo_unico' => $codigo_unico,
+        ]);
+    }
+
+    /**
+     * Gera um código para inserção na coluna codigo_unico
+     * da tabela pivô cupons_pessoas
+     *
+     * @param $id_vestylle_pessoa Id da pessoa no sistema da vestylle
+     *
+     * @return string
+     */
+    public function gerarCodigoUnico($id_vestylle_pessoa)
+    {
+        $codigo = "#" . $id_vestylle_pessoa . '-' . $this->id;
+
+        return $codigo;
+    }
+
+    /**
+     * Metodo para dar find a partir do idEncryptado
+     *
+     * @see App\Repositories\CuponRepository - findEncryptadoWithoutFail
+     * @param mixed $idEncryptado
+     *
+     * @return void
+     */
+    public static function findEncryptado($idEncryptado, $pessoa_id = null)
+    {
+        $cupon = self::with(
+            [
+                'pessoas' => function ($query) use ($pessoa_id) { 
+                    $query->where('pessoa_id', $pessoa_id);
+                }
+            ]
+        )->where('qrcode', $idEncryptado)->get()->first();
+        
+        return $cupon;
+    }
+
+    /**
+     * Scope pra trazer listagem segmentada com base nas categorias da pessoa
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSegmentadosPorUsuario($query, $pessoa)
+    {
+        $categoriasPessoa = $pessoa->categorias->pluck('id')->toArray();
+
+        return $query->whereHas(
+            'categorias', function ($query) use ($categoriasPessoa) {
+                $query->whereIn('categoria_id', $categoriasPessoa);
+            }
+        );
+    }
+
+    /**
+     * Scope pra trazer listagem sem segmentação
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNaoSegmentados($query)
+    {
+        return $query->doesntHave('categorias');
+    }
+
+    /**
+     * Scope para filtrar cupons com data de vencimento expirada
+     */
+     public function scopeVencidos($query)
+     {
+         $now = \Carbon\Carbon::now();
+
+        return $query->where('data_validade', '<', $now);
+     }
+
+     /**
+     * Scope para aplicar na query filtrando por cupons que foram utilizados pela $pessoa
+     */
+    public function scopeUtilizadoVenda($query, $pessoa)
+    {
+        $pessoaId = $pessoa->id;
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('cupom_utilizado_venda', true);
+        });
+    }
+
+    /**
+     * Scope para aplicar na query filtrando por cupons que não foram utilizados pela $pessoa
+     */
+    public function scopeNaoUtilizadoVenda($query, $pessoa)
+    {
+        $pessoaId = $pessoa->id;
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('cupom_utilizado_venda', false);
+        });
+    }
+
+}

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+read -r OLDREV NEWREV REFNAME
+[[ $NEWREV =~ "0{40}" ]] && exit
+
+BRANCH=$(git rev-parse --symbolic --abbrev-ref "$REFNAME")
+PROJECT_PATH="/var/www/html/vestylle-webapi"
+BARE_REPOSITORY="${PROJECT_PATH}/vestylle-webapi.git"
+
+if [ ! -d "$PROJECT_PATH/$BRANCH" ]; then
+  git clone $BARE_REPOSITORY -b "$BRANCH" "$PROJECT_PATH/$BRANCH"
+  cd "$PROJECT_PATH/$BRANCH" || exit
+else
+  cd "$PROJECT_PATH/$BRANCH" || exit
+  unset GIT_DIR
+  git checkout -f "$BRANCH"
+  git pull origin "$BRANCH"
+fi
+
+export NVM_DIR=$HOME/.nvm
+export NODE_VERSION=8.12.0
+
+. $HOME/.nvm/nvm.sh
+nvm install $NODE_VERSION
+nvm use $NODE_VERSION
+npm i -g yarn
+yarn
+yarn prod
+
+composer install
+
+if [[ ${BRANCH} == 'develop' ]]; then
+  php artisan migrate:fresh --seed
+  php artisan passport:client --personal
+else
+  php artisan migrate --force
+fi
