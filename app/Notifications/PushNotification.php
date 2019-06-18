@@ -43,7 +43,7 @@ class PushNotification extends Notification
     {
         return (new WebPushMessage)
             ->title($this->campanha->titulo)
-            ->icon('/favicon.png')
+            ->icon('/furacao.png')
             ->body($this->campanha->texto)
             ->action('Acessar', $this->campanha->url);
     }
