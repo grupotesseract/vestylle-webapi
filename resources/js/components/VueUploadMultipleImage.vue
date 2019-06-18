@@ -116,7 +116,7 @@
         cursor: pointer;
     }
     .filezone {
-        margin: 5em auto;
+        margin: 1em auto;
         outline: 2px dashed grey;
         outline-offset: -10px;
         background: #ccc;

@@ -22,6 +22,12 @@
             <p>{!! $cupon->aparece_listagem ? 'Sim' : 'Não' !!}</p>
         </div>
 
+        <!-- Aparece na homepage Field -->
+        <div class="form-group">
+            {!! Form::label('id', 'Cupom em destaque:') !!}
+            <p>{!! $cupon->emDestaque ? 'Sim' : 'Não' !!}</p>
+        </div>
+
         <!-- Data Validade Field -->
         <div class="form-group">
             {!! Form::label('data_validade', 'Data de Validade:') !!}
@@ -70,9 +76,18 @@
         @endif
     </div>
     <div class="col-md-8">
-        @if ($cupon->fotos)
+
+        @if ($cupon->fotoDestaque)
             <div class="form-group">
-                <image-slider :images="{{ $cupon->fotos }}"></image-slider>
+                {!! Form::label('foto_destaque', 'Foto de destaque') !!} <br>
+                <img src="{{$cupon->urlFotoDestaque}}" alt="" width=300>
+            </div>
+        @endif
+
+        @if ($cupon->fotosListagem)
+            <div class="form-group">
+                {!! Form::label('fotos', 'Fotos da listagem e pagina interna') !!} <br>
+                <image-slider :images="{{ $cupon->fotosListagem }}"></image-slider>
             </div>
         @endif
 
