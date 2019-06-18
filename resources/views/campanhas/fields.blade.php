@@ -35,6 +35,8 @@
 
     @include('campanhas.partials.segmentar-mesaniversario')
 
+    @include('campanhas.partials.segmentar-diaaniversario')
+
     @include('campanhas.partials.segmentar-saldopontos')
 
     @include('campanhas.partials.segmentar-vencimentopontos')

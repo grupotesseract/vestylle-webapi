@@ -36,6 +36,8 @@
                 this.getImagePreviews();
             },
             handleFiles() {
+                this.files = [];
+
                 let uploadedFiles = this.$refs.files.files;
 
                 if (uploadedFiles.length > 10 || this.files.length == 10) {

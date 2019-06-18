@@ -33,9 +33,22 @@
     }
 }
 
-
 .mx-auto {
     margin-right:auto;
     margin-left:auto;
 }
 
+.container-item-segmentacao {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+    margin: 4px;
+
+    div {
+        margin-top:5px;
+    }
+
+    label   {
+        margin: 0;
+    }
+}

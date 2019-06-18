@@ -87,10 +87,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="{{ asset('js/categorias.js') }}" ></script>
 
-    {{--
-    <script src="{{ asset('js/enable-push.js') }}" defer></script>
-    --}}
-
     @yield('scripts')
 </body>
 @endif
