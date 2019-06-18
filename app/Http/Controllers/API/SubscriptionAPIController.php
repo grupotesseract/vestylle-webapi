@@ -47,11 +47,13 @@ class SubscriptionAPIController extends AppBaseController
         $endpoint = $request->endpoint;
         $token = $request->keys['auth'];
         $key = $request->keys['p256dh'];
+
+        $usuarioPush = Auth('api')->user();
         
         $user = PessoaPush::firstOrCreate(
             [
             'endpoint' => $endpoint,
-            'pessoa_id' => Auth::id()
+            'pessoa_id' => $usuarioPush->id
             ]
         );
 
