@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Foto;
 use InfyOm\Generator\Common\BaseRepository;
+use GuzzleHttp\Psr7\UploadedFile;
 
 /**
  * Class FotoRepository
@@ -38,63 +39,40 @@ class FotoRepository extends BaseRepository
      */
     public function uploadAndCreate($request)
     {
-        $files = $request->allFiles()['files'];
-        $request = is_array($request) ? $request : $request->all();
+        if (strpos(get_class($request), 'UploadedFile')) {
+            $files = [];
+            array_push($files, $request);
+        }
+        else {
+            $files = $request->allFiles()['files'];
+        }
 
         foreach ($files as $file) {
-            //Quando a imagem é croppada, ele envia o blob da imagem oque nao conta como object
-            if ($file && ! is_object($file)) {
-                $filename = microtime();
-                $image = \Image::make($file);
-                //Criando path inicial para direcionar o arquivo
-                $destinationPath = storage_path().'/images/';
-                //Pega o formato da imagem
-                $extension = 'jpeg';
-                $upload_success = $image->save($destinationPath.$filename.'.'.$extension);
-                //Se o upload da foto ocorreu com sucesso
-                if ($upload_success) {
+            //Criando path inicial para direcionar o arquivo
+            $destinationPath = storage_path().'/images/';
+            //Pega o formato da imagem
+            $extension = $file->getClientOriginalExtension();
 
-                    //adicionando as informações da foto na request
-                    $file->image_name = $filename;
-                    $file->image_path = $destinationPath;
-                    $file->image_extension = $extension;
+            //usando o intervention para criar a imagem
+            $filename = microtime();
+            $image = \Image::make($file->getRealPath());
+            $upload_success = $image->save($destinationPath.$filename.'.'.$extension);
 
-                    //Criando e persistindo no BD uma nova foto já associada ao user
-                    $novasFotos[] = $this->model->create((array) $file);
-                    // Se nao tiver funcionado, retornar false no success para o js se manisfestar
-                } else {
-                    return [
-                        'success' => false,
-                    ];
-                }
+            //Se o upload da foto ocorreu com sucesso
+            if ($upload_success) {
+
+                //adicionando as informações da foto na request
+                $file->image_name = $filename;
+                $file->image_path = $destinationPath;
+                $file->image_extension = $extension;
+
+                //Criando e persistindo no BD uma nova foto já associada ao user
+                $novasFotos[] = $this->model->create((array) $file);
+                // Se nao tiver funcionado, retornar false no success para o js se manisfestar
             } else {
-
-                //Criando path inicial para direcionar o arquivo
-                $destinationPath = storage_path().'/images/';
-                //Pega o formato da imagem
-                $extension = $file->getClientOriginalExtension();
-
-                //usando o intervention para criar a imagem
-                $filename = microtime();
-                $image = \Image::make($file->getRealPath());
-                $upload_success = $image->save($destinationPath.$filename.'.'.$extension);
-
-                //Se o upload da foto ocorreu com sucesso
-                if ($upload_success) {
-
-                    //adicionando as informações da foto na request
-                    $file->image_name = $filename;
-                    $file->image_path = $destinationPath;
-                    $file->image_extension = $extension;
-
-                    //Criando e persistindo no BD uma nova foto já associada ao user
-                    $novasFotos[] = $this->model->create((array) $file);
-                    // Se nao tiver funcionado, retornar false no success para o js se manisfestar
-                } else {
-                    return [
-                        'success' => false,
-                    ];
-                }
+                return [
+                    'success' => false,
+                ];
             }
         }
 

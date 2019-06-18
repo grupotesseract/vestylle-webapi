@@ -17,11 +17,14 @@ use Eloquent as Model;
  */
 class Foto extends Model
 {
+    const TIPO_DESTAQUE_CUPOM = 1;
+
     public $table = 'fotos';
 
     public $fillable = [
         'cloudinary_id',
         'image_name',
+        'tipo',
         'image_path',
         'image_extension',
         'owner_id',
