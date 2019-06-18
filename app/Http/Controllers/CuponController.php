@@ -69,7 +69,6 @@ class CuponController extends AppBaseController
         $validated = $request->validate(Cupon::$rules);
         $cupon = $this->cuponRepository->create($input);
         $fotos = $request->allFiles()['files'] ?? false;
-        $fotoDestaque = $request->allFiles()['foto_homepage'] ?? false;
         $hasFotos = !empty($fotos);
 
         if ($hasFotos) {
@@ -82,15 +81,23 @@ class CuponController extends AppBaseController
             }
         }
 
+        if ($request->em_destaque) {
+            $fotoDestaque = $request->allFiles()['foto_homepage'] ?? false;
+            if (!empty($fotoDestaque)) {
+                $cupon->fotoDestaque()->delete();
+                $objFotoDestaque = $this->fotoRepository->uploadAndCreate($fotoDestaque);
+                $objFotoDestaque = array_pop($objFotoDestaque);
+                $objFotoDestaque->update(['tipo' => \App\Models\Foto::TIPO_DESTAQUE_CUPOM]);
+                $cupon->fotos()->save($objFotoDestaque);
+                $this->dispatch(new SincronizarComCloudinary($objFotoDestaque));
+            }
+        }
 
-        //Se vier fotoDestaque
-        if (!empty($fotoDestaque)) {
-            $cupon->fotoDestaque()->delete();
-            $objFotoDestaque = $this->fotoRepository->uploadAndCreate($fotoDestaque);
-            $objFotoDestaque = array_pop($objFotoDestaque);
-            $objFotoDestaque->update(['tipo' => \App\Models\Foto::TIPO_DESTAQUE_CUPOM]);
-            $cupon->fotos()->save($objFotoDestaque);
-            $this->dispatch(new SincronizarComCloudinary($objFotoDestaque));
+        //Se nao vier foto em destaque entao remover caso tenha foto anterior
+        else {
+            if ($cupon->emDestaque) {
+                $cupon->fotoDestaque()->delete();
+            }
         }
 
         //pegando categorias da request, se nao tiver,
@@ -183,6 +190,25 @@ class CuponController extends AppBaseController
 
             foreach ($fotos as $foto) {
                 $this->dispatch(new SincronizarComCloudinary($foto));
+            }
+        }
+
+        if ($request->em_destaque) {
+            $fotoDestaque = $request->allFiles()['foto_homepage'] ?? false;
+            if (!empty($fotoDestaque)) {
+                $cupon->fotoDestaque()->delete();
+                $objFotoDestaque = $this->fotoRepository->uploadAndCreate($fotoDestaque);
+                $objFotoDestaque = array_pop($objFotoDestaque);
+                $objFotoDestaque->update(['tipo' => \App\Models\Foto::TIPO_DESTAQUE_CUPOM]);
+                $cupon->fotos()->save($objFotoDestaque);
+                $this->dispatch(new SincronizarComCloudinary($objFotoDestaque));
+            }
+        }
+
+        //Se nao vier foto em destaque entao remover caso tenha foto anterior
+        else {
+            if ($cupon->emDestaque) {
+                $cupon->fotoDestaque()->delete();
             }
         }
 

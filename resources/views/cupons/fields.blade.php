@@ -73,10 +73,10 @@
     </div>
 
     <div class="col-sm-6 text-left">
-        <h4> {!! Form::checkbox('em_destaque', 1, false, ['class' => 'checkbox_em_destaque']) !!} Sim </h4>
+        <h4> {!! Form::checkbox('em_destaque', 1, $cupon->emDestaque ?? false, ['class' => 'checkbox_em_destaque']) !!} Sim </h4>
     </div>
 
-    <div class="container-foto-destaque hide col-sm-12">
+    <div class="container-foto-destaque @if (!(isset($cupon) && $cupon->emDestaque)) hide @endif col-sm-12">
         <br>
 
         @include('fotos.aviso_upload', [
@@ -122,10 +122,10 @@
 </div>
 
 
-@if (isset($cupon->fotos))
+@if (isset($cupon->fotosListagem))
 <div class="row">
     <div class="col-md-12 conteudo-centralizado">
-        <image-slider :images="{{ $cupon->fotos }}"></image-slider>
+        <image-slider :images="{{ $cupon->fotosListagem }}"></image-slider>
     </div>
 </div>
 @else
@@ -140,7 +140,6 @@
 
 <div class="form-group col-sm-12">
     <br>
-
 
     <upload-multiple-images v-model="files" v-on:upload="files = $event" :model="'App\\Models\\Cupon'" :model_id="'{!! isset($cupon) ? intval($cupon->id) : null !!}'" :input_name="'fotos[]'" :post_url="'upload_image'"></upload-multiple-images>
 </div>

@@ -326,4 +326,30 @@ class Cupon extends Model
             : $value;
     }
 
+    /**
+     * Acessor para a url da foto em destaque do cupom
+     */
+     public function getUrlFotoDestaqueAttribute()
+     {
+         return $this->fotoDestaque
+             ? $this->fotoDestaque->urlCloudinary
+             : null;
+     }
+
+    /**
+     * Acessor para determinar se esse cupom está em destaque
+     */
+     public function getEmDestaqueAttribute()
+     {
+        return $this->fotoDestaque()->count() ? true : false;
+     }
+
+     /**
+      * Acessor para as Fotos que não são a foto em destaque
+      */
+      public function getFotosListagemAttribute()
+      {
+         return $this->fotos()->whereNull('tipo')->get();
+      }
+
 }
