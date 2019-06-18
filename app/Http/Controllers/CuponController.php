@@ -66,15 +66,12 @@ class CuponController extends AppBaseController
     public function store(Request $request)
     {
         $input = $request->all();
-
         $validated = $request->validate(Cupon::$rules);
-
-
+        $cupon = $this->cuponRepository->create($input);
         $fotos = $request->allFiles()['files'] ?? false;
-        $fotoHomepage = $request->allFiles()['foto_homepage'] ?? false;
+        $fotoDestaque = $request->allFiles()['foto_homepage'] ?? false;
         $hasFotos = !empty($fotos);
 
-        $cupon = $this->cuponRepository->create($input);
         if ($hasFotos) {
             $fotos = $this->fotoRepository->uploadAndCreate($request);
             $cupon->fotos()->saveMany($fotos);
@@ -86,11 +83,14 @@ class CuponController extends AppBaseController
         }
 
 
-        if (!empty($fotoHomepage)) {
-            $objFotoHomepage = $this->fotoRepository->uploadAndCreate($fotoHomepage);
-            $objFotoHomepage->update(['tipo' => \App\Models\Foto::TIPO_DESTAQUE_CUPOM]);
-            $cupon->fotos()->save($objFotoHomepage);
-            $this->dispatch(new SincronizarComCloudinary($objFotoHomepage));
+        //Se vier fotoDestaque
+        if (!empty($fotoDestaque)) {
+            $cupon->fotoDestaque()->delete();
+            $objFotoDestaque = $this->fotoRepository->uploadAndCreate($fotoDestaque);
+            $objFotoDestaque = array_pop($objFotoDestaque);
+            $objFotoDestaque->update(['tipo' => \App\Models\Foto::TIPO_DESTAQUE_CUPOM]);
+            $cupon->fotos()->save($objFotoDestaque);
+            $this->dispatch(new SincronizarComCloudinary($objFotoDestaque));
         }
 
         //pegando categorias da request, se nao tiver,

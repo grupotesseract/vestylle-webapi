@@ -24,6 +24,7 @@ class Foto extends Model
     public $fillable = [
         'cloudinary_id',
         'image_name',
+        'tipo',
         'image_path',
         'image_extension',
         'owner_id',

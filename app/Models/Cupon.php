@@ -129,7 +129,9 @@ class Cupon extends Model
      */
     public function pessoas()
     {
-        return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')->withPivot('cupom_utilizado_venda','codigo_unico');;
+        return $this
+            ->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')
+            ->withPivot('cupom_utilizado_venda','codigo_unico');
     }
 
     /**
@@ -143,13 +145,24 @@ class Cupon extends Model
     }
 
     /**
-     * Foto de destaque do cupom
+     * Foto de destaque do cupom (query)
      *
-     * @return void
+     * @return QueryBuilder
      */
     public function fotoDestaque()
     {
-        return $this->fotos()->where('tipo', \App\Models\Foto::TIPO_DESTAQUE_CUPOM);
+        return $this->fotos()
+            ->where('tipo', \App\Models\Foto::TIPO_DESTAQUE_CUPOM);
+    }
+
+    /**
+     * Acessor para a foto de destaque do cupom
+     *
+     * @return void
+     */
+    public function getFotoDestaqueAttribute()
+    {
+        return $this->fotoDestaque()->first();
     }
 
     /**
@@ -219,13 +232,11 @@ class Cupon extends Model
      */
     public static function findEncryptado($idEncryptado, $pessoa_id = null)
     {
-        $cupon = self::with(
-            [
-                'pessoas' => function ($query) use ($pessoa_id) {
-                    $query->where('pessoa_id', $pessoa_id);
-                }
-            ]
-        )->where('qrcode', $idEncryptado)->get()->first();
+        $cupon = self::with([
+            'pessoas' => function ($query) use ($pessoa_id) {
+                $query->where('pessoa_id', $pessoa_id);
+            }
+        ])->where('qrcode', $idEncryptado)->get()->first();
 
         return $cupon;
     }
@@ -261,14 +272,14 @@ class Cupon extends Model
     /**
      * Scope para filtrar cupons com data de vencimento expirada
      */
-     public function scopeVencidos($query)
-     {
-         $now = \Carbon\Carbon::now();
+    public function scopeVencidos($query)
+    {
+        $now = \Carbon\Carbon::now();
 
         return $query->where('data_validade', '<', $now);
-     }
+    }
 
-     /**
+    /**
      * Scope para aplicar na query filtrando por cupons que foram utilizados pela $pessoa
      */
     public function scopeUtilizadoVenda($query, $pessoa)
