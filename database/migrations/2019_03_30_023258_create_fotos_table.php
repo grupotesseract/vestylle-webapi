@@ -21,6 +21,7 @@ class CreateFotosTable extends Migration
             $table->string('image_extension')->nullable();
             $table->integer('owner_id')->nullable();
             $table->string('owner_type')->nullable();
+            $table->smallInteger('tipo')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -64,6 +64,11 @@ class Cupon extends Model
         'subtitulo' => 'required | max: 150',
     ];
 
+    public $appends = [
+        'em_destaque',
+        'fotos_listagem'
+    ];
+
     /**
      * Método para dar override em eventos como a deleção do cupom
      * sem ter que replicar a lógica pela API quando esses eventos acontecerem
@@ -129,7 +134,9 @@ class Cupon extends Model
      */
     public function pessoas()
     {
-        return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')->withPivot('cupom_utilizado_venda','codigo_unico');;
+        return $this
+            ->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')
+            ->withPivot('cupom_utilizado_venda','codigo_unico');
     }
 
     /**
@@ -143,6 +150,27 @@ class Cupon extends Model
     }
 
     /**
+     * Foto de destaque do cupom (query)
+     *
+     * @return QueryBuilder
+     */
+    public function fotoDestaque()
+    {
+        return $this->fotos()
+            ->where('tipo', \App\Models\Foto::TIPO_DESTAQUE_CUPOM);
+    }
+
+    /**
+     * Acessor para a foto de destaque do cupom
+     *
+     * @return void
+     */
+    public function getFotoDestaqueAttribute()
+    {
+        return $this->fotoDestaque()->first();
+    }
+
+    /**
      * Relacionamento N x N entre Cupons e Categorias (polimórfico)
      *
      * @return void
@@ -153,15 +181,15 @@ class Cupon extends Model
     }
 
     /**
-     * Acessor que traz a a primeira foto do cupon, caso nao exista nenhuma
+     * Acessor que traz a foto de destaque do cupon, caso nao exista nenhuma
      * trazer da oferta, caso eles estejam relacionados
      *
      * @return void
      */
     public function getFotoCaminhoAttribute()
     {
-        if ($this->fotos()->count()) {
-            return $this->fotos()->first()->urlCloudinary;
+        if ($this->fotoDestaque()->count()) {
+            return $this->fotoDestaque->urlCloudinary;
         }
 
         if ($this->oferta) {
@@ -209,14 +237,12 @@ class Cupon extends Model
      */
     public static function findEncryptado($idEncryptado, $pessoa_id = null)
     {
-        $cupon = self::with(
-            [
-                'pessoas' => function ($query) use ($pessoa_id) { 
-                    $query->where('pessoa_id', $pessoa_id);
-                }
-            ]
-        )->where('qrcode', $idEncryptado)->get()->first();
-        
+        $cupon = self::with([
+            'pessoas' => function ($query) use ($pessoa_id) {
+                $query->where('pessoa_id', $pessoa_id);
+            }
+        ])->where('qrcode', $idEncryptado)->get()->first();
+
         return $cupon;
     }
 
@@ -251,14 +277,14 @@ class Cupon extends Model
     /**
      * Scope para filtrar cupons com data de vencimento expirada
      */
-     public function scopeVencidos($query)
-     {
-         $now = \Carbon\Carbon::now();
+    public function scopeVencidos($query)
+    {
+        $now = \Carbon\Carbon::now();
 
         return $query->where('data_validade', '<', $now);
-     }
+    }
 
-     /**
+    /**
      * Scope para aplicar na query filtrando por cupons que foram utilizados pela $pessoa
      */
     public function scopeUtilizadoVenda($query, $pessoa)
@@ -281,5 +307,54 @@ class Cupon extends Model
             $qCuponPessoa->where('cupom_utilizado_venda', false);
         });
     }
+
+    /**
+     * Mutator para a data_validade
+     *
+     * @param mixed $value - Valor antes de inserir no BD
+     */
+    public function setDataValidadeAttribute($value)
+    {
+        if (is_null($value)) {
+            return $this->attributes['data_validade'] = $value;
+        }
+
+        $isCarbon = is_object($value);
+
+        if ($isCarbon) {
+            return $this->attributes['data_validade'] = $value->format('Y-m-d');
+        }
+
+        $dataFormatada = preg_match('/\//', $value);
+        return $this->attributes['data_validade'] = $dataFormatada
+            ? \Carbon\Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d')
+            : $value;
+    }
+
+    /**
+     * Acessor para a url da foto em destaque do cupom
+     */
+     public function getUrlFotoDestaqueAttribute()
+     {
+         return $this->fotoDestaque
+             ? $this->fotoDestaque->urlCloudinary
+             : null;
+     }
+
+    /**
+     * Acessor para determinar se esse cupom está em destaque
+     */
+     public function getEmDestaqueAttribute()
+     {
+        return $this->fotoDestaque()->count() ? true : false;
+     }
+
+     /**
+      * Acessor para as Fotos que não são a foto em destaque
+      */
+      public function getFotosListagemAttribute()
+      {
+         return $this->fotos()->whereNull('tipo')->get();
+      }
 
 }
