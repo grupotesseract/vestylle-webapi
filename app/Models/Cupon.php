@@ -143,6 +143,16 @@ class Cupon extends Model
     }
 
     /**
+     * Foto de destaque do cupom
+     *
+     * @return void
+     */
+    public function fotoDestaque()
+    {
+        return $this->fotos()->where('tipo', \App\Models\Foto::TIPO_DESTAQUE_CUPOM);
+    }
+
+    /**
      * Relacionamento N x N entre Cupons e Categorias (polimórfico)
      *
      * @return void
@@ -211,12 +221,12 @@ class Cupon extends Model
     {
         $cupon = self::with(
             [
-                'pessoas' => function ($query) use ($pessoa_id) { 
+                'pessoas' => function ($query) use ($pessoa_id) {
                     $query->where('pessoa_id', $pessoa_id);
                 }
             ]
         )->where('qrcode', $idEncryptado)->get()->first();
-        
+
         return $cupon;
     }
 
@@ -280,6 +290,29 @@ class Cupon extends Model
             $qCuponPessoa->where('pessoa_id', $pessoaId);
             $qCuponPessoa->where('cupom_utilizado_venda', false);
         });
+    }
+
+    /**
+     * Mutator para a data_validade
+     *
+     * @param mixed $value - Valor antes de inserir no BD
+     */
+    public function setDataValidadeAttribute($value)
+    {
+        if (is_null($value)) {
+            return $this->attributes['data_validade'] = $value;
+        }
+
+        $isCarbon = is_object($value);
+
+        if ($isCarbon) {
+            return $this->attributes['data_validade'] = $value->format('Y-m-d');
+        }
+
+        $dataFormatada = preg_match('/\//', $value);
+        return $this->attributes['data_validade'] = $dataFormatada
+            ? \Carbon\Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d')
+            : $value;
     }
 
 }

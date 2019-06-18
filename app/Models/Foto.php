@@ -17,6 +17,8 @@ use Eloquent as Model;
  */
 class Foto extends Model
 {
+    const TIPO_DESTAQUE_CUPOM = 1;
+
     public $table = 'fotos';
 
     public $fillable = [

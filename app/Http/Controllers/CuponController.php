@@ -69,11 +69,12 @@ class CuponController extends AppBaseController
 
         $validated = $request->validate(Cupon::$rules);
 
-        $cupon = $this->cuponRepository->create($input);
 
         $fotos = $request->allFiles()['files'] ?? false;
+        $fotoHomepage = $request->allFiles()['foto_homepage'] ?? false;
         $hasFotos = !empty($fotos);
 
+        $cupon = $this->cuponRepository->create($input);
         if ($hasFotos) {
             $fotos = $this->fotoRepository->uploadAndCreate($request);
             $cupon->fotos()->saveMany($fotos);
@@ -82,6 +83,14 @@ class CuponController extends AppBaseController
             foreach ($fotos as $foto) {
                 $this->dispatch(new SincronizarComCloudinary($foto));
             }
+        }
+
+
+        if (!empty($fotoHomepage)) {
+            $objFotoHomepage = $this->fotoRepository->uploadAndCreate($fotoHomepage);
+            $objFotoHomepage->update(['tipo' => \App\Models\Foto::TIPO_DESTAQUE_CUPOM]);
+            $cupon->fotos()->save($objFotoHomepage);
+            $this->dispatch(new SincronizarComCloudinary($objFotoHomepage));
         }
 
         //pegando categorias da request, se nao tiver,
