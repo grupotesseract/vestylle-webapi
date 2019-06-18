@@ -64,6 +64,11 @@ class Cupon extends Model
         'subtitulo' => 'required | max: 150',
     ];
 
+    public $appends = [
+        'em_destaque',
+        'fotos_listagem'
+    ];
+
     /**
      * Método para dar override em eventos como a deleção do cupom
      * sem ter que replicar a lógica pela API quando esses eventos acontecerem
@@ -176,15 +181,15 @@ class Cupon extends Model
     }
 
     /**
-     * Acessor que traz a a primeira foto do cupon, caso nao exista nenhuma
+     * Acessor que traz a foto de destaque do cupon, caso nao exista nenhuma
      * trazer da oferta, caso eles estejam relacionados
      *
      * @return void
      */
     public function getFotoCaminhoAttribute()
     {
-        if ($this->fotos()->count()) {
-            return $this->fotos()->first()->urlCloudinary;
+        if ($this->fotoDestaque()->count()) {
+            return $this->fotoDestaque->urlCloudinary;
         }
 
         if ($this->oferta) {
