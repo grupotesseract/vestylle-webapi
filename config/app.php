@@ -188,6 +188,7 @@ return [
         \InfyOm\AdminLTETemplates\AdminLTETemplatesServiceProvider::class,
 
         \InfyOm\GeneratorBuilder\GeneratorBuilderServiceProvider::class,
+        NotificationChannels\ExpoPushNotifications\ExpoPushNotificationsServiceProvider::class,
     ],
 
     /*
