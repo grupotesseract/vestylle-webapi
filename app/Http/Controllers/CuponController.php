@@ -63,10 +63,9 @@ class CuponController extends AppBaseController
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateCuponRequest $request)
     {
         $input = $request->all();
-        $validated = $this->validate($request, Cupon::$rules, Cupon::$msgValidacaoAmigavel);
         $cupon = $this->cuponRepository->create($input);
         $fotos = $request->allFiles()['files'] ?? false;
         $hasFotos = !empty($fotos);
@@ -160,12 +159,10 @@ class CuponController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, Request $request)
+    public function update(UpdateCuponRequest $request, $id)
     {
         $input = $request->all();
         $cupon = $this->cuponRepository->findWithoutFail($id);
-
-        $validated = $this->validate($request, Cupon::$rules, Cupon::$msgValidacaoAmigavel);
 
         if (empty($cupon)) {
             Flash::error('Cupom não encontrado');

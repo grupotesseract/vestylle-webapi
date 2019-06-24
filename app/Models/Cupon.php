@@ -59,11 +59,10 @@ class Cupon extends Model
      * @var array
      */
     public static $rules = [
-        'data_validade' => 'required',
-        'texto_cupom' => 'required',
-        'codigo_amigavel' => 'unique:cupons,codigo_amigavel|required_without:aparece_listagem',
         'titulo' => 'required | max: 150',
         'subtitulo' => 'required | max: 150',
+        'data_validade' => 'required',
+        'texto_cupom' => 'required',
     ];
 
     public static $msgValidacaoAmigavel = [
@@ -363,5 +362,18 @@ class Cupon extends Model
       {
          return $this->fotos()->whereNull('tipo')->get();
       }
+
+      /**
+       * Mutator para não setar '' em um campo unique e nullable
+       */
+       public function setCodigoAmigavelAttribute($value)
+       {
+           //Se vier vazio, setar value pra null
+           if (!strlen($value)) {
+               $value = null;
+           }
+
+           $this->attributes['codigo_amigavel'] = $value;
+       }
 
 }
