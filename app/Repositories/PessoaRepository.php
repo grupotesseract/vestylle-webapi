@@ -444,5 +444,54 @@ class PessoaRepository extends BaseRepository
         return $generos;
     }
 
+    /**
+     * Metodo para atualizar as informações de todas as pessoas que tem CPF
+     * mas não tem id_vestylle (Pessoas que ainda nao possuem cadastro na loja)
+     *
+     * @return integer - Numero de pessoas atualizadas
+     */
+    public function atualizaPessoasSemIDVestylle()
+    {
+        $pessoasSemIdVestylle = $this->model()::whereNotNull('cpf')->whereNull('id_vestylle');
+
+        //Se tiver pessoas, checa se os CPF's existem na vestylle, caso sim atualiza
+        if ($pessoasSemIdVestylle->count()){
+            $numPessoasAtualizadas = 0;
+            foreach ($pessoasSemIdVestylle->get() as $Pessoa) {
+
+                //Se existir o cpf da pessoa na vestylle, atualizar
+                if ($this->checaCpfVestylle($Pessoa->cpf)) {
+                    $this->updateFromVestylle($Pessoa);
+                    $this->updatePontosPessoa($Pessoa);
+                    $this->updateVencimentoPontosPessoa($Pessoa);
+                    $this->updateDataUltimaCompraPessoa($Pessoa);
+                    $this->updateNascimentoPessoa($Pessoa);
+                    $this->updateDataUltimaCompraPessoa($Pessoa);
+                    $numPessoasAtualizadas++;
+                }
+            }
+            return $numPessoasAtualizadas;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Metodo para checar se um CPF existe na base da Vestylle
+     *
+     * @return boolean - Se existe ou não
+     */
+    public function checaCpfVestylle($cpf)
+    {
+        $this->startConnectorVestylle();
+        $retornoVestylle = $this->vestylleDB->getPessoa($cpf);
+        $pessoa = is_array($retornoVestylle) ? array_shift($retornoVestylle) : false;
+
+        if (!$pessoa || !is_object($pessoa)) {
+            return false;
+        }
+
+        return true;
+    }
 
 }
