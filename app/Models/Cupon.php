@@ -163,7 +163,7 @@ class Cupon extends Model
     public function fotoDestaque()
     {
         return $this->fotos()
-            ->where('tipo', \App\Models\Foto::TIPO_DESTAQUE_CUPOM);
+                    ->where('tipo', \App\Models\Foto::TIPO_DESTAQUE_CUPOM);
     }
 
     /**
@@ -248,6 +248,25 @@ class Cupon extends Model
                 $query->where('pessoa_id', $pessoa_id);
             }
         ])->where('qrcode', $idEncryptado)->get()->first();
+
+        return $cupon;
+    }
+
+    /**
+     * Metodo para dar find a partir do codigo_amigavel
+     *
+     * @see App\Repositories\CuponRepository - findByCodigoAmigavel
+     * @param mixed $idEncryptado
+     *
+     * @return void
+     */
+    public static function findByCodigoAmigavel($codigoAmigavel, $pessoa_id = null)
+    {
+        $cupon = self::with([
+            'pessoas' => function ($query) use ($pessoa_id) {
+                $query->where('pessoa_id', $pessoa_id);
+            }
+        ])->where('codigo_amigavel', $codigoAmigavel)->get()->first();
 
         return $cupon;
     }
@@ -340,40 +359,40 @@ class Cupon extends Model
     /**
      * Acessor para a url da foto em destaque do cupom
      */
-     public function getUrlFotoDestaqueAttribute()
-     {
-         return $this->fotoDestaque
-             ? $this->fotoDestaque->urlCloudinary
-             : null;
-     }
+    public function getUrlFotoDestaqueAttribute()
+    {
+        return $this->fotoDestaque
+            ? $this->fotoDestaque->urlCloudinary
+            : null;
+    }
 
     /**
      * Acessor para determinar se esse cupom está em destaque
      */
-     public function getEmDestaqueAttribute()
-     {
+    public function getEmDestaqueAttribute()
+    {
         return $this->fotoDestaque()->count() ? true : false;
-     }
+    }
 
-     /**
-      * Acessor para as Fotos que não são a foto em destaque
-      */
-      public function getFotosListagemAttribute()
-      {
-         return $this->fotos()->whereNull('tipo')->get();
-      }
+    /**
+     * Acessor para as Fotos que não são a foto em destaque
+     */
+    public function getFotosListagemAttribute()
+    {
+        return $this->fotos()->whereNull('tipo')->get();
+    }
 
-      /**
-       * Mutator para não setar '' em um campo unique e nullable
-       */
-       public function setCodigoAmigavelAttribute($value)
-       {
-           //Se vier vazio, setar value pra null
-           if (!strlen($value)) {
-               $value = null;
-           }
+    /**
+     * Mutator para não setar '' em um campo unique e nullable
+     */
+    public function setCodigoAmigavelAttribute($value)
+    {
+        //Se vier vazio, setar value pra null
+        if (!strlen($value)) {
+            $value = null;
+        }
 
-           $this->attributes['codigo_amigavel'] = $value;
-       }
+        $this->attributes['codigo_amigavel'] = $value;
+    }
 
 }

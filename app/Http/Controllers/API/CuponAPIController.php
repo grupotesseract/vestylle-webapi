@@ -72,13 +72,13 @@ class CuponAPIController extends AppBaseController
      * @return Response
      */
     public function show($id)
-    {        
+    {
         $pessoa = Auth('api')->user();
         $pessoa_id = $pessoa->id;
-        
+
         $cupon = $this->cuponRepository->with(
             [
-                'pessoas' => function ($query) use ($pessoa_id) { 
+                'pessoas' => function ($query) use ($pessoa_id) {
                     $query->where('pessoa_id', $pessoa_id);
                 }
             ]
@@ -86,7 +86,7 @@ class CuponAPIController extends AppBaseController
 
         if (empty($cupon)) {
             return $this->sendError('Cupom não encontrado');
-        }               
+        }
 
         return $this->sendResponse($cupon->toArray(), 'Cupom encontrado com sucesso');
     }
@@ -190,14 +190,19 @@ class CuponAPIController extends AppBaseController
      */
     public function showEncryptado($idEncryptado)
     {
-        $pessoa = Auth('api')->user();
-        $pessoa_id = $pessoa->id;       
+        $pessoa_id = Auth('api')->user() ? Auth('api')->user()->id : null;
 
-        $cupon = $this->cuponRepository->findEncryptadoWithoutFail($idEncryptado, $pessoa_id); 
+        $cupon = $this->cuponRepository->findEncryptadoWithoutFail($idEncryptado, $pessoa_id);
 
+        //Se nao encontrar pelo 'qrcode' procurar pelo codigo_amigavel
+        if (empty($cupon)) {
+            $cupon = $this->cuponRepository->findByCodigoAmigavel($idEncryptado, $pessoa_id);
+        }
+
+        //Se nao encontrar denovo, ai deu ruim
         if (empty($cupon)) {
             return $this->sendError('Cupom não encontrado');
-        }        
+        }
 
         return $this->sendResponse($cupon->toArray(), 'Cupom encontrado com sucesso');
     }
