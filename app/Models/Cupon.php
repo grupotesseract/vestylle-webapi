@@ -31,6 +31,7 @@ class Cupon extends Model
         'oferta_id',
         'foto_caminho',
         'titulo',
+        'codigo_amigavel',
         'subtitulo',
         'aparece_listagem',
         'porcentagem_off',
@@ -60,8 +61,14 @@ class Cupon extends Model
     public static $rules = [
         'data_validade' => 'required',
         'texto_cupom' => 'required',
+        'codigo_amigavel' => 'unique:cupons,codigo_amigavel|required_without:aparece_listagem',
         'titulo' => 'required | max: 150',
         'subtitulo' => 'required | max: 150',
+    ];
+
+    public static $msgValidacaoAmigavel = [
+        'codigo_amigavel.required_without' => 'O campo Código para ativação do cupom é obrigatório se o cupom não estiver marcado como Disponivel em "Meus Cupons"',
+        'codigo_amigavel.unique' => 'O valor do campo Código para ativação do cupom já está sendo utiizado por outro cupom',
     ];
 
     public $appends = [

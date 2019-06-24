@@ -10,23 +10,24 @@
             <p>{!! $cupon->subtitulo !!}</p>
         </div>
 
-        <!-- Id Field -->
-        <div class="form-group">
-            {!! Form::label('id', 'Código:') !!}
-            <p>{!! $cupon->id !!}</p>
-        </div>
-
         <!-- Aparece na listagem Field -->
         <div class="form-group">
-            {!! Form::label('id', 'Aparece na Listagem:') !!}
+            {!! Form::label('id', 'Cupom disponivel em Meus Cupons:') !!}
             <p>{!! $cupon->aparece_listagem ? 'Sim' : 'Não' !!}</p>
         </div>
 
         <!-- Aparece na homepage Field -->
         <div class="form-group">
-            {!! Form::label('id', 'Cupom em destaque:') !!}
+            {!! Form::label('id', 'Cupom em destaque na página inicial:') !!}
             <p>{!! $cupon->emDestaque ? 'Sim' : 'Não' !!}</p>
         </div>
+
+        <!-- Código para ativação do cupom -->
+        <div class="form-group">
+            {!! Form::label('codigo_amigavel', 'Código para ativação do cupom:') !!}
+            <p>{!! $cupon->codigo_amigavel !!}</p>
+        </div>
+
 
         <!-- Data Validade Field -->
         <div class="form-group">

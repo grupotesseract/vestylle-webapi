@@ -14,6 +14,13 @@
     {!! Form::text('data_validade', $cupon->data_validade ?? null, ['class' => 'datepicker form-control']) !!}
 </div>
 
+<!-- Codigo Amigavel Field -->
+<div class="form-group col-sm-3">
+    {!! Form::label('codigo_amigavel', 'Código para ativação do cupom') !!}
+    {!! Form::text('codigo_amigavel', $cupon->codigo_amigavel ?? null, ['class' => 'form-control']) !!}
+</div>
+
+
 <!-- Oferta Field -->
 <div class="form-group col-sm-5">
     {!! Form::label('oferta_id', 'Oferta:') !!}
