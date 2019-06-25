@@ -31,6 +31,7 @@ class Cupon extends Model
         'oferta_id',
         'foto_caminho',
         'titulo',
+        'codigo_amigavel',
         'subtitulo',
         'aparece_listagem',
         'porcentagem_off',
@@ -58,10 +59,15 @@ class Cupon extends Model
      * @var array
      */
     public static $rules = [
-        'data_validade' => 'required',
-        'texto_cupom' => 'required',
         'titulo' => 'required | max: 150',
         'subtitulo' => 'required | max: 150',
+        'data_validade' => 'required',
+        'texto_cupom' => 'required',
+    ];
+
+    public static $msgValidacaoAmigavel = [
+        'codigo_amigavel.required_without' => 'O campo Código para ativação do cupom é obrigatório se o cupom não estiver marcado como Disponivel em "Meus Cupons"',
+        'codigo_amigavel.unique' => 'O valor do campo Código para ativação do cupom já está sendo utiizado por outro cupom',
     ];
 
     public $appends = [
@@ -157,7 +163,7 @@ class Cupon extends Model
     public function fotoDestaque()
     {
         return $this->fotos()
-            ->where('tipo', \App\Models\Foto::TIPO_DESTAQUE_CUPOM);
+                    ->where('tipo', \App\Models\Foto::TIPO_DESTAQUE_CUPOM);
     }
 
     /**
@@ -235,14 +241,23 @@ class Cupon extends Model
      *
      * @return void
      */
-    public static function findEncryptado($idEncryptado, $pessoa_id = null)
+    public static function findEncryptado($idEncryptado)
     {
-        $cupon = self::with([
-            'pessoas' => function ($query) use ($pessoa_id) {
-                $query->where('pessoa_id', $pessoa_id);
-            }
-        ])->where('qrcode', $idEncryptado)->get()->first();
+        $cupon = self::where('qrcode', $idEncryptado)->first();
+        return $cupon;
+    }
 
+    /**
+     * Metodo para dar find a partir do codigo_amigavel
+     *
+     * @see App\Repositories\CuponRepository - findByCodigoAmigavel
+     * @param mixed codigoAmigavel
+     *
+     * @return void
+     */
+    public static function findByCodigoAmigavel($codigoAmigavel)
+    {
+        $cupon = self::where('codigo_amigavel', $codigoAmigavel)->first();
         return $cupon;
     }
 
@@ -334,27 +349,40 @@ class Cupon extends Model
     /**
      * Acessor para a url da foto em destaque do cupom
      */
-     public function getUrlFotoDestaqueAttribute()
-     {
-         return $this->fotoDestaque
-             ? $this->fotoDestaque->urlCloudinary
-             : null;
-     }
+    public function getUrlFotoDestaqueAttribute()
+    {
+        return $this->fotoDestaque
+            ? $this->fotoDestaque->urlCloudinary
+            : null;
+    }
 
     /**
      * Acessor para determinar se esse cupom está em destaque
      */
-     public function getEmDestaqueAttribute()
-     {
+    public function getEmDestaqueAttribute()
+    {
         return $this->fotoDestaque()->count() ? true : false;
-     }
+    }
 
-     /**
-      * Acessor para as Fotos que não são a foto em destaque
-      */
-      public function getFotosListagemAttribute()
-      {
-         return $this->fotos()->whereNull('tipo')->get();
-      }
+    /**
+     * Acessor para as Fotos que não são a foto em destaque
+     */
+    public function getFotosListagemAttribute()
+    {
+        return $this->fotos()->whereNull('tipo')->get();
+    }
+
+    /**
+     * Mutator para não setar '' em um campo unique e nullable
+     */
+    public function setCodigoAmigavelAttribute($value)
+    {
+        //Se vier vazio, setar value pra null
+        if (!strlen($value)) {
+            $value = null;
+        }
+
+        $this->attributes['codigo_amigavel'] = $value;
+    }
 
 }
