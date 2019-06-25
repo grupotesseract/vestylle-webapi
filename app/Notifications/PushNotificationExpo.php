@@ -50,6 +50,7 @@ class PushNotificationExpo extends Notification
         return ExpoMessage::create()
             ->badge(1)
             ->enableSound()
+            ->title($this->campanha->titulo)
             ->body($this->campanha->texto);
     }
 }
