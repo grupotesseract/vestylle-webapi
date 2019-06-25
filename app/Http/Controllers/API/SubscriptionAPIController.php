@@ -11,6 +11,7 @@ use App\Repositories\CampanhaRepository;
 use Auth;
 use Notification;
 use App\Models\PessoaPush;
+use App\Notifications\PushNotificationExpo;
 
 class SubscriptionAPIController extends AppBaseController
 {
@@ -73,8 +74,11 @@ class SubscriptionAPIController extends AppBaseController
         //A NOTIFICAÇÃO, DE ACORDO COM O SEU SEGMENTO
         $campanha = $this->campanhaRepository->find($idCampanha);
         $pessoasIds = $campanha->pessoasQuery->get()->pluck('id');
-        $pessoasPush = PessoaPush::whereIn('pessoa_id', $pessoasIds)->get();
+        $pessoasPush = PessoaPush::whereIn('pessoa_id', $pessoasIds)->get();        
+        //WebPush
         Notification::send($pessoasPush, new PushNotification($campanha));
+        //Expo
+        Notification::send($pessoasPush, new PushNotificationExpo());
         return redirect()->back(); 
     }
     
