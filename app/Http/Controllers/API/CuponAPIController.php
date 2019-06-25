@@ -190,13 +190,11 @@ class CuponAPIController extends AppBaseController
      */
     public function showEncryptado($idEncryptado)
     {
-        $pessoa_id = Auth('api')->user() ? Auth('api')->user()->id : null;
-
-        $cupon = $this->cuponRepository->findEncryptadoWithoutFail($idEncryptado, $pessoa_id);
+        $cupon = $this->cuponRepository->findEncryptadoWithoutFail($idEncryptado);
 
         //Se nao encontrar pelo 'qrcode' procurar pelo codigo_amigavel
         if (empty($cupon)) {
-            $cupon = $this->cuponRepository->findByCodigoAmigavel($idEncryptado, $pessoa_id);
+            $cupon = $this->cuponRepository->findByCodigoAmigavel($idEncryptado);
         }
 
         //Se nao encontrar denovo, ai deu ruim

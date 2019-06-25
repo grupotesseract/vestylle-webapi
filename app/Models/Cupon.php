@@ -241,14 +241,9 @@ class Cupon extends Model
      *
      * @return void
      */
-    public static function findEncryptado($idEncryptado, $pessoa_id = null)
+    public static function findEncryptado($idEncryptado)
     {
-        $cupon = self::with([
-            'pessoas' => function ($query) use ($pessoa_id) {
-                $query->where('pessoa_id', $pessoa_id);
-            }
-        ])->where('qrcode', $idEncryptado)->get()->first();
-
+        $cupon = self::where('qrcode', $idEncryptado)->first();
         return $cupon;
     }
 
@@ -256,18 +251,13 @@ class Cupon extends Model
      * Metodo para dar find a partir do codigo_amigavel
      *
      * @see App\Repositories\CuponRepository - findByCodigoAmigavel
-     * @param mixed $idEncryptado
+     * @param mixed codigoAmigavel
      *
      * @return void
      */
-    public static function findByCodigoAmigavel($codigoAmigavel, $pessoa_id = null)
+    public static function findByCodigoAmigavel($codigoAmigavel)
     {
-        $cupon = self::with([
-            'pessoas' => function ($query) use ($pessoa_id) {
-                $query->where('pessoa_id', $pessoa_id);
-            }
-        ])->where('codigo_amigavel', $codigoAmigavel)->get()->first();
-
+        $cupon = self::where('codigo_amigavel', $codigoAmigavel)->first();
         return $cupon;
     }
 
