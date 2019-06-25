@@ -52,3 +52,4 @@ Route::get('ofertas/{id}', 'OfertaAPIController@show');
 Route::get('cupons/{id}', 'CuponAPIController@show');
 Route::get('cupons/encrypt/{idEncryptado}', 'CuponAPIController@showEncryptado');
 
+Route::post('password/reset', 'PessoaAPIController@sendResetLinkEmail');
