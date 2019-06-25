@@ -10,17 +10,24 @@
             <p>{!! $cupon->subtitulo !!}</p>
         </div>
 
-        <!-- Id Field -->
-        <div class="form-group">
-            {!! Form::label('id', 'Código:') !!}
-            <p>{!! $cupon->id !!}</p>
-        </div>
-
         <!-- Aparece na listagem Field -->
         <div class="form-group">
-            {!! Form::label('id', 'Aparece na Listagem:') !!}
+            {!! Form::label('id', 'Cupom disponivel em Meus Cupons:') !!}
             <p>{!! $cupon->aparece_listagem ? 'Sim' : 'Não' !!}</p>
         </div>
+
+        <!-- Aparece na homepage Field -->
+        <div class="form-group">
+            {!! Form::label('id', 'Cupom em destaque na página inicial:') !!}
+            <p>{!! $cupon->emDestaque ? 'Sim' : 'Não' !!}</p>
+        </div>
+
+        <!-- Código para ativação do cupom -->
+        <div class="form-group">
+            {!! Form::label('codigo_amigavel', 'Código para ativação do cupom:') !!}
+            <p>{!! $cupon->codigo_amigavel !!}</p>
+        </div>
+
 
         <!-- Data Validade Field -->
         <div class="form-group">
@@ -70,9 +77,18 @@
         @endif
     </div>
     <div class="col-md-8">
-        @if ($cupon->fotos)
+
+        @if ($cupon->fotoDestaque)
             <div class="form-group">
-                <image-slider :images="{{ $cupon->fotos }}"></image-slider>
+                {!! Form::label('foto_destaque', 'Foto de destaque') !!} <br>
+                <img src="{{$cupon->urlFotoDestaque}}" alt="" width=300>
+            </div>
+        @endif
+
+        @if ($cupon->fotosListagem)
+            <div class="form-group">
+                {!! Form::label('fotos', 'Fotos da listagem e pagina interna') !!} <br>
+                <image-slider :images="{{ $cupon->fotosListagem }}"></image-slider>
             </div>
         @endif
 

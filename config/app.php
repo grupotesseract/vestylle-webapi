@@ -173,7 +173,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\ViewServiceProvider::class,
+        App\Providers\ViewServiceProvider::class, 
 
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 
@@ -188,6 +188,7 @@ return [
         \InfyOm\AdminLTETemplates\AdminLTETemplatesServiceProvider::class,
 
         \InfyOm\GeneratorBuilder\GeneratorBuilderServiceProvider::class,
+        NotificationChannels\ExpoPushNotifications\ExpoPushNotificationsServiceProvider::class,
     ],
 
     /*

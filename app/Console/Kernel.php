@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\AtualizaPessoasDataUltimaCompra::class,
+        \App\Console\Commands\AtualizaPessoasSemIDVestylle::class,
         \App\Console\Commands\LimparCuponsVencidos::class
     ];
 
@@ -25,14 +26,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-
         $schedule->command('vestylle:atualiza-ultimos-compradores')
             ->dailyAt('04:20');
 
+        $schedule->command('vestylle:atualiza-clientes-novos')
+            ->dailyAt('04:25');
+
         $schedule->command('vestylle:limpar_cupons_vencidos')
-            ->dailyAt('16:20');
+            ->dailyAt('04:29');
     }
 
     /**

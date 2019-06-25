@@ -18,7 +18,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('pessoas/{id}/ofertas', 'PessoaAPIController@getOfertas')->middleware('pessoaid');
     Route::post('pessoas/{id}/ofertas', 'PessoaAPIController@postOfertas')->middleware('pessoaid');
 
-    Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
     Route::post('cupons/{id}/ativar', 'CuponAPIController@ativar');
 });
 
@@ -36,8 +35,9 @@ Route::group(['middleware' => ['auth:api']], function () {
 */
 
 //Rotas para teste da subscription das push's
-Route::get('/subscriptions', 'SubscriptionController@index');
-Route::post('/subscription', 'SubscriptionController@store');
+//Route::get('/subscriptions', 'SubscriptionController@index');
+Route::get('/push', 'SubscriptionAPIController@push')->name('push');
+Route::post('/push', 'SubscriptionAPIController@store');
 
 Route::post('pessoas', 'PessoaAPIController@store');
 Route::post('/login', 'PessoaAPIController@login');

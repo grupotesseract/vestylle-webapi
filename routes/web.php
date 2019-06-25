@@ -17,6 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/push/{idCampanha}', 'API\SubscriptionAPIController@push')->name('push');
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -53,11 +58,10 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::get('categorias/{id}/ofertas', 'CategoriaController@showofertas')->name('categorias.ofertas');
     Route::get('categorias/{id}/cupons', 'CategoriaController@showcupons')->name('categorias.cupons');
 
+    Route::resource('tipoInformacaos', 'TipoInformacaoController');
+    Route::resource('campanhas', 'CampanhaController');
 });
 
-
-
-Route::resource('tipoInformacaos', 'TipoInformacaoController');
 Route::get('password/reset/{token}', 'PessoaController@showResetForm')->name('password.reset');
 Route::post('password/update', 'PessoaController@reset')->name('password.update');
 

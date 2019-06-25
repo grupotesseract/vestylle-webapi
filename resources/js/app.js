@@ -36,10 +36,3 @@ const app = new Vue({
     }
 });
 
-
-
-$(".aparece_listagem").bind('change', (ev) => {
-    console.log(ev);
-
-});
-
