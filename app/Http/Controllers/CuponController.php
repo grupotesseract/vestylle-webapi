@@ -214,7 +214,7 @@ class CuponController extends AppBaseController
         $categorias = $request->categorias ?? [];
         $cupon->categorias()->sync($categorias);
 
-        $cupon = $this->cuponRepository->update($input, $id);
+        $cupon = $this->cuponRepository->update($input, $idCupom);
 
         Flash::success('Cupom atualizado com sucesso.');
 
