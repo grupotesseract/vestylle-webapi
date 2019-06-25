@@ -40,15 +40,29 @@ class CuponRepository extends BaseRepository
      * @param mixed $id
      * @param string $columns
      */
-    public function findEncryptadoWithoutFail($idEncryptado, $pessoa_id = null)
+    public function findEncryptadoWithoutFail($idEncryptado)
     {
         try {
-            return $this->model()::findEncryptado($idEncryptado, $pessoa_id);
+            return $this->model()::findEncryptado($idEncryptado);
         } catch (Exception $e) {
             return;
         }
     }
 
+    /**
+     * Retorna o cupon referente ao codigo amigavel sem falhar caso nao exista
+     *
+     * @param mixed $id
+     * @param string $columns
+     */
+    public function findByCodigoAmigavel($codigoAmigavel)
+    {
+        try {
+            return $this->model()::findByCodigoAmigavel($codigoAmigavel);
+        } catch (Exception $e) {
+            return;
+        }
+    }
 
     /**
      * Get Cupons que tem 'aparece_listagem' marcado como true
@@ -72,12 +86,12 @@ class CuponRepository extends BaseRepository
             $cuponsUtilizadosVenda = $this->model()::with('fotos')->apareceListagem()
                 ->UtilizadoVenda($pessoa)
                 ->get();
-            
+
             //Mergeando Cupons, assim nao ficam duplicados e existem de ambos grupos
             $cupons = $cuponsSegmentados->merge($cuponsNaoSegmentados);
             //Excluindo cupons ja utilizados apos o merge
             $cupons = $cupons->diff($cuponsUtilizadosVenda);
-            
+
 
         } else {
             $cupons = $cuponsNaoSegmentados;

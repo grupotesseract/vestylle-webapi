@@ -63,10 +63,9 @@ class CuponController extends AppBaseController
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateCuponRequest $request)
     {
         $input = $request->all();
-        $validated = $request->validate(Cupon::$rules);
         $cupon = $this->cuponRepository->create($input);
         $fotos = $request->allFiles()['files'] ?? false;
         $hasFotos = !empty($fotos);
@@ -155,17 +154,15 @@ class CuponController extends AppBaseController
     /**
      * Update the specified Cupon in storage.
      *
-     * @param  int              $id
+     * @param  int              $idCupom
      * @param UpdateCuponRequest $request
      *
      * @return Response
      */
-    public function update($id, Request $request)
+    public function update(UpdateCuponRequest $request, $idCupom)
     {
         $input = $request->all();
-        $cupon = $this->cuponRepository->findWithoutFail($id);
-
-        $validated = $request->validate(Cupon::$rules);
+        $cupon = $this->cuponRepository->findWithoutFail($idCupom);
 
         if (empty($cupon)) {
             Flash::error('Cupom não encontrado');
@@ -178,7 +175,7 @@ class CuponController extends AppBaseController
         $canUpload  = $hasFotos ? \App\Helpers\Helpers::checkUploadLimit($cupon, count($fotos)) : true;
 
         if ($canUpload == false) {
-            $cupon = $this->cuponRepository->update($input, $id);
+            $cupon = $this->cuponRepository->update($input, $idCupom);
             Flash::error('Número máximo de imagens atingido. Tente novamente');
             Flash::success('Cupom atualizado com sucesso.');
             return redirect(route('cupons.edit', $cupon));
@@ -217,7 +214,7 @@ class CuponController extends AppBaseController
         $categorias = $request->categorias ?? [];
         $cupon->categorias()->sync($categorias);
 
-        $cupon = $this->cuponRepository->update($input, $id);
+        $cupon = $this->cuponRepository->update($input, $idCupom);
 
         Flash::success('Cupom atualizado com sucesso.');
 

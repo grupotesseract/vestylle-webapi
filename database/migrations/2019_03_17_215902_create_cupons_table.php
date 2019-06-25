@@ -17,7 +17,7 @@ class CreateCuponsTable extends Migration
             $table->increments('id');
             //Hash calculado a partir do id do cupom
             $table->string('qrcode')->nullable();
-            ////////////////////////////////////////
+            $table->string('codigo_amigavel')->unique()->nullable();
             $table->integer('oferta_id')->unsigned()->nullable();
             $table->date('data_validade');
             $table->text('texto_cupom');

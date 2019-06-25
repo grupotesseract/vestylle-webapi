@@ -18,7 +18,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('pessoas/{id}/ofertas', 'PessoaAPIController@getOfertas')->middleware('pessoaid');
     Route::post('pessoas/{id}/ofertas', 'PessoaAPIController@postOfertas')->middleware('pessoaid');
 
-    Route::delete('imagens/{imagem_id}', 'FotoAPIController@remover');
     Route::post('cupons/{id}/ativar', 'CuponAPIController@ativar');
 });
 
@@ -53,3 +52,4 @@ Route::get('ofertas/{id}', 'OfertaAPIController@show');
 Route::get('cupons/{id}', 'CuponAPIController@show');
 Route::get('cupons/encrypt/{idEncryptado}', 'CuponAPIController@showEncryptado');
 
+Route::post('password/reset', 'PessoaAPIController@sendResetLinkEmail');
