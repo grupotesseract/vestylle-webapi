@@ -10,11 +10,17 @@ use App\Repositories\PessoaRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+
 
 class PessoaController extends AppBaseController
 {
+    use ResetsPasswords;
+
     /** @var  PessoaRepository */
     private $pessoaRepository;
+
+    protected $redirectTo = '/';
 
     public function __construct(PessoaRepository $pessoaRepo)
     {

@@ -62,5 +62,6 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::resource('campanhas', 'CampanhaController');
 });
 
-
+Route::get('password/reset/{token}', 'PessoaController@showResetForm')->name('password.reset');
+Route::post('password/update', 'PessoaController@reset')->name('password.update');
 
