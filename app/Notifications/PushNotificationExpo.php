@@ -45,7 +45,7 @@ class PushNotificationExpo extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toExpoPush($notifiable, $notification)
+    public function toExpoPush($notifiable)
     {
         return ExpoMessage::create()
             ->badge(1)
