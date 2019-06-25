@@ -9,19 +9,23 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 use NotificationChannels\ExpoPushNotifications\ExpoChannel;
 use NotificationChannels\ExpoPushNotifications\ExpoMessage;
+use App\Models\Campanha;
+
 
 class PushNotificationExpo extends Notification
 {
     use Queueable;
+
+    private $campanha;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Campanha $campanha)
     {
-        //
+        $this->campanha = $campanha;        
     }
 
     /**
@@ -41,11 +45,11 @@ class PushNotificationExpo extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toExpoPush($notifiable)
+    public function toExpoPush($notifiable, $notification)
     {
         return ExpoMessage::create()
             ->badge(1)
             ->enableSound()
-            ->body("Tadââ");
+            ->body($this->campanha->texto);
     }
 }
