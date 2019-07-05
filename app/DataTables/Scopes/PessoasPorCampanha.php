@@ -25,10 +25,8 @@ class PessoasPorCampanha implements DataTableScope
      */
     public function apply($query)
     {
-        $campanhaID = $this->campanhaID;
-
-        $campanha = \App\Models\Campanha::find($campanhaID);
-
-        return $campanha->pessoasQuery;
+        $campanha = Campanha::find($this->campanhaID);
+        $query = $campanha->pessoasQuery;
+        return $query;
     }
 }

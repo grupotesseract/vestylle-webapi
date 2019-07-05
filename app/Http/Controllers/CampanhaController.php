@@ -74,16 +74,16 @@ class CampanhaController extends AppBaseController
      *
      * @return Response
      */
-    public function show(PessoaDataTable $pessoaDataTable, $id)
+    public function show(PessoaDataTable $pessoaDataTable, $idCampanha)
     {
-        $campanha = $this->campanhaRepository->findWithoutFail($id);
+        $campanha = $this->campanhaRepository->findWithoutFail($idCampanha);
 
         if (empty($campanha)) {
             Flash::error('Campanha não encontrada');
             return redirect(route('campanhas.index'));
         }
 
-        return $pessoaDataTable->addScope(new PessoasPorCampanha($id))
+        return $pessoaDataTable->addScope(new PessoasPorCampanha($idCampanha))
             ->render('campanhas.show', compact('campanha'));
     }
 
