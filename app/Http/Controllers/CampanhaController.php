@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Flash;
 use Response;
 use App\Models\Cupon;
-use App\Http\Requests;
 use App\Models\Oferta;
 use App\DataTables\CampanhaDataTable;
 use App\Repositories\CampanhaRepository;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\CreateCampanhaRequest;
+use App\DataTables\Scopes\PessoasPorCampanha;
 use App\Http\Requests\UpdateCampanhaRequest;
+use App\DataTables\PessoaDataTable;
 
 class CampanhaController extends AppBaseController
 {
@@ -73,17 +74,17 @@ class CampanhaController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show(PessoaDataTable $pessoaDataTable, $idCampanha)
     {
-        $campanha = $this->campanhaRepository->findWithoutFail($id);
+        $campanha = $this->campanhaRepository->findWithoutFail($idCampanha);
 
         if (empty($campanha)) {
             Flash::error('Campanha não encontrada');
-
             return redirect(route('campanhas.index'));
         }
 
-        return view('campanhas.show')->with('campanha', $campanha);
+        return $pessoaDataTable->addScope(new PessoasPorCampanha($idCampanha))
+            ->render('campanhas.show', compact('campanha'));
     }
 
     /**
