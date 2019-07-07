@@ -25,14 +25,13 @@
                 <div class="row" style="padding-left: 20px">
                     @include('cupons.show_fields')
 
-                    <hr>
-                    <br>
+                    <hr> <br>
 
                     <div class="col-xs-12">
-                    <h4>Pessoas que ativaram esse cupom</h4>
+                        <h4>Pessoas que ativaram esse cupom</h4>
 
-                    <br>
-                    @include('pessoas.table')
+                        <br>
+                        @include('pessoas.table')
 
                     </div>
                     <a href="{!! route('cupons.index') !!}" class="btn btn-default">Voltar</a>
