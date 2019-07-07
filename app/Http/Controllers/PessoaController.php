@@ -146,11 +146,11 @@ class PessoaController extends AppBaseController
             Flash::error('Pessoa não encontrada');
 
             return redirect(route('pessoas.index'));
-        }
+        }        
 
-        if ($pessoa->cupons) {
-            \DB::statement("DELETE FROM cupons_pessoas WHERE pessoa_id = $pessoa->id");
-        }
+        $pessoa->cupons()->detach();
+        $pessoa->listaDesejos()->detach();
+        $pessoa->categorias()->detach();
 
         $this->pessoaRepository->delete($id);
 
