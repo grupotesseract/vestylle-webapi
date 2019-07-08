@@ -33,7 +33,7 @@ class Pessoa extends Authenticatable
     use LaratrustUserTrait;
     use Notifiable;
     use HasPushSubscriptions;
-    use SoftDeletes;
+    
     use HasApiTokens;
 
     // FLAG cadastro para indicar quando a pessoa completou o cadastro || se o cadastro ainda está pendente
