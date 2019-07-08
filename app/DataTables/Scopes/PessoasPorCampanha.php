@@ -3,6 +3,7 @@
 namespace App\DataTables\Scopes;
 
 use Yajra\DataTables\Contracts\DataTableScope;
+use App\Models\Campanha;
 
 class PessoasPorCampanha implements DataTableScope
 {
@@ -27,6 +28,6 @@ class PessoasPorCampanha implements DataTableScope
     {
         $campanha = Campanha::find($this->campanhaID);
         $query = $campanha->pessoasQuery;
-        return $query;
+        return $query; 
     }
 }
