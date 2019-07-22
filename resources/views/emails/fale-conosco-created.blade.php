@@ -3,10 +3,11 @@
 
 Usuário: {{ $pessoa ? $pessoa->nome : 'Não estava logado'}}
 
+Nome: {{ $nome }}
+
 Contato: {{ $contato }}
 
 Assunto: {{ $assunto }}
 
-Mensagem:
-{{ $mensagem }}
+Mensagem: {{ $mensagem }}
 @endcomponent

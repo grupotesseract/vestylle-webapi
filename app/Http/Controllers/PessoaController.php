@@ -20,7 +20,8 @@ class PessoaController extends AppBaseController
     /** @var  PessoaRepository */
     private $pessoaRepository;
 
-    protected $redirectTo = '/';
+    protected $redirectTo = '/password/success';
+
 
     public function __construct(PessoaRepository $pessoaRepo)
     {
@@ -157,5 +158,15 @@ class PessoaController extends AppBaseController
         Flash::success('Pessoa excluída com sucesso.');
 
         return redirect(route('pessoas.index'));
+    }
+
+    /**
+     * Form de senha redefinida com sucesso
+     *
+     * @return Response
+     */
+    public function resetSuccess()
+    {
+        return view('auth.passwords.reset_success');
     }
 }
