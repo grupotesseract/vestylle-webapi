@@ -59,5 +59,6 @@ Route::group(['middleware' => ['role:admin']], function () {
 });
 
 Route::get('password/reset/{token}', 'PessoaController@showResetForm')->name('password.reset');
+Route::get('password/success', 'PessoaController@resetSuccess');
 Route::post('password/update', 'PessoaController@reset')->name('password.update');
 

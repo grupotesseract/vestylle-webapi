@@ -60,6 +60,7 @@ class ResetPassword extends Notification
         }
 
         return (new MailMessage)             
+            ->from('megajau@vestylle.com.br', 'Vestylle')
             ->greeting('Olá!')
             ->salutation('Obrigado, ')
             ->subject(Lang::getFromJson('Solicitação de Recuperação de Senha'))
