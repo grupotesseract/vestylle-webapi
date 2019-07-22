@@ -30,9 +30,11 @@ class FaleConoscoCreated extends Mailable
     public function build()
     {
         return $this->from(env('EMAIL_ORIGEM_CONTATO'))
+            ->subject('✉ Novo contato pelo "Fale Conosco"')
             ->markdown('emails.fale-conosco-created')
             ->with([
                 'pessoa' => $this->faleConosco->pessoa,
+                'nome' => $this->faleConosco->nome,
                 'contato' => $this->faleConosco->contato,
                 'assunto' => $this->faleConosco->assunto,
                 'mensagem' => $this->faleConosco->mensagem,

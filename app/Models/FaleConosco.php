@@ -22,13 +22,12 @@ class FaleConosco extends Model
 
     public $table = 'fale_conoscos';
 
-
     protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'pessoa_id',
         'assunto',
+        'nome',
         'mensagem',
         'contato'
     ];
@@ -41,6 +40,7 @@ class FaleConosco extends Model
     protected $casts = [
         'pessoa_id' => 'integer',
         'assunto' => 'string',
+        'nome' => 'string',
         'mensagem' => 'string',
         'contato' => 'string'
     ];
@@ -53,6 +53,7 @@ class FaleConosco extends Model
     public static $rules = [
         'pessoa_id' => 'integer|nullable',
         'assunto' => 'string|nullable',
+        'nome' => 'string|nullable',
         'mensagem' => 'string|nullable',
         'contato' => 'string|nullable'
     ];
