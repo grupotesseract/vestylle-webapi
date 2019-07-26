@@ -106,6 +106,8 @@ class LojaController extends AppBaseController
             }
         }
 
+        $loja = $this->lojaRepository->update($input, $id);
+
         Flash::success('Loja atualizada com sucesso.');
 
         return redirect(route('lojas.show', $loja));
