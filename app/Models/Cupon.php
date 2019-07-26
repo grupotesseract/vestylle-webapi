@@ -300,6 +300,16 @@ class Cupon extends Model
     }
 
     /**
+     * Scope para filtrar cupons com data de vencimento expirada
+     */
+    public function scopeNaoVencidos($query)
+    {
+        $now = \Carbon\Carbon::now();
+
+        return $query->where('data_validade', '>=', $now);
+    }
+
+    /**
      * Scope para aplicar na query filtrando por cupons que foram utilizados pela $pessoa
      */
     public function scopeUtilizadoVenda($query, $pessoa)
