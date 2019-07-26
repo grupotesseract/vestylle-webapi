@@ -152,6 +152,7 @@ class PessoaController extends AppBaseController
         $pessoa->cupons()->detach();
         $pessoa->listaDesejos()->detach();
         $pessoa->categorias()->detach();
+        $pessoa->faleConoscos()->forceDelete();
 
         $this->pessoaRepository->delete($id);
 
