@@ -139,6 +139,16 @@ class Pessoa extends Authenticatable
     }
 
     /**
+     * Relacionamento N x N entre cupons e pessoas
+     *
+     * @return relationship
+     */
+    public function faleConoscos()
+    {
+        return $this->hasMany('App\Models\FaleConosco');
+    }
+
+    /**
      * Mutator para a dataNascimento
      */
     public function setDataNascimentoAttribute($value)
