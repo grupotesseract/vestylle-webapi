@@ -21,7 +21,7 @@
         <!-- Whatsapp 2 Field -->
         <div class="form-group">
             {!! Form::label('whatsapp2', 'Whatsapp:') !!}
-            <p>{!! $loja->whatsapp !!}</p>
+            <p>{!! $loja->whatsapp2 !!}</p>
         </div>
 
         <!-- Telefone Field -->
