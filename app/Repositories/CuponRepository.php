@@ -73,12 +73,15 @@ class CuponRepository extends BaseRepository
     public function apareceListagem($pessoa)
     {
         $cuponsNaoSegmentados = $this->model()::with('fotos')->apareceListagem()
-            ->NaoSegmentados()->get();
+            ->NaoVencidos()
+            ->NaoSegmentados()
+            ->get();
 
         //Se pessoa: devemos considerar segmentacao e excluir cupons 'ja utilizados no caixa'
         if (!is_null($pessoa)) {
 
             $cuponsSegmentados = $this->model()::with('fotos')->apareceListagem()
+                ->NaoVencidos()
                 ->SegmentadosPorUsuario($pessoa)
                 ->get();
 
