@@ -12,6 +12,7 @@ class CuponPessoa extends Model
         'cupom_id',
         'pessoa_id',
         'codigo_unico',
+        'data_expiracao'
     ];
 
     /**
