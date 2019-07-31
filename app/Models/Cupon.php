@@ -142,7 +142,7 @@ class Cupon extends Model
     {
         return $this
             ->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')
-            ->withPivot('cupom_utilizado_venda','codigo_unico');
+            ->withPivot('cupom_utilizado_venda', 'codigo_unico', 'data_expiracao');
     }
 
     /**
@@ -211,10 +211,13 @@ class Cupon extends Model
      */
     public function ativar($pessoa_id, $codigo_unico)
     {
-        \App\Models\CuponPessoa::create([
+        $data_expiracao = \Carbon\Carbon::now()->addDays(7);
+
+        return \App\Models\CuponPessoa::create([
             'cupom_id' => $this->id,
             'pessoa_id' => $pessoa_id,
             'codigo_unico' => $codigo_unico,
+            'data_expiracao' => $data_expiracao
         ]);
     }
 
@@ -330,6 +333,7 @@ class Cupon extends Model
         return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId) {
             $qCuponPessoa->where('pessoa_id', $pessoaId);
             $qCuponPessoa->where('cupom_utilizado_venda', false);
+            $qCuponPessoa->where('data_expiracao', '>=', \Carbon\Carbon::now());
         });
     }
 
