@@ -172,10 +172,11 @@ class CuponAPIController extends AppBaseController
         }
 
         $codigo_unico = $cupom->gerarCodigoUnico($pessoa->id_vestylle);
-        $cupom->ativar($pessoa_id, $codigo_unico);
+        $cupomAtivado = $cupom->ativar($pessoa_id, $codigo_unico);
 
         $response = $cupom->toArray();
         $response['codigo_unico'] = $codigo_unico;
+        $response['data_expiracao'] = $cupomAtivado->data_expiracao;
 
         return $this->sendResponse($response, 'Cupom ativado com sucesso');
     }
