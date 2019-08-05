@@ -82,6 +82,7 @@ class CuponRepository extends BaseRepository
 
             $cuponsSegmentados = $this->model()::with('fotos')->apareceListagem()
                 ->NaoVencidos()
+                ->NaoExpirados($pessoa)
                 ->SegmentadosPorUsuario($pessoa)
                 ->get();
 
