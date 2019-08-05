@@ -313,6 +313,34 @@ class Cupon extends Model
     }
 
     /**
+     * Scope para filtrar cupons com data de expiracao antiga (pessoa ativou cupon a + de 7 dias)
+     */
+    public function scopeExpirados($query, $pessoa)
+    {
+        $now = \Carbon\Carbon::now();
+        $pessoaId = $pessoa->id;
+
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId, $now) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('data_expiracao', '<', $now);
+        });
+    }
+
+    /**
+     * Scope para filtrar os cupons que não foram expirados (pessoa ativou em menos de 7 dias)
+     */
+    public function scopeNaoExpirados($query, $pessoa)
+    {
+        $now = \Carbon\Carbon::now();
+        $pessoaId = $pessoa->id;
+
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId, $now) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('data_expiracao', '>=', $now);
+        });
+    }
+
+    /**
      * Scope para aplicar na query filtrando por cupons que foram utilizados pela $pessoa
      */
     public function scopeUtilizadoVenda($query, $pessoa)
