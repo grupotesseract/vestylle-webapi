@@ -25,7 +25,7 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 class PessoaAPIController extends AppBaseController
 {
     use SendsPasswordResetEmails;
-    
+
     /** @var  PessoaRepository */
     private $pessoaRepository;
     private $ofertaRepository;
@@ -34,7 +34,7 @@ class PessoaAPIController extends AppBaseController
     {
         $this->pessoaRepository = $pessoaRepo;
         $this->ofertaRepository = $ofertaRepo;
-    }    
+    }
 
     /**
      * Display a listing of the Pessoa.
@@ -324,7 +324,10 @@ class PessoaAPIController extends AppBaseController
             return $this->sendError('Pessoa não encontrada');
         }
 
-        $cuponsUtilizados = $pessoa->cupons()->NaoUtilizadoVenda($pessoa)->get()->toArray();
+        $cuponsUtilizados = $pessoa->cupons()
+           ->NaoExpirados($pessoa)
+           ->NaoUtilizadoVenda($pessoa)
+           ->get()->toArray();
 
         return $this->sendResponse($cuponsUtilizados, "Cupons do usuário #$pessoa->id carregados com sucesso");
     }
@@ -349,8 +352,8 @@ class PessoaAPIController extends AppBaseController
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     protected function sendResetLinkFailedResponse(Request $request, $response)
-    {        
-        return $this->sendError('Erro ao solicitar redefinição de senha. '. trans($response));        
+    {
+        return $this->sendError('Erro ao solicitar redefinição de senha. '. trans($response));
     }
 
 }
