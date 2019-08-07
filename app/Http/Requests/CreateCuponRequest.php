@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Cupon;
+use Illuminate\Validation\Rule;
 
 class CreateCuponRequest extends FormRequest
 {
@@ -25,6 +26,25 @@ class CreateCuponRequest extends FormRequest
      */
     public function rules()
     {
-        return Cupon::$rules;
+        $rules = Cupon::$rules;
+
+        return array_merge($rules, [
+            'codigo_amigavel' => [
+                'nullable',
+                'required_without:aparece_listagem',
+                Rule::unique('cupons')->ignore($this->route('cupon')),
+            ]
+        ]);
     }
+
+    /**
+     * Incluindo mensagem de validacao custom
+     *
+     * @return void
+     */
+    public function messages()
+    {
+        return Cupon::$msgValidacaoAmigavel;
+    }
+
 }

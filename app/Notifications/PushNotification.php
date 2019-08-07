@@ -10,18 +10,22 @@ use Illuminate\Notifications\Messages\MailMessage;
 use NotificationChannels\WebPush\WebPushMessage;
 use NotificationChannels\WebPush\WebPushChannel;
 
+use App\Models\Campanha;
+
 class PushNotification extends Notification
 {
     use Queueable;
+
+    private $campanha;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Campanha $campanha)
     {
-        //
+        $this->campanha = $campanha;
     }
 
     /**
@@ -38,9 +42,9 @@ class PushNotification extends Notification
     public function toWebPush($notifiable, $notification)
     {
         return (new WebPushMessage)
-            ->title('I\'m Notification Title')
-            ->icon('/notification-icon.png')
-            ->body('Great, Push Notifications work!')
-            ->action('View App', 'notification_action');
+            ->title($this->campanha->titulo)
+            ->icon('/furacao.png')
+            ->body($this->campanha->texto)
+            ->action('Acessar', $this->campanha->url);
     }
 }

@@ -5,21 +5,28 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Notifications\PushNotification;
+use App\Repositories\CampanhaRepository;
+
 
 use Auth;
 use Notification;
 use App\Models\PessoaPush;
+use App\Notifications\PushNotificationExpo;
 
 class SubscriptionAPIController extends AppBaseController
 {
+    /** @var  CampanhaRepository */    
+    private $campanhaRepository;
+    
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(CampanhaRepository $campanhaRepo)
     {
         //$this->middleware('auth');
+        $this->campanhaRepository = $campanhaRepo;
     }
 
     /**
@@ -41,10 +48,13 @@ class SubscriptionAPIController extends AppBaseController
         $endpoint = $request->endpoint;
         $token = $request->keys['auth'];
         $key = $request->keys['p256dh'];
+
+        $usuarioPush = Auth('api')->user();
         
         $user = PessoaPush::firstOrCreate(
             [
-            'endpoint' => $endpoint
+            'endpoint' => $endpoint,
+            'pessoa_id' => $usuarioPush->id
             ]
         );
 
@@ -58,12 +68,20 @@ class SubscriptionAPIController extends AppBaseController
      * 
      * @return \Illuminate\Http\Response
      */
-    public function push()
+    public function push($idCampanha)
     {
         //AQUI FAREMOS A SELEÇÃO DE QUAIS PESSOAS RECEBERÃO
         //A NOTIFICAÇÃO, DE ACORDO COM O SEU SEGMENTO
-        Notification::send(PessoaPush::all(), new PushNotification);
-        return redirect()->back();
+        $campanha = $this->campanhaRepository->find($idCampanha);
+        $pessoas = $campanha->pessoasQuery->get();
+        $pessoasIds = $pessoas->pluck('id');
+        $pessoasPush = PessoaPush::whereIn('pessoa_id', $pessoasIds)->get();        
+        
+        //WebPush
+        Notification::send($pessoasPush, new PushNotification($campanha));
+        //Expo
+        Notification::send($pessoas, new PushNotificationExpo($campanha));
+        return redirect()->back(); 
     }
     
 }

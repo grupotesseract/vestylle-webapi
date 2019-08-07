@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 use Laratrust\Traits\LaratrustUserTrait;
+use App\Notifications\ResetPassword;
 
 
 /**
@@ -32,7 +33,7 @@ class Pessoa extends Authenticatable
     use LaratrustUserTrait;
     use Notifiable;
     use HasPushSubscriptions;
-    use SoftDeletes;
+    
     use HasApiTokens;
 
     // FLAG cadastro para indicar quando a pessoa completou o cadastro || se o cadastro ainda está pendente
@@ -138,6 +139,16 @@ class Pessoa extends Authenticatable
     }
 
     /**
+     * Relacionamento N x N entre cupons e pessoas
+     *
+     * @return relationship
+     */
+    public function faleConoscos()
+    {
+        return $this->hasMany('App\Models\FaleConosco');
+    }
+
+    /**
      * Mutator para a dataNascimento
      */
     public function setDataNascimentoAttribute($value)
@@ -154,6 +165,14 @@ class Pessoa extends Authenticatable
             : $value;
     }
 
-
-
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
+    }
 }

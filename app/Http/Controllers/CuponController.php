@@ -63,14 +63,10 @@ class CuponController extends AppBaseController
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CreateCuponRequest $request)
     {
         $input = $request->all();
-
-        $validated = $request->validate(Cupon::$rules);
-
         $cupon = $this->cuponRepository->create($input);
-
         $fotos = $request->allFiles()['files'] ?? false;
         $hasFotos = !empty($fotos);
 
@@ -81,6 +77,25 @@ class CuponController extends AppBaseController
             //Upload p/ Cloudinary e delete local
             foreach ($fotos as $foto) {
                 $this->dispatch(new SincronizarComCloudinary($foto));
+            }
+        }
+
+        if ($request->em_destaque) {
+            $fotoDestaque = $request->allFiles()['foto_homepage'] ?? false;
+            if (!empty($fotoDestaque)) {
+                $cupon->fotoDestaque()->delete();
+                $objFotoDestaque = $this->fotoRepository->uploadAndCreate($fotoDestaque);
+                $objFotoDestaque = array_pop($objFotoDestaque);
+                $objFotoDestaque->update(['tipo' => \App\Models\Foto::TIPO_DESTAQUE_CUPOM]);
+                $cupon->fotos()->save($objFotoDestaque);
+                $this->dispatch(new SincronizarComCloudinary($objFotoDestaque));
+            }
+        }
+
+        //Se nao vier foto em destaque entao remover caso tenha foto anterior
+        else {
+            if ($cupon->emDestaque) {
+                $cupon->fotoDestaque()->delete();
             }
         }
 
@@ -139,17 +154,15 @@ class CuponController extends AppBaseController
     /**
      * Update the specified Cupon in storage.
      *
-     * @param  int              $id
+     * @param  int              $idCupom
      * @param UpdateCuponRequest $request
      *
      * @return Response
      */
-    public function update($id, Request $request)
+    public function update(UpdateCuponRequest $request, $idCupom)
     {
         $input = $request->all();
-        $cupon = $this->cuponRepository->findWithoutFail($id);
-
-        $validated = $request->validate(Cupon::$rules);
+        $cupon = $this->cuponRepository->findWithoutFail($idCupom);
 
         if (empty($cupon)) {
             Flash::error('Cupom não encontrado');
@@ -162,7 +175,7 @@ class CuponController extends AppBaseController
         $canUpload  = $hasFotos ? \App\Helpers\Helpers::checkUploadLimit($cupon, count($fotos)) : true;
 
         if ($canUpload == false) {
-            $cupon = $this->cuponRepository->update($input, $id);
+            $cupon = $this->cuponRepository->update($input, $idCupom);
             Flash::error('Número máximo de imagens atingido. Tente novamente');
             Flash::success('Cupom atualizado com sucesso.');
             return redirect(route('cupons.edit', $cupon));
@@ -177,12 +190,31 @@ class CuponController extends AppBaseController
             }
         }
 
+        if ($request->em_destaque) {
+            $fotoDestaque = $request->allFiles()['foto_homepage'] ?? false;
+            if (!empty($fotoDestaque)) {
+                $cupon->fotoDestaque()->delete();
+                $objFotoDestaque = $this->fotoRepository->uploadAndCreate($fotoDestaque);
+                $objFotoDestaque = array_pop($objFotoDestaque);
+                $objFotoDestaque->update(['tipo' => \App\Models\Foto::TIPO_DESTAQUE_CUPOM]);
+                $cupon->fotos()->save($objFotoDestaque);
+                $this->dispatch(new SincronizarComCloudinary($objFotoDestaque));
+            }
+        }
+
+        //Se nao vier foto em destaque entao remover caso tenha foto anterior
+        else {
+            if ($cupon->emDestaque) {
+                $cupon->fotoDestaque()->delete();
+            }
+        }
+
         //pegando categorias da request, se nao tiver,
         //usar array vazio para remover categorias
         $categorias = $request->categorias ?? [];
         $cupon->categorias()->sync($categorias);
 
-        $cupon = $this->cuponRepository->update($input, $id);
+        $cupon = $this->cuponRepository->update($input, $idCupom);
 
         Flash::success('Cupom atualizado com sucesso.');
 

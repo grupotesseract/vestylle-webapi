@@ -14,6 +14,8 @@ use App\Http\Requests\API\CreatePessoaAPIRequest;
 use App\Http\Requests\API\UpdatePessoaAPIRequest;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+
 
 /**
  * Class PessoaController
@@ -22,6 +24,8 @@ use Illuminate\Support\Facades\Auth;
 
 class PessoaAPIController extends AppBaseController
 {
+    use SendsPasswordResetEmails;
+
     /** @var  PessoaRepository */
     private $pessoaRepository;
     private $ofertaRepository;
@@ -322,9 +326,36 @@ class PessoaAPIController extends AppBaseController
             return $this->sendError('Pessoa não encontrada');
         }
 
-        $cuponsUtilizados = $pessoa->cupons()->NaoUtilizadoVenda($pessoa)->get()->toArray();
+        $cuponsUtilizados = $pessoa->cupons()
+           ->NaoExpirados($pessoa)
+           ->NaoUtilizadoVenda($pessoa)
+           ->get()->toArray();
 
         return $this->sendResponse($cuponsUtilizados, "Cupons do usuário #$pessoa->id carregados com sucesso");
+    }
+
+    /**
+     * Get the response for a successful password reset link.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetLinkResponse(Request $request, $response)
+    {
+        return $this->sendResponse($response, 'Email de redefinição de senha enviado com sucesso');
+    }
+
+    /**
+     * Get the response for a failed password reset link.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetLinkFailedResponse(Request $request, $response)
+    {
+        return $this->sendError('Erro ao solicitar redefinição de senha. '. trans($response));
     }
 
 }

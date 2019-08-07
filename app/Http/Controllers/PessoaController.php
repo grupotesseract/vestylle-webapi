@@ -10,11 +10,18 @@ use App\Repositories\PessoaRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+
 
 class PessoaController extends AppBaseController
 {
+    use ResetsPasswords;
+
     /** @var  PessoaRepository */
     private $pessoaRepository;
+
+    protected $redirectTo = '/password/success';
+
 
     public function __construct(PessoaRepository $pessoaRepo)
     {
@@ -140,16 +147,27 @@ class PessoaController extends AppBaseController
             Flash::error('Pessoa não encontrada');
 
             return redirect(route('pessoas.index'));
-        }
+        }        
 
-        if ($pessoa->cupons) {
-            \DB::statement("DELETE FROM cupons_pessoas WHERE pessoa_id = $pessoa->id");
-        }
+        $pessoa->cupons()->detach();
+        $pessoa->listaDesejos()->detach();
+        $pessoa->categorias()->detach();
+        $pessoa->faleConoscos()->forceDelete();
 
         $this->pessoaRepository->delete($id);
 
         Flash::success('Pessoa excluída com sucesso.');
 
         return redirect(route('pessoas.index'));
+    }
+
+    /**
+     * Form de senha redefinida com sucesso
+     *
+     * @return Response
+     */
+    public function resetSuccess()
+    {
+        return view('auth.passwords.reset_success');
     }
 }

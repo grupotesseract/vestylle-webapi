@@ -31,6 +31,7 @@ class Cupon extends Model
         'oferta_id',
         'foto_caminho',
         'titulo',
+        'codigo_amigavel',
         'subtitulo',
         'aparece_listagem',
         'porcentagem_off',
@@ -58,10 +59,20 @@ class Cupon extends Model
      * @var array
      */
     public static $rules = [
-        'data_validade' => 'required',
-        'texto_cupom' => 'required',
         'titulo' => 'required | max: 150',
         'subtitulo' => 'required | max: 150',
+        'data_validade' => 'required',
+        'texto_cupom' => 'required',
+    ];
+
+    public static $msgValidacaoAmigavel = [
+        'codigo_amigavel.required_without' => 'O campo Código para ativação do cupom é obrigatório se o cupom não estiver marcado como Disponivel em "Meus Cupons"',
+        'codigo_amigavel.unique' => 'O valor do campo Código para ativação do cupom já está sendo utiizado por outro cupom',
+    ];
+
+    public $appends = [
+        'em_destaque',
+        'fotos_listagem'
     ];
 
     /**
@@ -129,7 +140,9 @@ class Cupon extends Model
      */
     public function pessoas()
     {
-        return $this->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')->withPivot('cupom_utilizado_venda','codigo_unico');;
+        return $this
+            ->belongsToMany('App\Models\Pessoa', 'cupons_pessoas', 'cupom_id', 'pessoa_id')
+            ->withPivot('cupom_utilizado_venda', 'codigo_unico', 'data_expiracao');
     }
 
     /**
@@ -143,6 +156,27 @@ class Cupon extends Model
     }
 
     /**
+     * Foto de destaque do cupom (query)
+     *
+     * @return QueryBuilder
+     */
+    public function fotoDestaque()
+    {
+        return $this->fotos()
+                    ->where('tipo', \App\Models\Foto::TIPO_DESTAQUE_CUPOM);
+    }
+
+    /**
+     * Acessor para a foto de destaque do cupom
+     *
+     * @return void
+     */
+    public function getFotoDestaqueAttribute()
+    {
+        return $this->fotoDestaque()->first();
+    }
+
+    /**
      * Relacionamento N x N entre Cupons e Categorias (polimórfico)
      *
      * @return void
@@ -153,15 +187,15 @@ class Cupon extends Model
     }
 
     /**
-     * Acessor que traz a a primeira foto do cupon, caso nao exista nenhuma
+     * Acessor que traz a foto de destaque do cupon, caso nao exista nenhuma
      * trazer da oferta, caso eles estejam relacionados
      *
      * @return void
      */
     public function getFotoCaminhoAttribute()
     {
-        if ($this->fotos()->count()) {
-            return $this->fotos()->first()->urlCloudinary;
+        if ($this->fotoDestaque()->count()) {
+            return $this->fotoDestaque->urlCloudinary;
         }
 
         if ($this->oferta) {
@@ -177,10 +211,13 @@ class Cupon extends Model
      */
     public function ativar($pessoa_id, $codigo_unico)
     {
-        \App\Models\CuponPessoa::create([
+        $data_expiracao = \Carbon\Carbon::now()->addDays(7);
+
+        return \App\Models\CuponPessoa::create([
             'cupom_id' => $this->id,
             'pessoa_id' => $pessoa_id,
             'codigo_unico' => $codigo_unico,
+            'data_expiracao' => $data_expiracao
         ]);
     }
 
@@ -207,16 +244,23 @@ class Cupon extends Model
      *
      * @return void
      */
-    public static function findEncryptado($idEncryptado, $pessoa_id = null)
+    public static function findEncryptado($idEncryptado)
     {
-        $cupon = self::with(
-            [
-                'pessoas' => function ($query) use ($pessoa_id) { 
-                    $query->where('pessoa_id', $pessoa_id);
-                }
-            ]
-        )->where('qrcode', $idEncryptado)->get()->first();
-        
+        $cupon = self::where('qrcode', $idEncryptado)->first();
+        return $cupon;
+    }
+
+    /**
+     * Metodo para dar find a partir do codigo_amigavel
+     *
+     * @see App\Repositories\CuponRepository - findByCodigoAmigavel
+     * @param mixed codigoAmigavel
+     *
+     * @return void
+     */
+    public static function findByCodigoAmigavel($codigoAmigavel)
+    {
+        $cupon = self::where('codigo_amigavel', $codigoAmigavel)->first();
         return $cupon;
     }
 
@@ -251,14 +295,52 @@ class Cupon extends Model
     /**
      * Scope para filtrar cupons com data de vencimento expirada
      */
-     public function scopeVencidos($query)
-     {
-         $now = \Carbon\Carbon::now();
+    public function scopeVencidos($query)
+    {
+        $now = \Carbon\Carbon::now();
 
         return $query->where('data_validade', '<', $now);
-     }
+    }
 
-     /**
+    /**
+     * Scope para filtrar cupons com data de vencimento expirada
+     */
+    public function scopeNaoVencidos($query)
+    {
+        $now = \Carbon\Carbon::now();
+
+        return $query->where('data_validade', '>=', $now);
+    }
+
+    /**
+     * Scope para filtrar cupons com data de expiracao antiga (pessoa ativou cupon a + de 7 dias)
+     */
+    public function scopeExpirados($query, $pessoa)
+    {
+        $now = \Carbon\Carbon::now();
+        $pessoaId = $pessoa->id;
+
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId, $now) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('data_expiracao', '<', $now);
+        });
+    }
+
+    /**
+     * Scope para filtrar os cupons que não foram expirados (pessoa ativou em menos de 7 dias)
+     */
+    public function scopeNaoExpirados($query, $pessoa)
+    {
+        $now = \Carbon\Carbon::now();
+        $pessoaId = $pessoa->id;
+
+        return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId, $now) {
+            $qCuponPessoa->where('pessoa_id', $pessoaId);
+            $qCuponPessoa->where('data_expiracao', '>=', $now);
+        });
+    }
+
+    /**
      * Scope para aplicar na query filtrando por cupons que foram utilizados pela $pessoa
      */
     public function scopeUtilizadoVenda($query, $pessoa)
@@ -279,7 +361,70 @@ class Cupon extends Model
         return $query->whereHas('pessoas', function($qCuponPessoa) use ($pessoaId) {
             $qCuponPessoa->where('pessoa_id', $pessoaId);
             $qCuponPessoa->where('cupom_utilizado_venda', false);
+            $qCuponPessoa->where('data_expiracao', '>=', \Carbon\Carbon::now());
         });
+    }
+
+    /**
+     * Mutator para a data_validade
+     *
+     * @param mixed $value - Valor antes de inserir no BD
+     */
+    public function setDataValidadeAttribute($value)
+    {
+        if (is_null($value)) {
+            return $this->attributes['data_validade'] = $value;
+        }
+
+        $isCarbon = is_object($value);
+
+        if ($isCarbon) {
+            return $this->attributes['data_validade'] = $value->format('Y-m-d');
+        }
+
+        $dataFormatada = preg_match('/\//', $value);
+        return $this->attributes['data_validade'] = $dataFormatada
+            ? \Carbon\Carbon::createFromFormat("d/m/Y", $value)->format('Y-m-d')
+            : $value;
+    }
+
+    /**
+     * Acessor para a url da foto em destaque do cupom
+     */
+    public function getUrlFotoDestaqueAttribute()
+    {
+        return $this->fotoDestaque
+            ? $this->fotoDestaque->urlCloudinary
+            : null;
+    }
+
+    /**
+     * Acessor para determinar se esse cupom está em destaque
+     */
+    public function getEmDestaqueAttribute()
+    {
+        return $this->fotoDestaque()->count() ? true : false;
+    }
+
+    /**
+     * Acessor para as Fotos que não são a foto em destaque
+     */
+    public function getFotosListagemAttribute()
+    {
+        return $this->fotos()->whereNull('tipo')->get();
+    }
+
+    /**
+     * Mutator para não setar '' em um campo unique e nullable
+     */
+    public function setCodigoAmigavelAttribute($value)
+    {
+        //Se vier vazio, setar value pra null
+        if (!strlen($value)) {
+            $value = null;
+        }
+
+        $this->attributes['codigo_amigavel'] = $value;
     }
 
 }
