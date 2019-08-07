@@ -31,8 +31,16 @@ class Kernel extends ConsoleKernel
         $schedule->command('vestylle:atualiza-ultimos-compradores')
             ->dailyAt('04:20');
 
+<<<<<<< Updated upstream
         $schedule->command('vestylle:limpar_cupons_vencidos')
             ->dailyAt('16:20');
+=======
+        $schedule->command('vestylle:atualiza-clientes-novos')
+            ->dailyAt('04:25');
+
+        //$schedule->command('vestylle:limpar_cupons_vencidos')
+            //->dailyAt('04:29');
+>>>>>>> Stashed changes
     }
 
     /**

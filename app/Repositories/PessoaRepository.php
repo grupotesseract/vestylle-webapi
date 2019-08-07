@@ -246,7 +246,7 @@ class PessoaRepository extends BaseRepository
      *
      * @param Pessoa $pessoa
      */
-    public function updateNascimentoPessoa(Pessoa $pessoa)
+    public function updateNascimentoPessoa(Pessoa $pessoa) 
     {
         $this->startConnectorVestylle();
         $result = $this->vestylleDB->getNascimentoPessoa($pessoa);
@@ -261,6 +261,20 @@ class PessoaRepository extends BaseRepository
         }
 
         return false;
+    }
+
+    public function updateSexoPessoa(Pessoa $pessoa) 
+    {
+        $this->startConnectorVestylle();
+        $result = $this->vestylleDB->getSexo($pessoa);
+
+        $updated = $pessoa->update(
+            [
+                'genero' => $result
+            ]
+        );
+
+        return $updated;
     }
 
     /**
@@ -403,6 +417,7 @@ class PessoaRepository extends BaseRepository
                 $this->updateDataUltimaCompraPessoa($Pessoa);
                 $this->updateNascimentoPessoa($Pessoa);
                 $this->updateDataUltimaCompraPessoa($Pessoa);
+                $this->updateSexoPessoa($Pessoa);
                 $numPessoasAtualizadas++;
             }
         }
