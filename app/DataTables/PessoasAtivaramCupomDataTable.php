@@ -6,7 +6,7 @@ use App\Models\Pessoa;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class PessoaDataTable extends DataTable
+class PessoasAtivaramCupomDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -20,7 +20,7 @@ class PessoaDataTable extends DataTable
 
         return $dataTable->addColumn('action', function ($cupon) {
             $id = $cupon->id;
-            $mostrarBtnBaixaCaixa = false;
+            $mostrarBtnBaixaCaixa = true;
             return view('pessoas.datatables_actions', compact('id', 'mostrarBtnBaixaCaixa'))
                 ->render();
         });

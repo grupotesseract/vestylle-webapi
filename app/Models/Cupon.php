@@ -436,7 +436,7 @@ class Cupon extends Model
      public function getQntPessoasElegiveisAttribute()
      {
          if ($this->categorias()->count()) {
-             $idsCategorias = $this->categorias()->get()->pluck('id');
+             $idsCategorias = $this->categorias->pluck('id');
              return Pessoa::whereHas('categorias', function ($qCategoria) use ($idsCategorias) {
                  $qCategoria->whereIn('categoria_id', $idsCategorias);
              })->count();
