@@ -72,7 +72,7 @@ class Cupon extends Model
 
     public $appends = [
         'em_destaque',
-        'fotos_listagem'
+        'fotos_listagem',
     ];
 
     /**
@@ -426,5 +426,25 @@ class Cupon extends Model
 
         $this->attributes['codigo_amigavel'] = $value;
     }
+
+
+    /**
+     * Acessor para obter a quantidade de pessoas que podem ver esse cupom
+     *
+     * @return integer
+     */
+     public function getQntPessoasElegiveisAttribute()
+     {
+         if ($this->categorias()->count()) {
+             $idsCategorias = $this->categorias()->get()->pluck('id');
+             return Pessoa::whereHas('categorias', function ($qCategoria) use ($idsCategorias) {
+                 $qCategoria->whereIn('categoria_id', $idsCategorias);
+             })->count();
+         }
+         else {
+             return Pessoa::count();
+         }
+     }
+
 
 }

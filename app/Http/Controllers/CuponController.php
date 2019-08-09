@@ -18,6 +18,7 @@ use App\Repositories\PessoaRepository;
 use App\Http\Requests\CreateCuponRequest;
 use App\Http\Requests\UpdateCuponRequest;
 use App\DataTables\Scopes\PessoasPorCupon;
+use App\DataTables\Scopes\PessoasPorNCategorias;
 use App\Http\Controllers\AppBaseController;
 
 class CuponController extends AppBaseController
@@ -292,4 +293,30 @@ class CuponController extends AppBaseController
         return redirect()->back();
     }
 
+    /**
+     * Serve a view com a datatable de pessoas que podem ver esse cupon
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function showPessoasPermitidas(PessoaDataTable $pessoaDataTable, $id)
+    {
+        $cupon = $this->cuponRepository->findWithoutFail($id);
+
+        if (empty($cupon)) {
+            Flash::error('Cupom não encontrado');
+            return redirect(route('cupons.index'));
+        }
+
+        //Se tiver categorias, então existe segmentacao, logo é necessario aplicar scope
+        if ($cupon->categorias()->count()) {
+            return $pessoaDataTable
+               ->addScope(new PessoasPorNCategorias($idsCategorias))
+               ->render('cupons.pessoas', compact('cupon'));
+        }
+
+        return $pessoaDataTable
+            ->render('cupons.pessoas', compact('cupon'));
+    }
 }
