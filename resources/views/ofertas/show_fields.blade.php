@@ -60,6 +60,15 @@
     </div>
 
     <div class="col-md-8">
+        <!--  Pessoas -->
+        <div class="form-group">
+            {!! Form::label('pessoas', "Existem $oferta->qntPessoasElegiveis pessoas que podem ver esse cupom") !!}
+            -
+            <a class="btn btn-xs btn-info" href="{{ route('ofertas.pessoas', $oferta->id)}}">
+                <i class="fa fa-user"></i> - Ver Detalhes
+            </a>
+        </div>
+        <hr>
         @if ($oferta->fotos()->count())
             <div class="form-group">
                 {!! Form::label('fotos', 'Fotos:') !!}

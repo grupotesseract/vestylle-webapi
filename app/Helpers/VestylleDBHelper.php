@@ -150,7 +150,7 @@ class VestylleDBHelper
      */
     public function getSaldoPontosPessoa(Pessoa $pessoa)
     {
-        $query = "SELECT SALDO from vegas_teste.fidmovim WHERE DONOID = $pessoa->id_vestylle ORDER BY CNSCADMOM DESC LIMIT 1" ;
+        $query = "SELECT SALDO from vegas_teste.fidmovim WHERE DONOID = $pessoa->id_vestylle ORDER BY CNSCADMOM DESC LIMIT 1";
 
         try {
             $result = $this->query()->select($query);
@@ -160,6 +160,34 @@ class VestylleDBHelper
         }
 
         return $result;
+    }
+
+    /**
+     * Método para obter sexo de uma pessoa - necessária a verificação do array pois a base Vestylle está com diferentes registros
+     *
+     * @param Pessoa $pessoa
+     * @return string||null
+     */
+    public function getSexo(Pessoa $pessoa)
+    {
+        $query = "SELECT DESCRICAO as sexo FROM vegas_teste.pesinfo WHERE TIPOINFO = 'SEXO' AND IDPESSOA = $pessoa->id_vestylle";
+        $mascArray = ['MASCULINO', 'M', 'masc', 'MASC.'];
+        $femArray = ['FEMININO', 'FEM', 'F', 'FEMININA', 'feminio', 'FEMENINO', 'FEMINNO', '(F)', 'FEM.'];
+
+        try {
+            $result = $this->query()->select($query);
+        } catch (\Exception $e) {
+            \Log::error("\n[ERRO] - Erro ao obter saldo de uma pessoa. Log: " . $e->getMessage());
+            return false;
+        }
+
+        if (in_array($result[0]->{"sexo"}, $mascArray)) {
+            return 'Masculino';
+        } else if (in_array($result[0]->{"sexo"}, $femArray)) {
+            return 'Feminino';
+        } else {
+            return null;
+        }
     }
 
     /**

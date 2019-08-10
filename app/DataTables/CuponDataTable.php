@@ -18,7 +18,10 @@ class CuponDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'cupons.datatables_actions');
+        return $dataTable->addColumn('qntPessoas', function($cupon) {
+            return $cupon->qntPessoasElegiveis;
+        })->addColumn('action', 'cupons.datatables_actions');
+
     }
 
     /**
@@ -73,7 +76,7 @@ class CuponDataTable extends DataTable
             ['data' => 'data_validade', 'title' => 'Valido até:'],
             ['data' => 'titulo', 'title' => 'Título'],
             ['data' => 'texto_cupom', 'title' => 'Texto'],
-            ['data' => 'oferta_id', 'title' => 'Código da oferta']
+            ['data' => 'qntPessoas', 'title' => 'Qnt. Pessoas', 'filterable' =>  false, 'searchable' => false, 'orderable' => false],
         ];
     }
 

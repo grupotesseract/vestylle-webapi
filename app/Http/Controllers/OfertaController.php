@@ -16,6 +16,7 @@ use App\Http\Requests\CreateOfertaRequest;
 use App\Http\Requests\UpdateOfertaRequest;
 use App\Http\Controllers\AppBaseController;
 use App\DataTables\Scopes\PessoasPorOferta;
+use App\DataTables\Scopes\PessoasPorNCategorias;
 
 class OfertaController extends AppBaseController
 {
@@ -202,6 +203,34 @@ class OfertaController extends AppBaseController
         Flash::success('Oferta excluída com sucesso.');
 
         return redirect(route('ofertas.index'));
+    }
+
+    /**
+     * Serve a view com a datatable de pessoas que podem ver essa oferta
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function showPessoasPermitidas(PessoaDataTable $pessoaDataTable, $id)
+    {
+        $oferta = $this->ofertaRepository->findWithoutFail($id);
+
+        if (empty($oferta)) {
+            Flash::error('Cupom não encontrado');
+            return redirect(route('ofertas.index'));
+        }
+
+        //Se tiver categorias, então existe segmentacao, logo é necessario aplicar scope
+        if ($oferta->categorias()->count()) {
+            $idsCategorias = $oferta->categorias->pluck('id');
+            return $pessoaDataTable
+               ->addScope(new PessoasPorNCategorias($idsCategorias))
+               ->render('ofertas.pessoas', compact('oferta'));
+        }
+
+        return $pessoaDataTable
+            ->render('ofertas.pessoas', compact('oferta'));
     }
 
 }

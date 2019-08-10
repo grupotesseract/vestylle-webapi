@@ -32,8 +32,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('vestylle:atualiza-clientes-novos')
             ->dailyAt('04:25');
 
-        $schedule->command('vestylle:limpar_cupons_vencidos')
-            ->dailyAt('04:29');
+        //$schedule->command('vestylle:limpar_cupons_vencidos')
+            //->dailyAt('04:29');
     }
 
     /**

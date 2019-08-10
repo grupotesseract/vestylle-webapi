@@ -82,6 +82,7 @@ class CuponRepository extends BaseRepository
 
             $cuponsSegmentados = $this->model()::with('fotos')->apareceListagem()
                 ->NaoVencidos()
+                ->NaoExpirados($pessoa)
                 ->SegmentadosPorUsuario($pessoa)
                 ->get();
 
@@ -89,11 +90,14 @@ class CuponRepository extends BaseRepository
             $cuponsUtilizadosVenda = $this->model()::with('fotos')->apareceListagem()
                 ->UtilizadoVenda($pessoa)
                 ->get();
+            
+            $cuponsExpirados = $this->model()::Expirados($pessoa)->get();
 
             //Mergeando Cupons, assim nao ficam duplicados e existem de ambos grupos
             $cupons = $cuponsSegmentados->merge($cuponsNaoSegmentados);
             //Excluindo cupons ja utilizados apos o merge
             $cupons = $cupons->diff($cuponsUtilizadosVenda);
+            $cupons = $cupons->diff($cuponsExpirados);
 
 
         } else {

@@ -2,11 +2,11 @@
 
 namespace App\DataTables;
 
-use App\Models\Oferta;
+use App\Models\Pessoa;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class OfertaDataTable extends DataTable
+class PessoasAtivaramCupomDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -18,20 +18,21 @@ class OfertaDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable
-            ->addColumn('qntPessoas', function ($oferta) {
-                return $oferta->qntPessoasElegiveis;
-            })
-            ->addColumn('action', 'ofertas.datatables_actions');
+        return $dataTable->addColumn('action', function ($cupon) {
+            $id = $cupon->id;
+            $mostrarBtnBaixaCaixa = true;
+            return view('pessoas.datatables_actions', compact('id', 'mostrarBtnBaixaCaixa'))
+                ->render();
+        });
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Oferta $model
+     * @param \App\Models\Pessoa $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Oferta $model)
+    public function query(Pessoa $model)
     {
         return $model->newQuery();
     }
@@ -51,7 +52,6 @@ class OfertaDataTable extends DataTable
                 'dom'     => 'Bfrtip',
                 'order'   => [[0, 'desc']],
                 'buttons' => [
-                    ['extend' => 'create','text' => '<i class="fa fa-plus"></i> Adicionar'],
                     ['extend' => 'export', 'text' => '<i class="fa fa-download"></i> Exportar'],
                     ['extend' => 'print', 'text' => '<i class="fa fa-print"></i> Imprimir'],
                     ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar'],
@@ -60,9 +60,7 @@ class OfertaDataTable extends DataTable
                         'text'    => 'Filtrar Colunas',
                     ]
                 ],
-                'language' => [
-                    'url' => url('//cdn.datatables.net/plug-ins/1.10.18/i18n/Portuguese-Brasil.json')
-                ],
+                'language' => ['url' => '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese-Brasil.json'],
             ]);
     }
 
@@ -73,12 +71,23 @@ class OfertaDataTable extends DataTable
      */
     protected function getColumns()
     {
-        $url = url('storage/');
         return [
-            ['data' => 'id', 'title' => 'Código'],
-            ['data' => 'titulo', 'title' => 'Título'],
-            ['data' => 'descricao_oferta', 'title' => 'Descrição'],
-            ['data' => 'qntPessoas', 'title' => 'Qnt. Pessoas', 'filterable' =>  false, 'searchable' => false, 'orderable' => false],
+            // 'id_vestylle',
+            'saldo_pontos',
+            'celular',
+            'telefone_fixo',
+            'email',
+            // 'email_verified_at',
+            'nome',
+            // 'cpf',
+            // 'cep',
+            // 'endereco',
+            // 'numero',
+            // 'bairro',
+            // 'complemento',
+            'data_ultima_compra',
+            'data_nascimento',
+            // 'cidade_id'
         ];
     }
 
@@ -89,6 +98,6 @@ class OfertaDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'ofertasdatatable_' . time();
+        return 'pessoasdatatable_' . time();
     }
 }
