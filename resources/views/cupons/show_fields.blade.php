@@ -78,6 +78,16 @@
     </div>
     <div class="col-md-8">
 
+        <!--  Pessoas -->
+        <div class="form-group">
+            {!! Form::label('pessoas', "Existem $cupon->qntPessoasElegiveis pessoas que podem ver esse cupom") !!}
+            -
+            <a class="btn btn-xs btn-info" href="{{ route('cupons.pessoas', $cupon->id)}}">
+                <i class="fa fa-user"></i> - Ver Detalhes
+            </a>
+        </div>
+        <hr>
+
         @if ($cupon->fotoDestaque)
             <div class="form-group">
                 {!! Form::label('foto_destaque', 'Foto de destaque') !!} <br>

@@ -31,11 +31,13 @@ Route::group(['middleware' => ['role:admin']], function () {
         'create', 'store'
     ]);
     Route::resource('cupons', 'CuponController');
+    Route::get('cupons/{id}/pessoas', 'CuponController@showPessoasPermitidas')->name('cupons.pessoas');
     Route::get('cupons/pessoa/{id}', 'CuponController@getCuponsPessoa');
     Route::resource('faleConoscos', 'FaleConoscoController')->except([
         'create', 'store'
     ]);
     Route::resource('ofertas', 'OfertaController');
+    Route::get('ofertas/{id}/pessoas', 'OfertaController@showPessoasPermitidas')->name('ofertas.pessoas');
     Route::resource('lojas', 'LojaController')->except([
         'create', 'store'
     ]);
