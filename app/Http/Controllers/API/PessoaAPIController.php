@@ -86,8 +86,9 @@ class PessoaAPIController extends AppBaseController
             $this->pessoaRepository->updatePontosPessoa($pessoa);
             $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
             $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
-            $this->pessoaRepository->updateNascimentoPessoa($pessoa);
+            $this->pessoaRepository->updateNascimentoPessoa($pessoa); 
             $this->pessoaRepository->updateSegmentos($pessoa);
+            $this->pessoaRepository->updateSexoPessoa($pessoa);
         }
 
         $token = $this->pessoaRepository->login($pessoa, $request);
@@ -152,6 +153,7 @@ class PessoaAPIController extends AppBaseController
             $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
             $this->pessoaRepository->updateNascimentoPessoa($pessoa);
             $this->pessoaRepository->updateSegmentos($pessoa);
+            $this->pessoaRepository->updateSexoPessoa($pessoa);
         }
 
         return $this->sendResponse($pessoa->toArray(), 'Pessoa atualizada com sucesso');
