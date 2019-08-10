@@ -22,7 +22,7 @@
 </div>
 
 {{-- *@OBS*: 'marcar como utilizado no caixa'. Pegando o id do cupon pela URL  --}}
-@if (\Request::is('*cupons*'))
+@if ( isset($mostrarBtnBaixaCaixa) && $mostrarBtnBaixaCaixa )
 <div class='btn-group'>
     {!! Form::open(['route' => ['cupons.setUtilizadoVenda', \Request::segments()[1]]]) !!}
     {!! Form::hidden('pessoa_id', $id) !!}

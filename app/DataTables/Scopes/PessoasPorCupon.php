@@ -4,6 +4,13 @@ namespace App\DataTables\Scopes;
 
 use Yajra\DataTables\Contracts\DataTableScope;
 
+/**
+ * Class: PessoasPorCupon
+ *
+ * Classe para filtrar as pessoas que adicionaram determinado cupom a sua lista de desejos
+ *
+ * @see DataTableScope
+ */
 class PessoasPorCupon implements DataTableScope
 {
 

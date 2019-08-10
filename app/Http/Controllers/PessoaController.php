@@ -12,6 +12,8 @@ use App\Http\Controllers\AppBaseController;
 use Response;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
+use App\Models\PessoaPush;
+
 
 class PessoaController extends AppBaseController
 {
@@ -152,7 +154,8 @@ class PessoaController extends AppBaseController
         $pessoa->cupons()->detach();
         $pessoa->listaDesejos()->detach();
         $pessoa->categorias()->detach();
-        $pessoa->faleConoscos()->forceDelete();
+        $pessoa->faleConoscos()->forceDelete(); 
+        PessoaPush::where('pessoa_id', $id)->delete();
 
         $this->pessoaRepository->delete($id);
 

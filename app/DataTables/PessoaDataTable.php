@@ -18,7 +18,12 @@ class PessoaDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'pessoas.datatables_actions');
+        return $dataTable->addColumn('action', function ($cupon) {
+            $id = $cupon->id;
+            $mostrarBtnBaixaCaixa = false;
+            return view('pessoas.datatables_actions', compact('id', 'mostrarBtnBaixaCaixa'))
+                ->render();
+        });
     }
 
     /**

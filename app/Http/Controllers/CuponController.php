@@ -11,6 +11,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\DataTables\CuponDataTable;
 use App\DataTables\PessoaDataTable;
+use App\DataTables\PessoasAtivaramCupomDataTable;
 use App\Repositories\FotoRepository;
 use App\Repositories\CuponRepository;
 use App\Jobs\SincronizarComCloudinary;
@@ -18,6 +19,7 @@ use App\Repositories\PessoaRepository;
 use App\Http\Requests\CreateCuponRequest;
 use App\Http\Requests\UpdateCuponRequest;
 use App\DataTables\Scopes\PessoasPorCupon;
+use App\DataTables\Scopes\PessoasPorNCategorias;
 use App\Http\Controllers\AppBaseController;
 
 class CuponController extends AppBaseController
@@ -116,18 +118,18 @@ class CuponController extends AppBaseController
      *
      * @return Response
      */
-    public function show(PessoaDataTable $pessoaDataTable, $id)
+    public function show(PessoasAtivaramCupomDataTable $pessoaDataTable, $id)
     {
         $cupon = $this->cuponRepository->findWithoutFail($id);
+        $mostrarBtnBaixaCaixa = true;
 
         if (empty($cupon)) {
             Flash::error('Cupom não encontrado');
-
             return redirect(route('cupons.index'));
         }
 
         return $pessoaDataTable->addScope(new PessoasPorCupon($id))
-            ->render('cupons.show', compact('cupon'));
+            ->render('cupons.show', compact('cupon', $mostrarBtnBaixaCaixa));
     }
 
     /**
@@ -292,4 +294,31 @@ class CuponController extends AppBaseController
         return redirect()->back();
     }
 
+    /**
+     * Serve a view com a datatable de pessoas que podem ver esse cupon
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function showPessoasPermitidas(PessoaDataTable $pessoaDataTable, $id)
+    {
+        $cupon = $this->cuponRepository->findWithoutFail($id);
+
+        if (empty($cupon)) {
+            Flash::error('Cupom não encontrado');
+            return redirect(route('cupons.index'));
+        }
+
+        //Se tiver categorias, então existe segmentacao, logo é necessario aplicar scope
+        if ($cupon->categorias()->count()) {
+            $idsCategorias = $cupon->categorias->pluck('id');
+            return $pessoaDataTable
+               ->addScope(new PessoasPorNCategorias($idsCategorias))
+               ->render('cupons.pessoas', compact('cupon'));
+        }
+
+        return $pessoaDataTable
+            ->render('cupons.pessoas', compact('cupon'));
+    }
 }

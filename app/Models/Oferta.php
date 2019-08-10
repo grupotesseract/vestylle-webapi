@@ -187,4 +187,22 @@ class Oferta extends Model
         return $query->doesntHave('categorias');
     }
 
+    /**
+     * Acessor para obter a quantidade de pessoas que podem ver essa oferta
+     *
+     * @return integer
+     */
+     public function getQntPessoasElegiveisAttribute()
+     {
+         if ($this->categorias()->count()) {
+             $idsCategorias = $this->categorias->pluck('id');
+             return Pessoa::whereHas('categorias', function ($qCategoria) use ($idsCategorias) {
+                 $qCategoria->whereIn('categoria_id', $idsCategorias);
+             })->count();
+         }
+         else {
+             return Pessoa::count();
+         }
+     }
+
 }
