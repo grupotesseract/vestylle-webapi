@@ -304,7 +304,6 @@ class CuponController extends AppBaseController
     public function showPessoasPermitidas(PessoaDataTable $pessoaDataTable, $id)
     {
         $cupon = $this->cuponRepository->findWithoutFail($id);
-        $mostrarBtnBaixaCaixa = false;
 
         if (empty($cupon)) {
             Flash::error('Cupom não encontrado');
@@ -320,6 +319,6 @@ class CuponController extends AppBaseController
         }
 
         return $pessoaDataTable
-            ->render('cupons.pessoas', compact('cupon', 'mostrarBtnBaixaCaixa'));
+            ->render('cupons.pessoas', compact('cupon'));
     }
 }

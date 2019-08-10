@@ -37,6 +37,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         'create', 'store'
     ]);
     Route::resource('ofertas', 'OfertaController');
+    Route::get('ofertas/{id}/pessoas', 'OfertaController@showPessoasPermitidas')->name('ofertas.pessoas');
     Route::resource('lojas', 'LojaController')->except([
         'create', 'store'
     ]);

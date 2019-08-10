@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="content-header">
-        <h1>Pessoas que podem ver o cupom: {{$cupon->titulo}}
+        <h1>Pessoas que podem ver a oferta: {{$oferta->titulo}}
 
             <span class="pull-right">
                 <a class="btn btn-default" href="javascript:history.back()"> Voltar</a>

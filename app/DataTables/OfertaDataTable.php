@@ -18,7 +18,11 @@ class OfertaDataTable extends DataTable
     {
         $dataTable = new EloquentDataTable($query);
 
-        return $dataTable->addColumn('action', 'ofertas.datatables_actions');
+        return $dataTable
+            ->addColumn('qntPessoas', function ($oferta) {
+                return $oferta->qntPessoasElegiveis;
+            })
+            ->addColumn('action', 'ofertas.datatables_actions');
     }
 
     /**
@@ -72,8 +76,9 @@ class OfertaDataTable extends DataTable
         $url = url('storage/');
         return [
             ['data' => 'id', 'title' => 'Código'],
-            ['data' => 'titulo', 'title' => 'Título'],            
+            ['data' => 'titulo', 'title' => 'Título'],
             ['data' => 'descricao_oferta', 'title' => 'Descrição'],
+            ['data' => 'qntPessoas', 'title' => 'Qnt. Pessoas', 'filterable' =>  false, 'searchable' => false, 'orderable' => false],
         ];
     }
 
