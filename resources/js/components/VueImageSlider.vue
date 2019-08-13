@@ -42,7 +42,10 @@
                     showConfirmButton: true
                 })
                 .then( (isConfirm) => {
-                    if (isConfirm) {
+                    console.log('confirmou?');
+                    console.log(isConfirm);
+
+                    if (isConfirm.value) {
                         const imgIndex = this.images.indexOf(currentImage);
 
                         axios.delete('/imagens/' + currentImage.id,
