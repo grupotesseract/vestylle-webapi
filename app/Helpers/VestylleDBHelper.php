@@ -181,10 +181,16 @@ class VestylleDBHelper
             return false;
         }
 
-        if (in_array($result[0]->{"sexo"}, $mascArray)) {
-            return 'Masculino';
-        } else if (in_array($result[0]->{"sexo"}, $femArray)) {
-            return 'Feminino';
+        if (is_array($result)) {
+        
+            if (in_array($result[0]->{"sexo"}, $mascArray)) {
+                return 'Masculino';
+            } else if (in_array($result[0]->{"sexo"}, $femArray)) {
+                return 'Feminino';
+            } else {
+                return null;
+            }
+            
         } else {
             return null;
         }
