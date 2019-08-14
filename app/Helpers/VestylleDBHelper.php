@@ -181,6 +181,7 @@ class VestylleDBHelper
             return false;
         }
 
+        \Log::debug(json_decode($result));
         if (is_array($result)) {
         
             if (in_array($result[0]->{"sexo"}, $mascArray)) {
