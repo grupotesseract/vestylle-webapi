@@ -181,8 +181,7 @@ class VestylleDBHelper
             return false;
         }
 
-        \Log::debug(json_encode($result));
-        if (is_array($result)) {
+        if (!is_null($result[0])) {
         
             if (in_array($result[0]->{"sexo"}, $mascArray)) {
                 return 'Masculino';
@@ -191,7 +190,7 @@ class VestylleDBHelper
             } else {
                 return null;
             }
-            
+
         } else {
             return null;
         }
