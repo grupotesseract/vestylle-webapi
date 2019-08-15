@@ -79,8 +79,53 @@ class SubscriptionAPIController extends AppBaseController
         
         //WebPush
         Notification::send($pessoasPush, new PushNotification($campanha));
-        //Expo
-        Notification::send($pessoas, new PushNotificationExpo($campanha));
+        // //Expo
+        // Notification::send($pessoas, new PushNotificationExpo($campanha));
+
+        
+        // 'curl -H "Content-Type: application/json" -X POST "https://exp.host/--/api/v2/push/send" -d '{
+        //     "to": ["ExponentPushToken[6R_fzjHyr5hX3cwSu0oSGA]", "ExponentPushToken[nracypPb4xzBWXPTTgJcbo]"],
+        //     "title":"hello",
+        //     "body": "world"
+        //   }'';        
+        
+        foreach ($pessoasIds as $pessoaId) {
+            $inSQL[] = 'App.Models.Pessoa.'.$pessoaId;
+        }
+
+        $expoTokens = \DB::table('exponent_push_notification_interests')
+        ->whereIn('key', $inSQL)->get()->pluck('value');
+
+
+        $data = array(
+            "to" => $expoTokens,
+            "title" => $campanha->titulo,
+            "body" => $campanha->texto
+        );
+
+        $payload = json_encode($data);
+
+        $ch = curl_init('https://exp.host/--/api/v2/push/send');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        
+        // Set HTTP Header for POST request 
+        curl_setopt(
+            $ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($payload))
+        );
+        
+        // Submit the POST request
+        $result = curl_exec($ch);
+        
+        // Close cURL session handle
+        curl_close($ch);
+
+        \Log::debug(json_encode($result));
+
         return redirect()->back(); 
     }
     

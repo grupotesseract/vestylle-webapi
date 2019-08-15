@@ -19,6 +19,7 @@ use App\Repositories\PessoaRepository;
 use App\Http\Requests\CreateCuponRequest;
 use App\Http\Requests\UpdateCuponRequest;
 use App\DataTables\Scopes\PessoasPorCupon;
+use App\DataTables\Scopes\PessoasAtivaramCupom;
 use App\DataTables\Scopes\PessoasPorNCategorias;
 use App\Http\Controllers\AppBaseController;
 
@@ -128,7 +129,7 @@ class CuponController extends AppBaseController
             return redirect(route('cupons.index'));
         }
 
-        return $pessoaDataTable->addScope(new PessoasPorCupon($id))
+        return $pessoaDataTable->addScope(new PessoasAtivaramCupom($id))
             ->render('cupons.show', compact('cupon', $mostrarBtnBaixaCaixa));
     }
 

@@ -95,7 +95,7 @@
         <div class="form-group col-sm-12 text-center">
 
             {!! Form::label('foto_homepage', 'Foto atual') !!} <br>
-            <img src="{{ $cupon->urlFotoDestaque ?? 'http://via.placeholder.com/300x300.jpeg'}}" alt="">
+            <img src="{{ $cupon->urlFotoDestaque ?? 'http://via.placeholder.com/500x500.jpeg'}}" alt="" style="max-width:500px">
             <br>
             <br>
             {!! Form::label('foto_homepage', 'Selecione para trocar') !!}
