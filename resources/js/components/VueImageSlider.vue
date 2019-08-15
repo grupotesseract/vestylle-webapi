@@ -33,29 +33,41 @@
                 this.currentNumber -= 1
             },
             removeImg(currentImage) {
-                const imgIndex = this.images.indexOf(currentImage);
 
-                axios.delete('/imagens/' + currentImage.id,
-                    {},
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }
-                ).then(function(data) {
-                    this.images.splice(imgIndex, 1 );
-                    this.next();
-                    swal({
-                        title: 'Imagem removida com sucesso',
-                        type: 'success',
-                        showConfirmButton: true
-                    });
+                swal({
+                    title: 'Remover imagem?',
+                    type: 'warning',
+                    text: 'A página será recarregada e quaisquer alterações que não foram salvas serão perdidas.',
+                    showCancelButton: true,
+                    showConfirmButton: true
+                })
+                .then( (isConfirm) => {
+                    console.log('confirmou?');
+                    console.log(isConfirm);
 
-                    if (this.images.length == 0) {
-                        window.setTimeout( () => window.location.reload(true), 3500)
+                    if (isConfirm.value) {
+                        const imgIndex = this.images.indexOf(currentImage);
+
+                        axios.delete('/imagens/' + currentImage.id,
+                            {},
+                            {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                }
+                            }
+                        ).then(function(data) {
+                            this.images.splice(imgIndex, 1 );
+                            this.next();
+                            swal({
+                                title: 'Imagem removida com sucesso',
+                                type: 'success',
+                            });
+                            window.setTimeout( () => window.location.reload(true), 800)
+                        }.bind(this)).catch(function(data) {
+                            console.log('error');
+                        });
+
                     }
-                }.bind(this)).catch(function(data) {
-                    console.log('error');
                 });
             },
             isEditRoute() {

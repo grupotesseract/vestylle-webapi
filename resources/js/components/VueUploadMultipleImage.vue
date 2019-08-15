@@ -98,6 +98,7 @@
                         }
                     }
                 ).then(function(data) {
+                    console.log('after deleted');
                     this.files = [];
                 }.bind(this)).catch(function(data) {
                     console.log('error');

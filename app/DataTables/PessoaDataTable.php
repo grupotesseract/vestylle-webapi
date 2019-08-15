@@ -72,21 +72,22 @@ class PessoaDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            // 'id_vestylle',
+            'id',
+            'id_vestylle' => ['visible' => false],
+            'cpf',
+            'nome',
             'saldo_pontos',
             'celular',
-            'telefone_fixo',
-            'email',
+            //'telefone_fixo',
+            'email' => ['visible' => false],
+            'data_nascimento' => ['visible' => false],
             // 'email_verified_at',
-            'nome',
-            // 'cpf',
             // 'cep',
             // 'endereco',
             // 'numero',
             // 'bairro',
             // 'complemento',
-            'data_ultima_compra',
-            'data_nascimento',
+            //'data_ultima_compra',
             // 'cidade_id'
         ];
     }
