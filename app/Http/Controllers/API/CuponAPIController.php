@@ -88,6 +88,11 @@ class CuponAPIController extends AppBaseController
             return $this->sendError('Cupom não encontrado');
         }
 
+        //Se a pessoa tiver ativado esse cupom, substituir data_validade por data_expiracao
+        if ($cupon->pessoas->count()) {
+            $cupon->data_validade = $cupon->pessoas->first()->pivot->data_expiracao;
+        }
+
         return $this->sendResponse($cupon->toArray(), 'Cupom encontrado com sucesso');
     }
 
