@@ -69,9 +69,15 @@ class CuponController extends AppBaseController
     public function store(CreateCuponRequest $request)
     {
         $input = $request->all();
-        $cupon = $this->cuponRepository->create($input);
         $fotos = $request->allFiles()['files'] ?? false;
         $hasFotos = !empty($fotos);
+
+        //Se o cupom não aparece na listagem, atualizar campo.
+        if (!$request->aparece_listagem) {
+            $input['aparece_listagem'] = false;
+        }
+
+        $cupon = $this->cuponRepository->create($input);
 
         if ($hasFotos) {
             $fotos = $this->fotoRepository->uploadAndCreate($request);
@@ -83,7 +89,8 @@ class CuponController extends AppBaseController
             }
         }
 
-        if ($request->em_destaque) {
+        //Se aparece na listagem e também na home, tratar foto home
+        if ($request->em_destaque && $request->aparece_listagem) {
             $fotoDestaque = $request->allFiles()['foto_homepage'] ?? false;
             if (!empty($fotoDestaque)) {
                 $cupon->fotoDestaque()->delete();
@@ -169,7 +176,6 @@ class CuponController extends AppBaseController
 
         if (empty($cupon)) {
             Flash::error('Cupom não encontrado');
-
             return redirect(route('cupons.index'));
         }
 
@@ -178,9 +184,7 @@ class CuponController extends AppBaseController
         $canUpload  = $hasFotos ? \App\Helpers\Helpers::checkUploadLimit($cupon, count($fotos)) : true;
 
         if ($canUpload == false) {
-            $cupon = $this->cuponRepository->update($input, $idCupom);
             Flash::error('Número máximo de imagens atingido. Tente novamente');
-            Flash::success('Cupom atualizado com sucesso.');
             return redirect(route('cupons.edit', $cupon));
         }
 
@@ -193,7 +197,13 @@ class CuponController extends AppBaseController
             }
         }
 
-        if ($request->em_destaque) {
+        //Se o cupom não aparece na listagem, atualizar campo.
+        if (!$request->aparece_listagem) {
+            $input['aparece_listagem'] = false;
+        }
+
+        //Se aparece na listagem e também na home, tratar foto home
+        if ($request->em_destaque && $request->aparece_listagem) {
             $fotoDestaque = $request->allFiles()['foto_homepage'] ?? false;
             if (!empty($fotoDestaque)) {
                 $cupon->fotoDestaque()->delete();
@@ -211,6 +221,7 @@ class CuponController extends AppBaseController
                 $cupon->fotoDestaque()->delete();
             }
         }
+
 
         //pegando categorias da request, se nao tiver,
         //usar array vazio para remover categorias
