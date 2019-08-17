@@ -86,7 +86,7 @@ class PessoaAPIController extends AppBaseController
             $this->pessoaRepository->updatePontosPessoa($pessoa);
             $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
             $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
-            $this->pessoaRepository->updateNascimentoPessoa($pessoa); 
+            $this->pessoaRepository->updateNascimentoPessoa($pessoa);
             $this->pessoaRepository->updateSegmentos($pessoa);
             $this->pessoaRepository->updateSexoPessoa($pessoa);
         }
@@ -327,9 +327,15 @@ class PessoaAPIController extends AppBaseController
         }
 
         $cuponsUtilizados = $pessoa->cupons()
+           ->withPivot('data_expiracao')
            ->NaoExpirados($pessoa)
            ->NaoUtilizadoVenda($pessoa)
-           ->get()->toArray();
+           ->get();
+
+        //Substituindo a data de validade do cupom pela data de expiracao
+        $cuponsUtilizados = $cuponsUtilizados->each(function($cupon) {
+            $cupon->data_validade = $cupon->pivot->data_expiracao;
+        })->toArray();
 
         return $this->sendResponse($cuponsUtilizados, "Cupons do usuário #$pessoa->id carregados com sucesso");
     }
