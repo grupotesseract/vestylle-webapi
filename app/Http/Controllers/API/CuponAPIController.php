@@ -159,8 +159,9 @@ class CuponAPIController extends AppBaseController
             return $this->sendError('Cupom não encontrado');
         }
 
-        $pessoa_id = $request->input('pessoa_id');
-        $pessoa = \App\Models\Pessoa::find($pessoa_id);
+        //Pegando pessoa a partir do token da request
+        $pessoa = \Auth::user();
+        $pessoa_id = $pessoa->id;
 
         if (!$pessoa) {
             return $this->sendError('Pessoa não encontrada');
@@ -170,9 +171,14 @@ class CuponAPIController extends AppBaseController
             return $this->sendError('Identificador do usuário não encontrado no sistema da vestylle');
         }
 
-        $cupom_ativado = \App\Models\CuponPessoa::jaFoiAtivado($pessoa_id, $cupom_id);
+        //SE encontrar o cupom a partir da pessoa, então ja foi ativado
+        $cupom_ativado = $pessoa->cupons()
+            ->withPivot('data_expiracao')
+            ->withPivot('codigo_unico')
+            ->find($cupom_id);
 
         if ($cupom_ativado) {
+            $cupom_ativado->data_validade = $cupom_ativado->pivot->data_expiracao;
             return $this->sendResponse($cupom_ativado, 'O Cupom já está ativado');
         }
 
@@ -182,6 +188,7 @@ class CuponAPIController extends AppBaseController
         $response = $cupom->toArray();
         $response['codigo_unico'] = $codigo_unico;
         $response['data_expiracao'] = $cupomAtivado->data_expiracao;
+        $response['data_validade'] = $cupomAtivado->data_expiracao->format('Y-m-d H:i:s');
 
         return $this->sendResponse($response, 'Cupom ativado com sucesso');
     }

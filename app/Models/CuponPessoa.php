@@ -54,6 +54,7 @@ class CuponPessoa extends Model
             $cupom_pessoa = \App\Models\CuponPessoa::where([ 'cupom_id' => $cupom_id, 'pessoa_id' => $pessoa_id, ])->first();
             $cupom = $cupom_pessoa->cupom->toArray();
             $cupom['codigo_unico'] = $cupom_pessoa->codigo_unico;
+            $cupom['data_validade'] = $cupom_pessoa->data_expiracao;
 
             return $cupom;
         }
