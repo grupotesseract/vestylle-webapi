@@ -30,6 +30,12 @@
             <p>{!! $loja->telefone !!}</p>
         </div>
 
+        <!-- Dias Expiracao Cupom Field -->
+        <div class="form-group">
+            {!! Form::label('dias_expiracao_cupom', 'Dias até expirar cupons ativos:') !!}
+            <p>{!! $loja->dias_expiracao_cupom !!}</p>
+        </div>
+
     </div>
     <div class="col-sm-8 conteudo-centralizado">
 
