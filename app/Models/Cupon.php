@@ -211,7 +211,8 @@ class Cupon extends Model
      */
     public function ativar($pessoa_id, $codigo_unico)
     {
-        $data_expiracao = \Carbon\Carbon::now()->addDays(7);
+        $diasExpiracao = \App\Models\Loja::first()->dias_expiracao_cupom;
+        $data_expiracao = \Carbon\Carbon::now()->addDays($diasExpiracao);
 
         return \App\Models\CuponPessoa::create([
             'cupom_id' => $this->id,

@@ -28,6 +28,21 @@
     {!! Form::text('telefone', null, ['class' => 'form-control']) !!}
 </div>
 
+<!-- Dias Expiracao Cupom Field -->
+<div class="form-group col-sm-12">
+    <hr>
+    <div class="col-sm-4">
+        <h4>Dias até expiração de cupons ativos? <br>
+            <span class="small">(contados a partir da ativação do cupom)</span>
+        </h4>
+    </div>
+    <div class="col-sm-1 text-left">
+        {!! Form::number('dias_expiracao_cupom', null, ['class' => 'form-control']) !!}
+    </div>
+    <div class="col-sm-7"></div>
+    <hr>
+</div>
+
 
 @isset ($loja->fotos)
 <div class="row">
