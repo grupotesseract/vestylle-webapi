@@ -8,7 +8,7 @@
     <a href="{!! route('cupons.index') !!}"><i class="fa fa-tag"></i><span>Cupons</span></a>
 </li>
 <li class="{{ Request::is('ofertas*') ? 'active' : '' }}">
-    <a href="{!! route('ofertas.index') !!}"><i class="fa fa-money"></i><span>Ofertas</span></a>
+    <a href="{!! route('ofertas.index') !!}"><i class="fa fa-money"></i><span>Produtos</span></a>
 </li>
 <li class="{{ Request::is('lojas*') ? 'active' : '' }}">
     <a href="/lojas/1"><i class="fa fa-home"></i><span>A Loja</span></a>

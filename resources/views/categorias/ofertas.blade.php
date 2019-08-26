@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="content-header">
-        <h1>Ofertas com a categoria {{$categoria->nome}}
+        <h1>Produtos com a categoria {{$categoria->nome}}
 
             <span class="pull-right">
                 <a class="btn btn-default" href="javascript:history.back()"> Voltar</a>

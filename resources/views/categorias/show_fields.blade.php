@@ -57,7 +57,7 @@
         <hr>
         <!--  Ofertas -->
         <div class="form-group">
-            {!! Form::label('ofertas', "Existem $categoria->numOfertas ofertas com essa categoria") !!}
+            {!! Form::label('ofertas', "Existem $categoria->numOfertas produtos com essa categoria") !!}
             -
             <a class="btn btn-xs btn-info" href="{{ route('categorias.ofertas', $categoria->id)}}">
                 <i class="fa fa-money"></i> - Ver Detalhes
