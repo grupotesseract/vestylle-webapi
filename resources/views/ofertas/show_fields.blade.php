@@ -7,24 +7,24 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('titulo', 'Título da Oferta') !!}
+            {!! Form::label('titulo', 'Título do Produto') !!}
             <p>{!! $oferta->titulo !!}</p>
         </div>
 
         <div class="form-group">
-            {!! Form::label('subtitulo', 'Subtítulo da Oferta') !!}
+            {!! Form::label('subtitulo', 'Subtítulo do Produto') !!}
             <p>{!! $oferta->subtitulo !!}</p>
         </div>
 
         <!-- Descricao Oferta Field -->
         <div class="form-group">
-            {!! Form::label('descricao_oferta', 'Descrição da Oferta') !!}
+            {!! Form::label('descricao_oferta', 'Descrição do Produto') !!}
             <p>{!! $oferta->descricao_oferta !!}</p>
         </div>
 
         <!-- Texto Oferta Field -->
         <div class="form-group">
-            {!! Form::label('texto_oferta', 'Texto da Oferta') !!}
+            {!! Form::label('texto_oferta', 'Texto do Produto') !!}
             <p>{!! $oferta->texto_oferta !!}</p>
         </div>
 

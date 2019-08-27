@@ -13,7 +13,7 @@
 <!-- Oferta Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('oferta_id', 'Oferta:') !!}
-    {!! Form::select('oferta_id', $ofertas->pluck('titulo', 'id'), $campanha->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha uma Oferta']) !!}
+    {!! Form::select('oferta_id', $ofertas->pluck('titulo', 'id'), $campanha->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha um Produto']) !!}
 </div>
 
 <!-- Oferta Field -->
@@ -53,7 +53,7 @@
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
-    <a href="{!! route('campanhas.index') !!}" class="btn btn-default">Cancel</a>
+    <a href="{!! route('campanhas.index') !!}" class="btn btn-default">Cancelar</a>
 </div>
 
 @section('scripts')

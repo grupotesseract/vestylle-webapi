@@ -3,7 +3,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Detalhes da oferta -
+            Detalhes do produto -
 
             <div class="btn-group">
                 <a class="btn btn-xs btn-default" href="{{ route('ofertas.edit', $oferta->id) }}"> <i class="fa fa-pencil"></i> Editar</a>
@@ -24,7 +24,7 @@
 
 
                     <div class="col-xs-12">
-                    <h4>Pessoas que adicionaram essa oferta á lista de desejos:</h4>
+                    <h4>Pessoas que adicionaram esse produto á lista de desejos:</h4>
 
                     <br>
                     @include('pessoas.table')
