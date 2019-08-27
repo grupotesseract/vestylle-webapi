@@ -23,8 +23,8 @@
 
 <!-- Oferta Field -->
 <div class="form-group col-sm-5">
-    {!! Form::label('oferta_id', 'Associar esse cupom a uma Oferta') !!}
-    {!! Form::select('oferta_id', $ofertas->pluck('titulo', 'id'), $cupon->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha uma Oferta']) !!}
+    {!! Form::label('oferta_id', 'Associar esse cupom a um Produto') !!}
+    {!! Form::select('oferta_id', $ofertas->pluck('titulo', 'id'), $cupon->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha um Produto']) !!}
 </div>
 
 <!-- Porcentagem OFF Field -->
