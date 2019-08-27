@@ -25,7 +25,7 @@
         @if ($campanha->cupon_id)
             <!-- Cupon Id Field -->
             <div class="form-group">
-                {!! Form::label('cupon_id', 'Cupon Id:') !!}
+                {!! Form::label('cupon_id', 'Cupom Id:') !!}
                 <p>{!! $campanha->cupon_id !!}</p>
             </div>
         @endif
@@ -33,7 +33,7 @@
         @if ($campanha->oferta_id)
             <!-- Oferta Id Field -->
             <div class="form-group">
-                {!! Form::label('oferta_id', 'Oferta Id:') !!}
+                {!! Form::label('oferta_id', 'Produto Id:') !!}
                 <p>{!! $campanha->oferta_id !!}</p>
             </div>
         @endif
@@ -131,7 +131,7 @@
         @if ($campanha->created_at)
             <!-- Created At Field -->
             <div class="form-group">
-                {!! Form::label('created_at', 'Created At:') !!}
+                {!! Form::label('created_at', 'Data de Criação:') !!}
                 <p>{!! $campanha->created_at !!}</p>
             </div>
         @endif
@@ -139,7 +139,7 @@
         @if ($campanha->updated_at)
             <!-- Updated At Field -->
             <div class="form-group">
-                {!! Form::label('updated_at', 'Updated At:') !!}
+                {!! Form::label('updated_at', 'Data de Atualização:') !!}
                 <p>{!! $campanha->updated_at !!}</p>
             </div>
         @endif

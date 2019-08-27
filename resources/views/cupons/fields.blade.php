@@ -23,8 +23,8 @@
 
 <!-- Oferta Field -->
 <div class="form-group col-sm-5">
-    {!! Form::label('oferta_id', 'Associar esse cupom a uma Oferta') !!}
-    {!! Form::select('oferta_id', $ofertas->pluck('titulo', 'id'), $cupon->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha uma Oferta']) !!}
+    {!! Form::label('oferta_id', 'Associar esse cupom a um Produto') !!}
+    {!! Form::select('oferta_id', $ofertas->pluck('titulo', 'id'), $cupon->oferta_id ?? null, ['class' => 'form-control', 'placeholder' => 'Escolha um Produto']) !!}
 </div>
 
 <!-- Porcentagem OFF Field -->
@@ -68,7 +68,7 @@
 </div>
 
 <!-- Cupom em destaque? aparece na Home -->
-<div class="form-group col-sm-12 container-cupom-destaque">
+<div class="form-group col-sm-12 container-cupom-destaque @if( isset($cupon) && !$cupon->aparece_listagem) hide @endif">
     <div class="col-xs-12">
         <hr>
     </div>
@@ -80,7 +80,7 @@
     </div>
 
     <div class="col-sm-6 text-left">
-        <h4> {!! Form::checkbox('em_destaque', 1, $cupon->emDestaque ?? false, ['class' => 'checkbox_em_destaque']) !!} Sim </h4>
+        <h4> {!! Form::checkbox('em_destaque', 1, isset($cupon) ? $cupon->emDestaque : false, ['class' => 'checkbox_em_destaque']) !!} Sim </h4>
     </div>
 
     <div class="container-foto-destaque @if (!(isset($cupon) && $cupon->emDestaque)) hide @endif col-sm-12">

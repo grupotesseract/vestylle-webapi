@@ -31,6 +31,7 @@ class Loja extends Model
         'email',
         'whatsapp',
         'whatsapp2',
+        'dias_expiracao_cupom',
         'telefone',
     ];
 
