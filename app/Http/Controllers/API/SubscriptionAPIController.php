@@ -91,40 +91,42 @@ class SubscriptionAPIController extends AppBaseController
         
         foreach ($pessoasIds as $pessoaId) {
             $inSQL[] = 'App.Models.Pessoa.'.$pessoaId;
+    
+            $expoTokens = \DB::table('exponent_push_notification_interests')
+            ->whereIn('key', $inSQL)->get()->pluck('value');
         }
 
-        $expoTokens = \DB::table('exponent_push_notification_interests')
-        ->whereIn('key', $inSQL)->get()->pluck('value');
+        foreach ($expoTokens as $expoToken) {
+            $data = array(
+                "to" => $expoToken,
+                "title" => $campanha->titulo,
+                "body" => $campanha->texto
+            );
+    
+            $payload = json_encode($data);
+    
+            $ch = curl_init('https://exp.host/--/api/v2/push/send');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+            
+            // Set HTTP Header for POST request 
+            curl_setopt(
+                $ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($payload))
+            );
+            
+            // Submit the POST request
+            $result = curl_exec($ch);
+            
+            // Close cURL session handle
+            curl_close($ch);
+    
+            \Log::debug(json_encode($result));
 
-
-        $data = array(
-            "to" => $expoTokens,
-            "title" => $campanha->titulo,
-            "body" => $campanha->texto
-        );
-
-        $payload = json_encode($data);
-
-        $ch = curl_init('https://exp.host/--/api/v2/push/send');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-        
-        // Set HTTP Header for POST request 
-        curl_setopt(
-            $ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($payload))
-        );
-        
-        // Submit the POST request
-        $result = curl_exec($ch);
-        
-        // Close cURL session handle
-        curl_close($ch);
-
-        \Log::debug(json_encode($result));
+        }  
 
         return redirect()->back(); 
     }
