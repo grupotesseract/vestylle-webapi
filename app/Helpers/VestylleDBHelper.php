@@ -99,7 +99,7 @@ class VestylleDBHelper
         $tipoInformacoes = \App\Models\TipoInformacao::pluck('tipo_informacao')->toArray();
         $tipoInformacoesSplit = implode('", "', $tipoInformacoes);        
         $query = "SELECT DISTINCT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR
-                    as valor FROM vegas.pesinfo 
+                    as valor FROM ".env('VESTYLLE_DB_DATABASE').".pesinfo 
                     WHERE TIPOINFO IN (\"$tipoInformacoesSplit\")";        
        
         try {
@@ -126,7 +126,7 @@ class VestylleDBHelper
         $tipoInformacoesSplit = implode('", "', $tipoInformacoes);
 
         $query = "SELECT TIPOINFO as descricao, DESCRICAO as conteudo, VALOR as valor
-                    FROM vegas.pesinfo WHERE IDPESSOA = $pessoa->id_vestylle 
+                    FROM ".env('VESTYLLE_DB_DATABASE').".pesinfo WHERE IDPESSOA = $pessoa->id_vestylle 
                     AND TIPOINFO IN (\"$tipoInformacoesSplit\")";
         
         try {
@@ -150,7 +150,7 @@ class VestylleDBHelper
      */
     public function getSaldoPontosPessoa(Pessoa $pessoa)
     {
-        $query = "SELECT SALDO from vegas.fidmovim WHERE DONOID = $pessoa->id_vestylle ORDER BY CNSCADMOM DESC LIMIT 1";
+        $query = "SELECT SALDO from ".env('VESTYLLE_DB_DATABASE').".fidmovim WHERE DONOID = $pessoa->id_vestylle ORDER BY CNSCADMOM DESC LIMIT 1";
 
         try {
             $result = $this->query()->select($query);
@@ -170,7 +170,7 @@ class VestylleDBHelper
      */
     public function getSexo(Pessoa $pessoa)
     {
-        $query = "SELECT DESCRICAO as sexo FROM vegas.pesinfo WHERE TIPOINFO = 'SEXO' AND IDPESSOA = $pessoa->id_vestylle";
+        $query = "SELECT DESCRICAO as sexo FROM ".env('VESTYLLE_DB_DATABASE').".pesinfo WHERE TIPOINFO = 'SEXO' AND IDPESSOA = $pessoa->id_vestylle";
         $mascArray = ['MASCULINO', 'M', 'masc', 'MASC.'];
         $femArray = ['FEMININO', 'FEM', 'F', 'FEMININA', 'feminio', 'FEMENINO', 'FEMINNO', '(F)', 'FEM.'];
 
@@ -202,7 +202,7 @@ class VestylleDBHelper
      */
     public function getVencimentoPontosPessoa(Pessoa $pessoa)
     {
-        $query = "SELECT VENCIMENTO from vegas.fidmovim WHERE DONOID = $pessoa->id_vestylle AND VENCIMENTO >= NOW() ORDER BY VENCIMENTO ASC LIMIT 1" ;
+        $query = "SELECT VENCIMENTO from ".env('VESTYLLE_DB_DATABASE').".fidmovim WHERE DONOID = $pessoa->id_vestylle AND VENCIMENTO >= NOW() ORDER BY VENCIMENTO ASC LIMIT 1" ;
 
         try {
             $result = $this->query()->select($query);
@@ -222,7 +222,7 @@ class VestylleDBHelper
      */
     public function getNascimentoPessoa(Pessoa $pessoa)
     {
-        $query = "SELECT NASC FROM vegas.pesdepen WHERE IDPESSOA = $pessoa->id_vestylle AND (TIPO = 'PRINCI' 
+        $query = "SELECT NASC FROM ".env('VESTYLLE_DB_DATABASE').".pesdepen WHERE IDPESSOA = $pessoa->id_vestylle AND (TIPO = 'PRINCI' 
         OR TIPO = '') LIMIT 1" ;
 
         try {
@@ -244,7 +244,7 @@ class VestylleDBHelper
      */
     public function getDataUltimaCompraPessoa(Pessoa $pessoa)
     {
-        $query = "SELECT CNSCADMOM from vegas.cxmovim WHERE pessoa = $pessoa->id_vestylle ORDER BY CNSCADMOM DESC LIMIT 1" ;
+        $query = "SELECT CNSCADMOM from ".env('VESTYLLE_DB_DATABASE').".cxmovim WHERE pessoa = $pessoa->id_vestylle ORDER BY CNSCADMOM DESC LIMIT 1" ;
 
         try {
             $result = $this->query()->select($query);
@@ -334,7 +334,7 @@ class VestylleDBHelper
      */
     public function getIdsUltimasCompras($tipoLimite=self::LIMITE_DIAS, $valorLimite=2)
     {
-        $query = "SELECT pessoa from vegas.cxmovim" ;
+        $query = "SELECT pessoa from ".env('VESTYLLE_DB_DATABASE').".cxmovim" ;
         $query .= " WHERE CNSCADMOM > " . str_replace("#", $valorLimite, $tipoLimite);
 
         try {
@@ -369,7 +369,7 @@ class VestylleDBHelper
      */
     public function getIdsUltimosSaldos($tipoLimite=self::LIMITE_DIAS, $valorLimite=2)
     {
-        $query = "SELECT DONOID from vegas.fidmovim" ;
+        $query = "SELECT DONOID from ".env('VESTYLLE_DB_DATABASE').".fidmovim" ;
         $query .= " WHERE CNSCADMOM > " . str_replace("#", $valorLimite, $tipoLimite);
 
         try {
