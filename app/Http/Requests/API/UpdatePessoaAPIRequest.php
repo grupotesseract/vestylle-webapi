@@ -24,20 +24,40 @@ class UpdatePessoaAPIRequest extends APIRequest
      * @return array
      */
     public function rules()
-    {        
+    {
         $rules = [
-            'email' => 
-                [
-                    'required',
-                    Rule::unique('pessoas')->ignore($this->route('pessoa')),
-                ],
-            'cpf' => 
-                [
-                    'required',
-                    Rule::unique('pessoas')->ignore($this->route('pessoa')),
-                ],
+            'email' => [
+                'required',
+                Rule::unique('pessoas')->ignore($this->route('pessoa')),
+            ],
+            'cpf' => [
+                'required',
+                Rule::unique('pessoas')->ignore($this->route('pessoa')),
+            ],
+            'data_nascimento' => [
+                'nullable',
+                'date_format:Y-m-d'
+
+            ]
         ];
 
         return $rules;
     }
+
+    /**
+     * Sobrescrevendo a mensagens retornadas
+     *
+     * @return void
+     */
+    public function messages()
+    {
+        return [
+            'data_nascimento.date_format' => 'Verifique a data informada.'
+        ];
+    }
+
+
+
+
+
 }
