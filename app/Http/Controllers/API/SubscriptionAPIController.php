@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\AppBaseController;
-use App\Notifications\PushNotification;
-use App\Repositories\CampanhaRepository;
-
-
-use Auth;
 use Notification;
 use App\Models\PessoaPush;
-use App\Notifications\PushNotificationExpo;
+use Illuminate\Http\Request;
+use App\Notifications\PushNotification;
+use App\Repositories\CampanhaRepository;
+use App\Http\Controllers\AppBaseController;
+use App\Jobs\SendExpoPushes;
 
 class SubscriptionAPIController extends AppBaseController
 {
-    /** @var  CampanhaRepository */    
+    /** @var  CampanhaRepository */
     private $campanhaRepository;
-    
+
     /**
      * Create a new controller instance.
      *
@@ -31,14 +28,14 @@ class SubscriptionAPIController extends AppBaseController
 
     /**
      * Store the PushSubscription.
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $this->validate(
-            $request, 
+            $request,
             [
                 'endpoint'    => 'required',
                 'keys.auth'   => 'required',
@@ -49,8 +46,8 @@ class SubscriptionAPIController extends AppBaseController
         $token = $request->keys['auth'];
         $key = $request->keys['p256dh'];
 
-        $usuarioPush = Auth('api')->user();
-        
+        $usuarioPush = \Auth('api')->user();
+
         $user = PessoaPush::firstOrCreate(
             [
             'endpoint' => $endpoint,
@@ -58,40 +55,36 @@ class SubscriptionAPIController extends AppBaseController
             ]
         );
 
-        $user->updatePushSubscription($endpoint, $key, $token);        
-        
+        $user->updatePushSubscription($endpoint, $key, $token);
+
         return response()->json(['success' => true], 200);
     }
 
     /**
      * Send Push Notifications to all users.
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function push($idCampanha)
     {
-        //AQUI FAREMOS A SELEÇÃO DE QUAIS PESSOAS RECEBERÃO
-        //A NOTIFICAÇÃO, DE ACORDO COM O SEU SEGMENTO
         $campanha = $this->campanhaRepository->find($idCampanha);
         $pessoas = $campanha->pessoasQuery->get();
+
+        //Se nao existirem pessoas elegiveis para receber a push, retornar erro.
+        if (!$pessoas->count()) {
+            \Flash::error('Não existem pessoas elegiveis para receber a notificação. Modifique a segmentação da campanha');
+            return redirect()->back();
+        }
+
         $pessoasIds = $pessoas->pluck('id');
-        $pessoasPush = PessoaPush::whereIn('pessoa_id', $pessoasIds)->get();        
-        
+        $pessoasPush = PessoaPush::whereIn('pessoa_id', $pessoasIds)->get();
+
         //WebPush
         Notification::send($pessoasPush, new PushNotification($campanha));
-        // //Expo
-        // Notification::send($pessoas, new PushNotificationExpo($campanha));
 
-        
-        // 'curl -H "Content-Type: application/json" -X POST "https://exp.host/--/api/v2/push/send" -d '{
-        //     "to": ["ExponentPushToken[6R_fzjHyr5hX3cwSu0oSGA]", "ExponentPushToken[nracypPb4xzBWXPTTgJcbo]"],
-        //     "title":"hello",
-        //     "body": "world"
-        //   }'';        
-        
         foreach ($pessoasIds as $pessoaId) {
             $inSQL[] = 'App.Models.Pessoa.'.$pessoaId;
-    
+
             $expoTokens = \DB::table('exponent_push_notification_interests')
             ->whereIn('key', $inSQL)->get()->pluck('value');
         }
@@ -102,33 +95,11 @@ class SubscriptionAPIController extends AppBaseController
                 "title" => $campanha->titulo,
                 "body" => $campanha->texto
             );
-    
-            $payload = json_encode($data);
-    
-            $ch = curl_init('https://exp.host/--/api/v2/push/send');
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-            
-            // Set HTTP Header for POST request 
-            curl_setopt(
-                $ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($payload))
-            );
-            
-            // Submit the POST request
-            $result = curl_exec($ch);
-            
-            // Close cURL session handle
-            curl_close($ch);
-    
-            \Log::debug(json_encode($result));
 
-        }  
+            SendExpoPushes::dispatch($data);
+        }
 
-        return redirect()->back(); 
+        return redirect()->back();
     }
-    
+
 }

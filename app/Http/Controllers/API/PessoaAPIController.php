@@ -151,9 +151,12 @@ class PessoaAPIController extends AppBaseController
             $this->pessoaRepository->updatePontosPessoa($pessoa);
             $this->pessoaRepository->updateVencimentoPontosPessoa($pessoa);
             $this->pessoaRepository->updateDataUltimaCompraPessoa($pessoa);
-            $this->pessoaRepository->updateNascimentoPessoa($pessoa);
             $this->pessoaRepository->updateSegmentos($pessoa);
             $this->pessoaRepository->updateSexoPessoa($pessoa);
+
+            if (!$request->data_nascimento) {
+                $this->pessoaRepository->updateNascimentoPessoa($pessoa);
+            }
         }
 
         return $this->sendResponse($pessoa->toArray(), 'Pessoa atualizada com sucesso');
