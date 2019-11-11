@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Notifications\PushNotification;
 use App\Repositories\CampanhaRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Jobs\SendExpoPushes;
 
 class SubscriptionAPIController extends AppBaseController
 {
@@ -95,26 +96,7 @@ class SubscriptionAPIController extends AppBaseController
                 "body" => $campanha->texto
             );
 
-            $payload = json_encode($data);
-
-            $ch = curl_init('https://exp.host/--/api/v2/push/send');
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-            // Set HTTP Header for POST request
-            curl_setopt(
-                $ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($payload))
-            );
-
-            // Submit the POST request
-            $result = curl_exec($ch);
-
-            // Close cURL session handle
-            curl_close($ch);
+            SendExpoPushes::dispatch($data);
         }
 
         return redirect()->back();
