@@ -238,5 +238,4 @@ class Pessoa extends Authenticatable
         return ($this->permiteExpoPush || $this->permiteWebPush) ? true : false;
      }
 
-
 }

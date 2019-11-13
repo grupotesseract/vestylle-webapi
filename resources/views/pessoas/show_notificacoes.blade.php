@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="content-header">
-        <h1>Pessoas</h1>
+        <h1>Pessoas que permitiram notificações</h1>
     </section>
     <div class="content">
         <div class="clearfix"></div>
