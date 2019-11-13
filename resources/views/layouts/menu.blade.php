@@ -1,6 +1,17 @@
-<li class="{{ Request::is('pessoas*') ? 'active' : '' }}">
-    <a href="{!! route('pessoas.index') !!}"><i class="fa fa-user"></i><span>Pessoas</span></a>
+<!-- Dropdown Menu Pessoas -->
+<li class="treeview {{ Request::is('*pessoas*') ? 'active menu-open' : '' }}">
+    <a href="javascript:void(0)"><i class="fa fa-users"></i><span>Pessoas</span></a>
+
+    <ul class="nav treeview-menu">
+        <li class="{{ Request::is('*pessoas*') ? 'active' : '' }}">
+            <a href="{!! route('pessoas.index') !!}"></i><span> Todas</span></a>
+        </li>
+        <li class="{{ Request::is('*pessoas-notificacoes*') ? 'active' : '' }}">
+            <a href="{!! route('pessoas.notificacoes') !!}"></i><span>Que permitiram notificações</span></a>
+        </li>
+    </ul>
 </li>
+
 <li class="{{ Request::is('faleConoscos*') ? 'active' : '' }}">
     <a href="{!! route('faleConoscos.index') !!}"><i class="fa fa-envelope"></i><span>Contatos</span></a>
 </li>
