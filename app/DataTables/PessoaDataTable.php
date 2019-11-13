@@ -23,7 +23,10 @@ class PessoaDataTable extends DataTable
             $mostrarBtnBaixaCaixa = false;
             return view('pessoas.datatables_actions', compact('id', 'mostrarBtnBaixaCaixa'))
                 ->render();
+        })->addColumn('notificacoes', function ($model) {
+            return $model->permitePushs ? 'Sim' : 'Não';
         });
+
     }
 
     /**
@@ -55,10 +58,7 @@ class PessoaDataTable extends DataTable
                     ['extend' => 'export', 'text' => '<i class="fa fa-download"></i> Exportar'],
                     ['extend' => 'print', 'text' => '<i class="fa fa-print"></i> Imprimir'],
                     ['extend' => 'reload','text' => '<i class="fa fa-refresh"></i> Atualizar'],
-                    [
-                        'extend' => 'colvis',
-                        'text'    => 'Filtrar Colunas',
-                    ]
+                    [ 'extend' => 'colvis', 'text'    => '<i class="fa fa-filter"></i> Filtrar Colunas', ]
                 ],
                 'language' => ['url' => '//cdn.datatables.net/plug-ins/1.10.15/i18n/Portuguese-Brasil.json'],
             ]);
@@ -72,14 +72,23 @@ class PessoaDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',
+            'id' => ['visible' => false],
             'id_vestylle' => ['visible' => false],
             'cpf',
             'nome',
-            'saldo_pontos',
+            'notificacoes' => [
+                'data'=>'notificacoes',
+                'title'=>'Permitiu Notificações',
+                'filterable'=> false,
+                'searchable'=> false,
+                'orderable' => false,
+                'visible' => false
+            ],
+
+            'saldo_pontos' => ['visible' => false],
             'celular',
             //'telefone_fixo',
-            'email' => ['visible' => false],
+            'email',
             'data_nascimento' => ['visible' => false],
             // 'email_verified_at',
             // 'cep',

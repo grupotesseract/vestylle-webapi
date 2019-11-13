@@ -168,6 +168,11 @@
             </div>
         @endif
 
+        <!-- Permitiu Notificacoes Field -->
+        <div class="form-group">
+            {!! Form::label('deleted_at', 'Permitiu Notificações') !!}
+            <p>{!! $pessoa->permitePushs ? 'Sim' : 'Não' !!}<p>
+        </div>
 
     </div>
 </div>
