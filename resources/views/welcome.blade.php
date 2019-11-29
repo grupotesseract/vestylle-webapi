@@ -90,7 +90,6 @@
                 </div>
 
                 <div class="links">
-                    <a target="_blank" href="https://github.com/grupotesseract/vestylle-webapi">GitHub</a>
                     @auth
                         <a target="_blank" href="{{ url('/home') }}">Home</a>
                     @else
