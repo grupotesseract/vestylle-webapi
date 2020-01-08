@@ -30,6 +30,8 @@ Route::group(['middleware' => ['role:admin']], function () {
     Route::resource('pessoas', 'PessoaController')->except([
         'create', 'store'
     ]);
+    Route::get('pessoas-notificacoes', 'PessoaController@getPessoasPermitiramNotificacoes')->name('pessoas.notificacoes');
+
     Route::resource('cupons', 'CuponController');
     Route::get('cupons/{id}/pessoas', 'CuponController@showPessoasPermitidas')->name('cupons.pessoas');
     Route::get('cupons/pessoa/{id}', 'CuponController@getCuponsPessoa');
