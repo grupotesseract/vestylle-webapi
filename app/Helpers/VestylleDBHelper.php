@@ -150,7 +150,7 @@ class VestylleDBHelper
      */
     public function getSaldoPontosPessoa(Pessoa $pessoa)
     {
-        $query = "SELECT SALDO from ".env('VESTYLLE_DB_DATABASE').".fidmovim WHERE DONOID = $pessoa->id_vestylle ORDER BY CNSCADMOM DESC LIMIT 1";
+        $query = "SELECT SALDO from ".env('VESTYLLE_DB_DATABASE').".fidmovim WHERE DONOID = $pessoa->id_vestylle AND PONTOMOMLIBERADO is null AND (PONTONAOLIBERADO = '' OR PONTONAOLIBERADO is null) ORDER BY CNSCADMOM DESC LIMIT 1";
 
         try {
             $result = $this->query()->select($query);

@@ -6,7 +6,7 @@ use App\Models\Pessoa;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
-class PessoaDataTable extends DataTable
+class PessoasQuePermitiramPushDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -37,7 +37,17 @@ class PessoaDataTable extends DataTable
      */
     public function query(Pessoa $model)
     {
-        return $model->newQuery();
+        $idsPessoasExpo = \DB::table(Pessoa::TABELA_PERMISSOES_EXPO_PUSH)
+            ->get()->pluck('key')
+            ->map(function($value) {
+                preg_match("#\.(\d+)#", $value, $output);
+                return (int) $output[1];
+            });
+
+        $idsPessoasWeb = Pessoa::has('permissoesWebPush')->pluck('id');
+        $idsPessoasNotificacoes = $idsPessoasExpo->merge($idsPessoasWeb)->unique();
+
+        return $model->whereIn('id', $idsPessoasNotificacoes);
     }
 
     /**

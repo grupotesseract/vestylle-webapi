@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\PessoaDataTable;
+use App\DataTables\PessoasQuePermitiramPushDataTable;
 use App\Http\Requests;
 use App\Http\Requests\CreatePessoaRequest;
 use App\Http\Requests\UpdatePessoaRequest;
@@ -149,12 +150,12 @@ class PessoaController extends AppBaseController
             Flash::error('Pessoa não encontrada');
 
             return redirect(route('pessoas.index'));
-        }        
+        }
 
         $pessoa->cupons()->detach();
         $pessoa->listaDesejos()->detach();
         $pessoa->categorias()->detach();
-        $pessoa->faleConoscos()->forceDelete(); 
+        $pessoa->faleConoscos()->forceDelete();
         PessoaPush::where('pessoa_id', $id)->delete();
 
         $this->pessoaRepository->delete($id);
@@ -173,4 +174,16 @@ class PessoaController extends AppBaseController
     {
         return view('auth.passwords.reset_success');
     }
+
+    /**
+     * Metodo para servir a view de pessoas que permitiram notificacoes
+     *
+     * @param PessoaDataTable $pessoaDataTable
+     * @return Response
+     */
+    public function getPessoasPermitiramNotificacoes(PessoasQuePermitiramPushDataTable $pessoaDataTable)
+    {
+        return $pessoaDataTable->render('pessoas.show_notificacoes');
+    }
+
 }

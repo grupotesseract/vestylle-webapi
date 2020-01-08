@@ -33,12 +33,13 @@ class Pessoa extends Authenticatable
     use LaratrustUserTrait;
     use Notifiable;
     use HasPushSubscriptions;
-    
+
     use HasApiTokens;
 
     // FLAG cadastro para indicar quando a pessoa completou o cadastro || se o cadastro ainda está pendente
     const CADASTRO_PENDENTE = 1;
     const CADASTRO_OK = 2;
+    const TABELA_PERMISSOES_EXPO_PUSH = 'exponent_push_notification_interests';
 
     public $table = 'pessoas';
 
@@ -99,6 +100,14 @@ class Pessoa extends Authenticatable
         'email' => 'required|unique:pessoas',
         'cpf' => 'unique:pessoas',
     ];
+
+
+    public $appends = [
+        'permitePushs'
+    ];
+
+
+
 
     /**
      * Relacionamento entre Pessoa x Cidade
@@ -175,4 +184,58 @@ class Pessoa extends Authenticatable
     {
         $this->notify(new ResetPassword($token));
     }
+
+    /**
+     * Relacao de Pessoa com a tabela que guarda as chaves identificando
+     * os devices permitidos receber WebPushs
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function permissoesWebPush()
+    {
+        return $this->hasMany(\App\Models\PessoaPush::class, 'pessoa_id');
+    }
+
+    /**
+     * Acessor para determinar se essa Pessoa permitiu as notificacoes web
+     *
+     * @return boolean
+     */
+     public function getPermiteWebPushAttribute()
+     {
+        return $this->permissoesWebPush()->count() ? true : false;
+     }
+
+
+    /**
+     * Metodo para obter os regisros de permissao de pushs do expo dessa pessoa
+     *
+     * @return QueryBuilder
+     */
+    public function permissoesExpoPush()
+    {
+        return \DB::table(self::TABELA_PERMISSOES_EXPO_PUSH)
+            ->where('key', 'like', "%$this->id%");
+    }
+
+    /**
+     * Acessor para determinar se essa Pessoa permitiu as notificacoes do expo
+     *
+     * @return boolean
+     */
+     public function getPermiteExpoPushAttribute()
+     {
+         return $this->permissoesExpoPush()->count() ? true : false;
+     }
+
+    /**
+     * Acessor para determinar se a pesssoa permitiu o recebimento de pushs
+     *
+     * @return boolean
+     */
+     public function getPermitePushsAttribute()
+     {
+        return ($this->permiteExpoPush || $this->permiteWebPush) ? true : false;
+     }
+
 }
