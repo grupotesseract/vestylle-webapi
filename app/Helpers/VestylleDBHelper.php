@@ -202,7 +202,7 @@ class VestylleDBHelper
      */
     public function getVencimentoPontosPessoa(Pessoa $pessoa)
     {
-        $query = "SELECT VENCIMENTO from ".env('VESTYLLE_DB_DATABASE').".fidmovim WHERE DONOID = $pessoa->id_vestylle AND VENCIMENTO >= NOW() ORDER BY VENCIMENTO ASC LIMIT 1" ;
+        $query = "SELECT VENCIMENTO from ".env('VESTYLLE_DB_DATABASE').".fidmovim WHERE DONOID = $pessoa->id_vestylle AND VENCIMENTO >= NOW() AND PONTOMOMLIBERADO is null AND (PONTONAOLIBERADO = '' OR PONTONAOLIBERADO is null) ORDER BY VENCIMENTO ASC LIMIT 1" ;
 
         try {
             $result = $this->query()->select($query);
