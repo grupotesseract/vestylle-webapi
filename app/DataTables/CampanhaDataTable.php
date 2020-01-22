@@ -70,8 +70,8 @@ class CampanhaDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'titulo' => ['searchable' => false],
-            'texto' => ['searchable' => false],
+            'titulo' => ['searchable' => true],
+            'texto' => ['searchable' => true],
             'qntPessoas' => ['data' => 'qntPessoas', 'filterable' => false, 'orderable' => false, 'searchable' => false]
         ];
     }
