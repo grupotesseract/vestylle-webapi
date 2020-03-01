@@ -93,7 +93,11 @@ class SubscriptionAPIController extends AppBaseController
             $data = array(
                 "to" => $expoToken,
                 "title" => $campanha->titulo,
-                "body" => $campanha->texto
+                "body" => $campanha->texto,
+                "data" => [
+                    "cupom_id" => $campanha->cupon_id,
+                    "produto_id" => $campanha->oferta_id,
+                ]
             );
 
             SendExpoPushes::dispatch($data);
